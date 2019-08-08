@@ -6,8 +6,11 @@ import CanvasMenu from './CanvasMenu';
 import GameBoard from './GameBoard';
 import PlayerList from './PlayerList';
 import theme from './theme';
+import useGameBoard from './hooks/useGameBoard';
 
 function App() {
+  const gameBoard = useGameBoard();
+
   return (
     <MuiThemeProvider theme={theme}>
       <Header />
@@ -16,7 +19,7 @@ function App() {
           <Grid item xs={3}>
             <Grid container spacing={3}>
               <Grid item xs={12}>
-                <PlayerList />
+                <PlayerList gameBoard={gameBoard} />
               </Grid>
               <Grid item xs={12}>
                 <CanvasMenu />
@@ -24,7 +27,7 @@ function App() {
             </Grid>
           </Grid>
           <Grid item xs={9}>
-            <GameBoard />
+            <GameBoard gameBoard={gameBoard}/>
           </Grid>
         </Grid>
       </div>

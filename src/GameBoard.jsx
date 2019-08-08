@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
+import _map from 'lodash/map';
 import _times from 'lodash/times';
+import CharacterIcon from './CharacterIcon';
+import { SET_SIZE } from './hooks/useGameBoard';
 
 function drawGrid(canvasClass) {
 	const canvas = document.querySelector(`.${canvasClass}`);
@@ -43,18 +46,25 @@ function drawGrid(canvasClass) {
 const styles = theme => ({
 	canvas: {
 		background: 'pink',
+		position: 'absolute',
+		top: 0,
+		left: 0,
+		zIndex: 1,
 	},
 	canvasWrapper: {
 		height: '100%',
 		width: '100%',
+		position: 'relative',
 	}
 })
 
 function GameBoard({
-	classes
+	classes,
+	gameBoard
 }) {
 	const [ loaded, setLoaded ] = useState(false)
 	const canvasWrapper = document.querySelector(`.${classes.canvasWrapper}`);
+	const { state, dispatch } = gameBoard;
 
 	useEffect(() => {
 		setLoaded(true);
@@ -62,9 +72,21 @@ function GameBoard({
 
 	useEffect(() => {
 		if (loaded) {
-			drawGrid(classes.canvas)
+			dispatch({
+				type: SET_SIZE,
+				payload: {
+					width: canvasWrapper.offsetWidth,
+					height: canvasWrapper.offsetHeight,
+				}
+			})
 		}
-	}, [loaded])
+	}, [loaded, canvasWrapper, dispatch])
+
+	useEffect(() => {
+		if (loaded) {
+			drawGrid(classes.canvas);
+		}
+	}, [state, loaded, classes])
 
 	if (!loaded) {
 		return <div className={classes.canvasWrapper} />
@@ -73,12 +95,27 @@ function GameBoard({
 	return (
 		<div className={classes.canvasWrapper}>
 				<canvas
-						className={classes.canvas}
-						width={canvasWrapper.offsetWidth}
-						height={canvasWrapper.offsetHeight}
-					>
+					className={classes.canvas}
+					width={state.width}
+					height={state.height}
+				>
 				<p>Browser Unsupported</p>
 			</canvas>
+			{
+				_map(state.characters, character => (
+					<CharacterIcon
+						key={character.name}
+						character={character}
+						dispatch={dispatch}
+						board={{
+							height: state.height,
+							width: state.width,
+							leftOffset: canvasWrapper.getBoundingClientRect().left,
+							topOffset: canvasWrapper.getBoundingClientRect().top
+						}}
+					/>
+				))
+			}
 		</div>
 	)
 }
