@@ -4,8 +4,6 @@ import { withStyles } from '@material-ui/core/styles';
 
 const styles = theme => ({
 	character: {
-		height: 50,
-		width: 50,
 		position: 'absolute',
 		zIndex: 103,
 		borderRadius: '50%',
@@ -19,28 +17,23 @@ function CharacterIcon({
 	dispatch
 }) {
 	const { x, y, background, name } = character;
-	const { topOffset, leftOffset } = board;
-	const [ top, setTop ] = useState(y * 50);
-	const [ left, setLeft ] = useState(x * 50);
+	const { topOffset, leftOffset, scale } = board;
+	const [ top, setTop ] = useState(y * scale);
+	const [ left, setLeft ] = useState(x * scale);
 
 	useEffect(() => {
-		setTop(y * 50);
-		setLeft(x * 50);
-	}, [ x, y ]);
-
-	function move({ clientX, clientY }) {
-		setTop(clientY - topOffset - 25);
-		setLeft(clientX - leftOffset - 25);
-	}
+		setTop(y * scale);
+		setLeft(x * scale);
+	}, [ x, y, scale ]);
 
 	function stopMoving({ clientX, clientY }) {
 		window.removeEventListener('mousemove', move);
 		window.removeEventListener('mouseup', stopMoving);
 
-		const curY = clientY - topOffset - 25;
-		const curX = clientX - leftOffset - 25;
-		const newY = Math.round(curY / 50);
-		const newX = Math.round(curX / 50);
+		const curY = clientY - topOffset - (scale / 2);
+		const curX = clientX - leftOffset - (scale / 2);
+		const newY = Math.round(curY / scale);
+		const newX = Math.round(curX / scale);
 
 		dispatch({
 			type: MOVE_CHARACTER,
@@ -52,21 +45,60 @@ function CharacterIcon({
 		})
 	}
 
+	function move({ clientX, clientY }) {
+		setTop(clientY - topOffset - (scale / 2));
+		setLeft(clientX - leftOffset - (scale / 2));
+	}
+
 	function startMoving() {
 		window.addEventListener('mousemove', move);
 		window.addEventListener('mouseup', stopMoving);
 	}
 
+	function stopMovingTouch({ changedTouches }) {
+		window.removeEventListener('touchmove', moveTouch);
+		window.removeEventListener('touchend', stopMovingTouch);
+
+		const { clientX, clientY } = changedTouches[0]
+		const curY = clientY - topOffset - (scale / 2);
+		const curX = clientX - leftOffset - (scale / 2);
+		const newY = Math.round(curY / scale);
+		const newX = Math.round(curX / scale);
+
+		dispatch({
+			type: MOVE_CHARACTER,
+			payload: {
+				name,
+				x: newX,
+				y: newY,
+			}
+		})
+	}
+
+	function moveTouch({ changedTouches }) {
+		const { clientX, clientY } = changedTouches[0]
+
+		setTop(clientY - topOffset - (scale / 2));
+		setLeft(clientX - leftOffset - (scale / 2));
+	}
+
+	function startMovingTouch() {
+		window.addEventListener('touchmove', moveTouch);
+		window.addEventListener('touchend', stopMovingTouch);
+	}
+
 	return (
 		<div
-			id={`char-${name}`}
 			className={classes.character}
 			style={{
 				top,
 				left,
 				background,
+				height: scale,
+				width: scale,
 			}}
 			onMouseDown={startMoving}
+			onTouchStart={startMovingTouch}
 		/>
 	)
 }

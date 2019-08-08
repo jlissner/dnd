@@ -1,15 +1,19 @@
 import { useReducer } from 'react';
-import _findIndex from 'lodash/findIndex';
 import _cloneDeep from 'lodash/cloneDeep';
+import _filter from 'lodash/filter';
+import _findIndex from 'lodash/findIndex';
 
 export const SET_SIZE = 'GAME_BOARD::SET_SIZE';
+export const SET_SCALE = 'GAME_BOARD::SET_SCALE';
 export const ADD_CHARACTER = 'GAME_BOARD::ADD_CHARACTER';
+export const REMOVE_CHARACTER = 'GAME_BOARD::REMOVE_CHARACTER';
 export const MOVE_CHARACTER = 'GAME_BOARD::MOVE_CHARACTER';
 
 const initialState = {
 	height: 0,
 	width: 0,
 	characters: [],
+	scale: 50,
 }
 
 function reducer(state, action) {
@@ -23,12 +27,26 @@ function reducer(state, action) {
 				height,
 			}
 		}
+		case SET_SCALE: {
+			return {
+				...state,
+				scale: action.payload
+			}
+		}
 		case ADD_CHARACTER: {
 			const characters = [...state.characters, action.payload];
 
 			return {
 				...state,
 				characters
+			}
+		}
+		case REMOVE_CHARACTER: {
+			const updatedCharacters = _filter(state.characters, ({ name }) => name !== action.payload);
+
+			return {
+				...state,
+				characters: updatedCharacters,
 			}
 		}
 		case MOVE_CHARACTER: {

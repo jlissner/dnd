@@ -14,22 +14,20 @@ function App() {
   return (
     <MuiThemeProvider theme={theme}>
       <Header />
-      <div style={{padding: 32, paddingTop: 32 + 56, height: '100%' }}>
-        <Grid container spacing={4} alignItems="stretch" style={{ height: '100%' }}>
-          <Grid item xs={3}>
-            <Grid container spacing={3}>
-              <Grid item xs={12}>
-                <PlayerList gameBoard={gameBoard} />
-              </Grid>
-              <Grid item xs={12}>
-                <CanvasMenu />
-              </Grid>
+
+      <div style={{ height: '100%', padding: 32, paddingTop: 56 + 32 }}>
+        <GameBoard gameBoard={gameBoard}/>
+
+        <div style={{ height: '100%', width: '25%', position: 'relative', zIndex: 1, }}>
+          <Grid container spacing={3}>
+            <Grid item xs={12}>
+              <PlayerList gameBoard={gameBoard} />
+            </Grid>
+            <Grid item xs={12}>
+              <CanvasMenu />
             </Grid>
           </Grid>
-          <Grid item xs={9}>
-            <GameBoard gameBoard={gameBoard}/>
-          </Grid>
-        </Grid>
+        </div>
       </div>
     </MuiThemeProvider>
   );
