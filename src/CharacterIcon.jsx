@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { MOVE_CHARACTER } from './hooks/useGameBoard';
+import React, { useEffect, useState, useRef } from 'react';
 import { withStyles } from '@material-ui/core/styles';
+import _find from 'lodash/find';
+import { MOVE_CHARACTER } from './hooks/useGameBoard';
 
 const styles = theme => ({
 	character: {
@@ -20,6 +21,7 @@ function CharacterIcon({
 	const { topOffset, leftOffset, scale } = board;
 	const [ top, setTop ] = useState(y * scale);
 	const [ left, setLeft ] = useState(x * scale);
+	const activeTouch = useRef({});
 
 	useEffect(() => {
 		setTop(y * scale);
@@ -56,10 +58,17 @@ function CharacterIcon({
 	}
 
 	function stopMovingTouch({ changedTouches }) {
+		const touch = _find(changedTouches, { identifier: activeTouch.current.id });
+
+		if (!touch) {
+			return;
+		}
+	
 		window.removeEventListener('touchmove', moveTouch);
 		window.removeEventListener('touchend', stopMovingTouch);
+		window.removeEventListener('touchcancel', stopMovingTouch);
 
-		const { clientX, clientY } = changedTouches[0]
+		const { clientX, clientY } = touch;
 		const curY = clientY - topOffset - (scale / 2);
 		const curX = clientX - leftOffset - (scale / 2);
 		const newY = Math.round(curY / scale);
@@ -72,19 +81,33 @@ function CharacterIcon({
 				x: newX,
 				y: newY,
 			}
-		})
+		});
+
+		activeTouch.current.id = null;
 	}
 
-	function moveTouch({ changedTouches }) {
-		const { clientX, clientY } = changedTouches[0]
+	function moveTouch(evt) {;
+		evt.preventDefault();
+
+
+		const { changedTouches } = evt;
+		const touch = _find(changedTouches, { identifier: activeTouch.current.id });
+
+		if (!touch) {
+			return
+		}
+		const { clientX, clientY } = touch;
 
 		setTop(clientY - topOffset - (scale / 2));
 		setLeft(clientX - leftOffset - (scale / 2));
 	}
 
-	function startMovingTouch() {
-		window.addEventListener('touchmove', moveTouch);
+	function startMovingTouch(evt) {
+		activeTouch.current.id = evt.changedTouches[0].identifier;
+
+		window.addEventListener('touchmove', moveTouch, { passive: false });
 		window.addEventListener('touchend', stopMovingTouch);
+		window.addEventListener('touchcancel', stopMovingTouch);
 	}
 
 	return (

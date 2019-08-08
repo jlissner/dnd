@@ -5,7 +5,7 @@ import _times from 'lodash/times';
 import CharacterIcon from './CharacterIcon';
 import { SET_SIZE, SET_SCALE } from './hooks/useGameBoard';
 
-function drawGrid(canvasClass, boxSize) {
+function drawGrid(canvasClass, scale) {
 	const canvas = document.querySelector(`.${canvasClass}`);
 	const width = canvas.width;
 	const height = canvas.height;
@@ -28,20 +28,24 @@ function drawGrid(canvasClass, boxSize) {
 	ctx.lineTo(width, height);
 	ctx.stroke();
 
-	const numOfHorizontalLines = Math.ceil( height / boxSize );
-	const numOfVerticalLines = Math.ceil( width / boxSize );
+	const numOfHorizontalLines = Math.ceil( height / scale );
+	const numOfVerticalLines = Math.ceil( width / scale );
 
 	_times(numOfHorizontalLines, (i) => {
-		ctx.moveTo(0, i * boxSize);
-		ctx.lineTo(width, i * boxSize);
+		ctx.moveTo(0, i * scale);
+		ctx.lineTo(width, i * scale);
 		ctx.stroke();
 	});
 
 	_times(numOfVerticalLines, (i) => {
-		ctx.moveTo(i * boxSize, 0);
-		ctx.lineTo(i * boxSize, height);
+		ctx.moveTo(i * scale, 0);
+		ctx.lineTo(i * scale, height);
 		ctx.stroke();
 	});
+}
+
+function drawLine(canvasClass, scale) {
+
 }
 
 const styles = theme => ({
