@@ -4,14 +4,15 @@ import _filter from 'lodash/filter';
 import _findIndex from 'lodash/findIndex';
 
 export const SET_SIZE = 'GAME_BOARD::SET_SIZE';
+export const SET_OFFSET = 'GAME_BOARD::SET_OFFSET';
 export const SET_SCALE = 'GAME_BOARD::SET_SCALE';
 export const ADD_CHARACTER = 'GAME_BOARD::ADD_CHARACTER';
 export const REMOVE_CHARACTER = 'GAME_BOARD::REMOVE_CHARACTER';
 export const MOVE_CHARACTER = 'GAME_BOARD::MOVE_CHARACTER';
 
 const initialState = {
-	height: 0,
-	width: 0,
+	size: [0, 0],
+	offset: [0, 0],
 	characters: [],
 	scale: 50,
 }
@@ -19,12 +20,15 @@ const initialState = {
 function reducer(state, action) {
 	switch (action.type) {
 		case SET_SIZE: {
-			const { width, height } = action.payload;
-
 			return {
 				...state,
-				width,
-				height,
+				size: action.payload,
+			}
+		}
+		case SET_OFFSET: {
+			return {
+				...state,
+				offset: action.payload,
 			}
 		}
 		case SET_SCALE: {

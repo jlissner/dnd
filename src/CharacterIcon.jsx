@@ -18,7 +18,8 @@ function CharacterIcon({
 	dispatch
 }) {
 	const { x, y, background, name } = character;
-	const { topOffset, leftOffset, scale } = board;
+	const { topOffset, leftOffset, scale, offset } = board;
+	const [ xOffset, yOffset ] = offset;
 	const [ top, setTop ] = useState(y * scale);
 	const [ left, setLeft ] = useState(x * scale);
 	const activeTouch = useRef({});
@@ -32,8 +33,8 @@ function CharacterIcon({
 		window.removeEventListener('mousemove', move);
 		window.removeEventListener('mouseup', stopMoving);
 
-		const curY = clientY - topOffset - (scale / 2);
-		const curX = clientX - leftOffset - (scale / 2);
+		const curY = clientY - topOffset - yOffset - (scale / 2);
+		const curX = clientX - leftOffset - xOffset - (scale / 2);
 		const newY = Math.round(curY / scale);
 		const newX = Math.round(curX / scale);
 
@@ -48,13 +49,31 @@ function CharacterIcon({
 	}
 
 	function move({ clientX, clientY }) {
-		setTop(clientY - topOffset - (scale / 2));
-		setLeft(clientX - leftOffset - (scale / 2));
+		setLeft(clientX - leftOffset - xOffset - (scale / 2));
+		setTop(clientY - topOffset - yOffset - (scale / 2));
 	}
 
-	function startMoving() {
+	function startMoving(evt) {
+		evt.stopPropagation();
+
 		window.addEventListener('mousemove', move);
 		window.addEventListener('mouseup', stopMoving);
+	}
+
+	function moveTouch(evt) {;
+		evt.preventDefault();
+
+
+		const { changedTouches } = evt;
+		const touch = _find(changedTouches, { identifier: activeTouch.current.id });
+
+		if (!touch) {
+			return
+		}
+		const { clientX, clientY } = touch;
+
+		setLeft(clientX - leftOffset - xOffset - (scale / 2));
+		setTop(clientY - topOffset - yOffset - (scale / 2));
 	}
 
 	function stopMovingTouch({ changedTouches }) {
@@ -69,8 +88,8 @@ function CharacterIcon({
 		window.removeEventListener('touchcancel', stopMovingTouch);
 
 		const { clientX, clientY } = touch;
-		const curY = clientY - topOffset - (scale / 2);
-		const curX = clientX - leftOffset - (scale / 2);
+		const curY = clientY - topOffset - yOffset - (scale / 2);
+		const curX = clientX - leftOffset - xOffset - (scale / 2);
 		const newY = Math.round(curY / scale);
 		const newX = Math.round(curX / scale);
 
@@ -86,23 +105,8 @@ function CharacterIcon({
 		activeTouch.current.id = null;
 	}
 
-	function moveTouch(evt) {;
-		evt.preventDefault();
-
-
-		const { changedTouches } = evt;
-		const touch = _find(changedTouches, { identifier: activeTouch.current.id });
-
-		if (!touch) {
-			return
-		}
-		const { clientX, clientY } = touch;
-
-		setTop(clientY - topOffset - (scale / 2));
-		setLeft(clientX - leftOffset - (scale / 2));
-	}
-
 	function startMovingTouch(evt) {
+		evt.stopPropagation();
 		activeTouch.current.id = evt.changedTouches[0].identifier;
 
 		window.addEventListener('touchmove', moveTouch, { passive: false });
@@ -114,8 +118,8 @@ function CharacterIcon({
 		<div
 			className={classes.character}
 			style={{
-				top,
-				left,
+				top: top + yOffset,
+				left: left + xOffset,
 				background,
 				height: scale,
 				width: scale,

@@ -16,6 +16,7 @@ function PlayerList({
 }) {
 	const { state, dispatch } = gameBoard;
 	const [ newPlayer, setNewPlayer ] = useState('');
+	const [ width, height ] = state.size;
 
 	function addCharacter(character) {
 		if (!_find(state.characters, toon => toon.name === character.name)) {
@@ -23,8 +24,8 @@ function PlayerList({
 				type: ADD_CHARACTER,
 				payload: {
 					...character, 
-					x: Math.round((state.width / 50) / 2),
-					y: Math.round((state.height / 50) / 3),
+					x: Math.round((width / 50) / 2),
+					y: Math.round((height / 50) / 3),
 				}
 			})
 		}

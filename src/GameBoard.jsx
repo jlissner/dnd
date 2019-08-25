@@ -1,14 +1,16 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import _map from 'lodash/map';
 import _times from 'lodash/times';
+import _find from 'lodash/find';
 import CharacterIcon from './CharacterIcon';
-import { SET_SIZE, SET_SCALE } from './hooks/useGameBoard';
+import { SET_SIZE, SET_SCALE, SET_OFFSET } from './hooks/useGameBoard';
 
-function drawGrid(canvasClass, scale) {
+function drawGrid(canvasClass, scale, offset) {
 	const canvas = document.querySelector(`.${canvasClass}`);
 	const width = canvas.width;
 	const height = canvas.height;
+	const [ xOffset, yOffset ] = offset;
 	const ctx = canvas.getContext('2d');
 
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -30,23 +32,25 @@ function drawGrid(canvasClass, scale) {
 
 	const numOfHorizontalLines = Math.ceil( height / scale );
 	const numOfVerticalLines = Math.ceil( width / scale );
+	const xGridOffset = xOffset % scale;
+	const yGridOffset = yOffset % scale;
 
 	_times(numOfHorizontalLines, (i) => {
-		ctx.moveTo(0, i * scale);
-		ctx.lineTo(width, i * scale);
+		ctx.moveTo(0, ((i * scale) + yGridOffset));
+		ctx.lineTo(width, ((i * scale) + yGridOffset));
 		ctx.stroke();
 	});
 
 	_times(numOfVerticalLines, (i) => {
-		ctx.moveTo(i * scale, 0);
-		ctx.lineTo(i * scale, height);
+		ctx.moveTo(((i * scale) + xGridOffset), 0);
+		ctx.lineTo(((i * scale) + xGridOffset), height);
 		ctx.stroke();
 	});
 }
 
-function drawLine(canvasClass, scale) {
+// function drawLine(canvasClass, scale) {
 
-}
+// }
 
 const styles = theme => ({
 	canvas: {
@@ -56,7 +60,7 @@ const styles = theme => ({
 		left: 0,
 		zIndex: 1,
 	},
-	canvasWrapper: {
+	boardWrapper: {
 		position: 'fixed',
 		top: 56,
 		left: 0,
@@ -69,16 +73,20 @@ function GameBoard({
 	classes,
 	gameBoard
 }) {
-	const canvasWrapper = document.querySelector(`.${classes.canvasWrapper}`);
+	const boardWrapper = document.querySelector(`.${classes.boardWrapper}`);
 	const { state, dispatch } = gameBoard;
+	const { characters, size, offset, scale } = state;
+	const [ width, height ] = size;
+	const [ xOffset, yOffset ] = offset;
+	const activeTouch = useRef({});
 
 	useEffect(() => {
 		window.addEventListener('resize', () => dispatch({
 			type: SET_SIZE,
-			payload: {
-				width: window.outerWidth,
-				height: window.outerHeight,
-			}
+			payload: [
+				window.outerWidth,
+				window.outerHeight,
+			]
 		}));
 
 		return () => {
@@ -89,39 +97,109 @@ function GameBoard({
 	useEffect(() => {
 		dispatch({
 			type: SET_SIZE,
-			payload: {
-				width: window.outerWidth,
-				height: window.outerHeight,
-			}
+			payload: [
+				window.outerWidth,
+				window.outerHeight,
+			]
 		})
 	}, [dispatch])
 
 	useEffect(() => {
-		drawGrid(classes.canvas, state.scale);
-	}, [state, classes])
+		drawGrid(classes.canvas, scale, offset);
+	}, [scale, classes, height, width, offset]);
 
+	function moveBoard(evt) {
+		const { clientX, clientY } = evt;
+		const [ startX, startY ] = activeTouch.current.start;
+
+		dispatch({
+			type: SET_OFFSET,
+			payload: [
+				xOffset + (clientX - startX),
+				yOffset + (clientY - startY),
+			]
+		});
+	}
+
+	function startMovingBoard(evt) {
+		const { clientX, clientY } = evt;
+		activeTouch.current.start = [ clientX, clientY ];
+
+
+		window.addEventListener('mousemove', moveBoard);
+		window.addEventListener('mouseup', stopMoving);
+	}
+
+	function stopMoving() {
+		window.removeEventListener('mousemove', moveBoard);
+		window.removeEventListener('mouseup', stopMoving);
+		window.removeEventListener('mousedown', stopMoving);
+	}
+
+	function moveBoardTouch(evt) {
+		evt.preventDefault();
+
+		const { changedTouches } = evt;
+		const touch = _find(changedTouches, { identifier: activeTouch.current.id });
+
+		if (!touch) {
+			return;
+		}
+
+		const { clientX, clientY } = touch;
+		const [ startX, startY ] = activeTouch.current.start;
+
+		dispatch({
+			type: SET_OFFSET,
+			payload: [
+				xOffset + (clientX - startX),
+				yOffset + (clientY - startY),
+			]
+		});
+	}
+
+	function stopMovingTouch() {
+		window.removeEventListener('touchmove', moveBoardTouch);
+		window.removeEventListener('touchend', stopMovingTouch);
+		window.removeEventListener('touchcancel', stopMovingTouch);
+	}
+	
+	function startMovingBoardTouch(evt) {
+		const { clientX, clientY, identifier } = evt.changedTouches[0];
+		activeTouch.current.id = identifier;
+		activeTouch.current.start = [ clientX, clientY ];
+
+		window.addEventListener('touchmove', moveBoardTouch, { passive: false });
+		window.addEventListener('touchend', stopMovingTouch);
+		window.addEventListener('touchcancel', stopMovingTouch);
+	}
+	
 	return (
-		<div className={classes.canvasWrapper}>
+		<div
+			className={classes.boardWrapper}
+			onMouseDown={startMovingBoard}
+			onTouchStart={startMovingBoardTouch}
+		>
 				<canvas
 					className={classes.canvas}
-					width={state.width}
-					height={state.height}
+					width={width}
+					height={height}
 				>
 				<p>Browser Unsupported</p>
 			</canvas>
-			<button style={{ bottom: 32, right: 32, zIndex: 2, position: 'absolute'}} onClick={() => dispatch({ type: SET_SCALE, payload: state.scale - 5 })}>Zoom Out</button>
+			<button style={{ bottom: 32, right: 32, zIndex: 2, position: 'absolute'}} onClick={() => dispatch({ type: SET_SCALE, payload: scale - 5 })}>Zoom Out</button>
+			<button style={{ bottom: 32, right: 116, zIndex: 2, position: 'absolute'}} onClick={() => dispatch({ type: SET_SCALE, payload: scale + 5 })}>Zoom In</button>
 			{
-				_map(state.characters, character => (
+				_map(characters, character => (
 					<CharacterIcon
 						key={character.name}
 						character={character}
 						dispatch={dispatch}
 						board={{
-							height: state.height,
-							width: state.width,
-							leftOffset: canvasWrapper.getBoundingClientRect().left,
-							topOffset: canvasWrapper.getBoundingClientRect().top,
-							scale: state.scale,
+							leftOffset: boardWrapper.getBoundingClientRect().left,
+							topOffset: boardWrapper.getBoundingClientRect().top,
+							scale,
+							offset,
 						}}
 					/>
 				))
