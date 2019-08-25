@@ -27,7 +27,7 @@ function CharacterIcon({
 	useEffect(() => {
 		setTop(y * scale);
 		setLeft(x * scale);
-	}, [ x, y, scale ]);
+	}, [ character, scale, x, y ]);
 
 	function stopMoving({ clientX, clientY }) {
 		window.removeEventListener('mousemove', move);

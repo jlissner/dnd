@@ -49,7 +49,6 @@ function drawGrid(canvasClass, scale, offset) {
 }
 
 // function drawLine(canvasClass, scale) {
-
 // }
 
 const styles = theme => ({
