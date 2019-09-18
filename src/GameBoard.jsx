@@ -35,13 +35,13 @@ function drawGrid(canvasClass, scale, offset) {
 	const xGridOffset = xOffset % scale;
 	const yGridOffset = yOffset % scale;
 
-	_times(numOfHorizontalLines, (i) => {
+	_times(numOfHorizontalLines + 1, (i) => {
 		ctx.moveTo(0, ((i * scale) + yGridOffset));
 		ctx.lineTo(width, ((i * scale) + yGridOffset));
 		ctx.stroke();
 	});
 
-	_times(numOfVerticalLines, (i) => {
+	_times(numOfVerticalLines + 1, (i) => {
 		ctx.moveTo(((i * scale) + xGridOffset), 0);
 		ctx.lineTo(((i * scale) + xGridOffset), height);
 		ctx.stroke();
