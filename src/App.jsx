@@ -1,4 +1,5 @@
 import React from 'react';
+import { hot } from 'react-hot-loader/root';
 import { MuiThemeProvider } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid';
 import Header from './Header';
@@ -36,4 +37,4 @@ function App() {
   );
 }
 
-export default App;
+export default hot(App);

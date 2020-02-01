@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import _map from 'lodash/map';
 import _times from 'lodash/times';
@@ -78,20 +78,21 @@ function GameBoard({
 	const [ width, height ] = size;
 	const [ xOffset, yOffset ] = offset;
 	const activeTouch = useRef({});
+	const resize = useCallback(() => dispatch({
+		type: SET_SIZE,
+		payload: [
+			window.outerWidth,
+			window.outerHeight,
+		]
+	}), [dispatch]);
 
 	useEffect(() => {
-		window.addEventListener('resize', () => dispatch({
-			type: SET_SIZE,
-			payload: [
-				window.outerWidth,
-				window.outerHeight,
-			]
-		}));
+		window.addEventListener('resize', resize);
 
 		return () => {
-			window.removeEventListener('resize');
+			window.removeEventListener('resize', resize);
 		}
-	}, [dispatch]);
+	}, [dispatch, resize]);
 
 	useEffect(() => {
 		dispatch({
@@ -162,7 +163,7 @@ function GameBoard({
 		window.removeEventListener('touchend', stopMovingTouch);
 		window.removeEventListener('touchcancel', stopMovingTouch);
 	}
-	
+
 	function startMovingBoardTouch(evt) {
 		const { clientX, clientY, identifier } = evt.changedTouches[0];
 		activeTouch.current.id = identifier;
@@ -172,7 +173,7 @@ function GameBoard({
 		window.addEventListener('touchend', stopMovingTouch);
 		window.addEventListener('touchcancel', stopMovingTouch);
 	}
-	
+
 	return (
 		<div
 			className={classes.boardWrapper}
