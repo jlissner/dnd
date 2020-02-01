@@ -35,4 +35,4 @@
 - id_pk bigserial
 - campaign_fk bigint
 - maps jsonb -- { map_fk, x, y, z, scale }
-- characters jsonb -- { character_fk, x, y, }
+- characters jsonb -- { character_fk, x, y }
