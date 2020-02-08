@@ -1,6 +1,7 @@
 import React from 'react';
 import { hot } from 'react-hot-loader/root';
 import { MuiThemeProvider } from '@material-ui/core/styles'
+import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import Header from './Header';
 import CanvasMenu from './CanvasMenu';
@@ -19,10 +20,10 @@ function App() {
     <MuiThemeProvider theme={theme}>
       <Header />
 
-      <div style={{ height: '100%', padding: 32, paddingTop: 56 + 32 }}>
+      <Box p={4} mt={11} height="100%">
         <GameBoard gameBoard={gameBoard}/>
 
-        <div style={{ height: '100%', width: '25%', position: 'relative', zIndex: 1, }}>
+        <Box height="100%" width="25%" position="relative" zIndex="1">
           <Grid container spacing={3}>
             <Grid item xs={12}>
               <PlayerList gameBoard={gameBoard} />
@@ -31,8 +32,8 @@ function App() {
               <CanvasMenu />
             </Grid>
           </Grid>
-        </div>
-      </div>
+        </Box>
+      </Box>
     </MuiThemeProvider>
   );
 }
