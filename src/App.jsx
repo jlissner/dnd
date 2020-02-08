@@ -4,6 +4,7 @@ import { MuiThemeProvider } from '@material-ui/core/styles'
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import Header from './Header';
+import Chat from './Chat';
 import CanvasMenu from './CanvasMenu';
 import GameBoard from './GameBoard';
 import PlayerList from './PlayerList';
@@ -30,6 +31,8 @@ function App() {
             </Grid>
             <Grid item xs={12}>
               <CanvasMenu />
+              <Chat />
+              <Chat />
             </Grid>
           </Grid>
         </Box>
