@@ -1,10 +1,11 @@
 module.exports = {
+  id: '1',
   playerName: 'Joe',
   characterName: 'Smash',
   className: 'Barbarian',
   subClass: 'Bezerker',
   level: '8',
-  race: 'Gloiath',
+  race: 'Goliath',
   alignment: 'Chaotic Good',
   xp: 23500,
   ac: 17,
@@ -14,7 +15,7 @@ module.exports = {
   proficiencyBonus: 3,
   attributes: [
     {
-      name: 'strength',
+      name: 'Strength',
       abbv: 'str',
       value: 20,
       modifier: 5,
@@ -22,15 +23,15 @@ module.exports = {
       notes: 'adv. when in a rage',
     },
     {
-      name: 'dexterity',
+      name: 'Dexterity',
       abbv: 'dex',
       value: 15,
       modifier: 2,
       proficient: false,
-      notes: '',
+      notes: 'adv. on effects I can see, such as traps and spells (Danger Sense)',
     },
     {
-      name: 'constitution',
+      name: 'Constitution',
       abbv: 'con',
       value: 18,
       modifier: 4,
@@ -38,7 +39,7 @@ module.exports = {
       notes: '',
     },
     {
-      name: 'intelligence',
+      name: 'Intelligence',
       abbv: 'int',
       value: 9,
       modifier: -1,
@@ -46,7 +47,7 @@ module.exports = {
       notes: '',
     },
     {
-      name: 'wisdom',
+      name: 'Wisdom',
       abbv: 'wis',
       value: 12,
       modifier: 1,
@@ -54,7 +55,7 @@ module.exports = {
       notes: '',
     },
     {
-      name: 'charisma',
+      name: 'Charisma',
       abbv: 'cha',
       value: 10,
       modifier: 0,
@@ -193,25 +194,154 @@ module.exports = {
   languages: ['Common', 'Giant'],
   proficiencies: [],
   money: {
-    cp: null,
-    sp: null,
-    ep: null,
-    gp: null,
-    pp: null,
+    cp: 0,
+    sp: 0,
+    ep: 0,
+    gp: 331,
+    pp: 0,
   },
   equipment: {
     armor: [], // { name, ac, modifier, modifierMax, preqStr, stealth, weight, notes }
-    weapons: [{
-      name: '+1 Warhammer',
-      dmg: ['1d8+1', '1d10+1'],
-      dmgType: 'bludgening',
-      properties: 'Versatile (ld10)',
-      notes: '',
-    }], // { name, modifier, dmg, stat, range, weight, notes }
-    other: [],
+    weapons: [
+      {
+        name: '+1 Warhammer',
+        dmg: ['1d8+1', '1d10+1'],
+        dmgType: 'bludgening',
+        properties: 'Versatile (ld10)',
+        notes: '',
+        quantity: 1,
+      }, {
+        name: 'Javalin of Lightning',
+        dmg: ['1d6+1'],
+        dmgType: 'piercing',
+        properties: 'Thrown (range 30/120)',
+        notes: 'Upgradeable.\n\nOnce per day can activate to do an additional 4d6 lightning damage, DC13 dex save',
+        quantity: 1,
+      },
+      {
+        name: 'Short Sword',
+        dmg: '1d6',
+        dmgType: 'piercing',
+        properties: 'Finesse, light',
+        notes: '',
+        quantity: 4,
+      },
+      {
+        name: 'Greataxe',
+        dmg: '1d12',
+        dmgType: 'slashing',
+        properties: 'Heavy, two-handed',
+        notes: '',
+        quantity: 2,
+      },
+      {
+        name: 'Battleaxe',
+        dmg: ['1d8', '1d10'],
+        dmgType: 'slashing',
+        properties: 'Versatile (1d10)',
+        notes: '',
+        quantity: 3,
+      },
+    ], // { name, modifier, dmg, stat, range, weight, notes }
+    other: [
+      {
+        name: 'Amulate of the Drunkard',
+        properties: 'Requires attunement.\n\nWhile wearing this amulate the user recovers 1d8 worth of hp when they drink alcohol.\n\nRoll a d20 each time you drink, once the total rolled is greater than or equal to 15, you are drunk.'
+      }, {
+        name: 'Amulate of Divine Fury',
+        properties: 'Requires attunement.\n\nA lost symbol of a dead god is engraved on this simple silver amulate.\n\nWhile attuned, the users weapon deals 1d4 radiant damage in addition to it\'s standard damage.\n\nShadow or demonic only.',
+      }, {
+        name: 'Braces of Defense',
+        properties: 'Requires attunement.\n\nSimple leather bracers with small steel studs on them.\n\nWhile wearing these bracers you gain *+2* to AC if you are wearing no other armor or shield.',
+      }, {
+        name: 'Hat of Disguise',
+        properties: 'Requires attunement.\n\nUser can cast disguise self at will.'
+      }, {
+        name: 'Bag of Holding',
+        properties: 'A bag that has a larger interior space than it\'s outer dimensions.\n\nThe bag weighs 15lbs regardless of it\'s contents.\n\nThe bag can hold up to 500lbs of items.\n\nItems in the bag cannot be larget than 64 cubic feet.'
+      }, {
+        name: 'Salted Meat',
+      }, {
+        name: 'Immoveable Rod',
+      }, {
+        name: 'Wand',
+      }, {
+        name: 'Horn',
+      }, {
+        name: 'Healing Potion',
+        properties: 'A character who drinks the magical red fiuid in this vial regains 2d4 + 2 hit points.\n\nDrinking or administering a potion takes an action.'
+      }, {
+        name: '5x Dragon Fruit from Heart Tree',
+      },
+      {
+        name: 'Marybell',
+        text: 'My horse, has a cart',
+      },
+    ],
   },
   status: [],
-  featuresAndTraits: '',
+  featuresAndTraits: [
+    {
+      title: 'Rage',
+      text: 'Can go in to a rage *4* (0 used) times per long rest.\n\n+2 dmg while Raging.\n\nResistance to bludgeoning, piercing, and slashing damage.',
+      tags: ['class'],
+    },
+    {
+      title: 'Unarmored Defense',
+      text: 'While you are not wearing any armor, your Armor Class equals 10+ your Dexterity modifier + your Constitution modifier. You can use a shield and still gain this benefit.',
+      tags: ['class'],
+    },
+    {
+      title: 'Reckless Attack',
+      text: 'Make all attack rolls with adv for the rest of the turn. All attacks against you have advantage for the rest of this turn.',
+      tags: ['class'],
+    },
+    {
+      title: 'Danger Sense',
+      text: 'You have advantage on Dex saving throws against effects that you can see, such as traps and spells. To gain this benefit you can\'t be blinded, deafened or incapactiated.',
+      tags: ['class'],
+    },
+    {
+      title: 'Stones Endurence',
+      text: 'You can focus yourself to occasionally shrug off injury. When you take damage, you can use your reaction to roll a d12. Add your Constitution modifier to the number rolled, and reduce the damage by that total. After you use this trait, you can’t use it again until you finish a short or long rest.',
+      tags: ['racial'],
+    },
+    {
+      title: 'Powerful Build',
+      text: 'You count as one size larger when determining your carrying capacity and the weight you can push, drag, or lift.',
+      tags: ['racial'],
+    },
+    {
+      title: 'Mountain Born',
+      text: 'You\'re acclimated to high altitude, including elevations above 20,000 feet. You’re also naturally adapted to cold climates, as described in chapter 5 of the Dungeon Master’s Guide.',
+      tags: ['racial'],
+    },
+    {
+      title: 'Frenzy',
+      text: 'Can go into a Frenzied Rage which allows you to make an attack as a bonus action. When your rage ends, suffer one level of exhaustion.',
+      tags: ['class'],
+    },
+    {
+      title: 'Fast Movement',
+      text: '+10 movement speed',
+      tags: ['class'],
+    },
+    {
+      title: 'Mindless Rage',
+      text: 'You can\'t be charmed or frightened while raging. If you are charmed or frightened when you enter your rage, the effect is suspended for the duration of the rage.',
+      tags: ['class'],
+    },
+    {
+      title: 'Feral Instinct',
+      text: 'Advantage on Initiative\n\nAdditionally, if you are surprised at the beginning of combat and aren\'t incapacitated, you can act normally on your first turn, but only if you enter your rage before doing anything else on that turn.',
+      tags: ['class'],
+    },
+    {
+      title: 'Alert',
+      text: '+5 to initiative.\n\nYou can\'t be surprised while you are conscious.\n\nOther creatures don\'t gain advantage on attack rolls against you as a result of being hidden from you.',
+      tags: ['feat'],
+    }
+  ],
   savingThrows: [],
   health: {
     hitDice: '1d12',
@@ -227,13 +357,13 @@ module.exports = {
     traits: '',
     ideals: '',
     bonds: '',
-    flaws: '',
+    flaws: 'single minded, dumb',
     backstory: '',
     notes: '',
   },
   appearance: {
     age: null,
-    height: '7\'5',
+    height: '7\'7',
     weight: '315lbs',
     eyes: 'grey',
     skin: 'grey with tattoos',

@@ -2,8 +2,8 @@ import { useEffect, useMemo, useState } from 'react';
 
 function useWebsocket(url) {
   const ws = useMemo(() => new WebSocket(url), []);
-  const [readyState, setReadyState] = useState(ws.readyState)
-  const [message, setMessage] = useState('')
+  const [readyState, setReadyState] = useState(ws.readyState);
+  const [message, setMessage] = useState('');
 
   useEffect(() => {
     ws.onopen = () => {
@@ -29,7 +29,7 @@ function useWebsocket(url) {
 
   function send(msg) {
     if (msg === null || msg === undefined) {
-      ws.send('');
+      return;
     }
 
     ws.send(msg);
