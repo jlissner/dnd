@@ -11,6 +11,12 @@ process.on('unhandledRejection', err => {
   throw err;
 });
 
+process.once('SIGHUP', function() {
+  // openBrowser(urls.localUrlForBrowser);
+  console.log('here')
+  process.exit();
+});
+
 // Ensure environment variables are read.
 require('../config/env');
 
@@ -111,14 +117,13 @@ checkBrowsers(paths.appPath, isInteractive)
 
     // devServer.listen(port, HOST, err => {
     app.listen(port, (err) => {
-
       if (err) {
         return console.log(err);
       }
 
-      if (isInteractive) {
-        clearConsole();
-      }
+      // if (isInteractive) {
+      //   clearConsole();
+      // }
 
       // We used to support resolving modules according to `NODE_PATH`.
       // This now has been deprecated in favor of jsconfig/tsconfig.json
@@ -129,11 +134,11 @@ checkBrowsers(paths.appPath, isInteractive)
             'Setting NODE_PATH to resolve modules absolutely has been deprecated in favor of setting baseUrl in jsconfig.json (or tsconfig.json if you are using TypeScript) and will be removed in a future major release of create-react-app.'
           )
         );
+
         console.log();
       }
 
       console.log(chalk.cyan('Starting the development server...\n'));
-      openBrowser(urls.localUrlForBrowser);
     });
 
     ['SIGINT', 'SIGTERM'].forEach(function(sig) {

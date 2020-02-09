@@ -17,6 +17,10 @@ module.exports = app => {
     ws.on('message', wss.broadcast);
   });
 
+  router.ws('/character', (ws, req) => {
+    
+  })
+
   router.get('/ping', function (req, res) {
    res.send('pong');
   });

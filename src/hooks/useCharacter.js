@@ -2,6 +2,7 @@ import { useReducer } from 'react';
 import _cloneDeep from 'lodash/cloneDeep';
 import _filter from 'lodash/filter';
 import _findIndex from 'lodash/findIndex';
+import useWebsocket from './useWebsocket';
 
 export const SET_SIZE = 'GAME_BOARD::SET_SIZE';
 export const SET_OFFSET = 'GAME_BOARD::SET_OFFSET';
@@ -242,6 +243,7 @@ const initialState = {
     skin: '',
     hair: '',
   },
+  spells: [],
 }
 
 function reducer(state, action) {
@@ -304,13 +306,14 @@ function reducer(state, action) {
   }
 }
 
-function useCharacter() {
+function useCharacter(id) {
   const [ state, dispatch ] = useReducer(reducer, initialState);
+  const { message, readyState, send } = useWebsocket(`ws://${window.location.host}/echo`);
 
-  return {
+  return [
     state,
     dispatch,
-  };
+  ];
 }
 
 export default useCharacter

@@ -1,31 +1,19 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import useWebsocket from './hooks/useWebsocket';
 
 function Chat() {
-  const [val, setVal] = useState('');
-  const [loading, setLoading] = useState(true);
-  const socket = useMemo(() => new WebSocket(`ws://${window.location.host}/echo`), []);
-
-  useEffect(() => {
-    socket.onmessage = (e) => setVal(e.data);
-    socket.onopen = () => {
-      setLoading(false);
-    };
-    socket.onclose = () => {
-      console.log('closed')
-    }
-  }, [socket])
-
+  const { send, readyState, message } = useWebsocket(`ws://${window.location.host}/echo`);
 
   function sendMsg(e) {
-    socket.send(e.target.value);
+    send(e.target.value);
   }
 
-  if (loading) {
-    return 'loading...'
+  if (readyState === 0) {
+    return 'loading...';
   }
 
   return (
-    <input value={val} onChange={sendMsg} />
+    <input value={message} onChange={sendMsg} />
   )
 }
 
