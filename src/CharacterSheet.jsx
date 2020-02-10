@@ -13,6 +13,7 @@ import {
   RadioButtonUnchecked,
 } from '@material-ui/icons';
 import _find from 'lodash/find';
+import _get from 'lodash/get';
 import _map from 'lodash/map';
 import useCharacter from './hooks/useCharacter';
 
@@ -131,7 +132,7 @@ function CharacterSheet({ id }) {
                     <Box border={1} borderColor="rgba(0, 0, 0, 0.23)" borderRadius="4px">
                       <Grid container spacing={1}>
                         {_map(character.attributes, attr => (
-                          <>
+                          <React.Fragment key={attr.name}>
                             <Grid item xs={2}>
                               <Checkbox
                                 icon={<RadioButtonUnchecked />}
@@ -148,7 +149,7 @@ function CharacterSheet({ id }) {
                             <Grid item xs={7}>
                               <Typography>{attr.name}</Typography>
                             </Grid>
-                          </>
+                          </React.Fragment>
                         ))}
                         <Grid item xs={12}>
                           <Typography variant="subtitle1" align="center">Saving Throws</Typography>
@@ -164,7 +165,7 @@ function CharacterSheet({ id }) {
                           const { modifier } = _find(character.attributes, ({ abbv }) => abbv === skill.type);
 
                           return (
-                            <>
+                            <React.Fragment key={skill.name}>
                               <Grid item xs={2}>
                                 <Checkbox
                                   icon={<RadioButtonUnchecked />}
@@ -181,7 +182,7 @@ function CharacterSheet({ id }) {
                               <Grid item xs={7}>
                                 <Typography>{skill.name}</Typography>
                               </Grid>
-                            </>
+                            </React.Fragment>
                           )
                         })}
                         <Grid item xs={12}>
@@ -190,12 +191,121 @@ function CharacterSheet({ id }) {
                       </Grid>
                     </Box>
                   </Grid>
+
                 </Grid>
               </Grid>
             </Grid>
+
+            <Box mt={2} border={1} borderColor="rgba(0, 0, 0, 0.23)" borderRadius="4px">
+              <Typography align="center" variant="h5">Languages</Typography>
+              <Box p={2}>
+                {_map(character.languages, language => (
+                  <Typography key={language.name}>{language.name}</Typography>
+                ))}
+              </Box>
+
+              <Typography align="center" variant="h5">Other Proficiencies</Typography>
+              <Box p={2}>
+                {_map(character.proficiencies, proficiency => (
+                  <Typography key={proficiency.name}>{proficiency.name}</Typography>
+                ))}
+              </Box>
+            </Box>
           </Grid>
 
           <Grid item xs={12} sm={4}>
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={4}>
+                <TextField
+                  value={character.ac || ''}
+                  fullWidth
+                  variant="outlined"
+                  label="Armor Class"
+                />
+              </Grid>
+              <Grid item xs={12} sm={4}>
+                <TextField
+                  value={`${character.initiative > -1 ? '+' : ''}${character.initiative || ''}`}
+                  fullWidth
+                  variant="outlined"
+                  label="Initiative"
+                />
+              </Grid>
+              <Grid item xs={12} sm={4}>
+                <TextField
+                  value={character.speed || ''}
+                  fullWidth
+                  variant="outlined"
+                  label="Speed"
+                />
+              </Grid>
+
+              <Grid item xs={12}>
+                <Grid container spacing={1}>
+                  <Grid item xs={12}>
+                    <TextField
+                      value={_get(character, 'health.maxHp', '')}
+                      fullWidth
+                      variant="outlined"
+                      label="Max Hit Points"
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      value={_get(character, 'health.currentHp', '')}
+                      fullWidth
+                      variant="outlined"
+                      label="Current Hit Points"
+                    />
+                  </Grid>
+                </Grid>
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  value={_get(character, 'health.tempHp', '')}
+                  fullWidth
+                  variant="outlined"
+                  label="Temporary Hit Points"
+                />
+              </Grid>
+
+              <Grid item xs={12} sm={6}>
+                <Grid container spacing={1}>
+                  <Grid item xs={12}>
+                    <TextField
+                      value={_get(character, 'health.totalHitDice', '')}
+                      fullWidth
+                      variant="outlined"
+                      label="Total Hit Dice"
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      value={_get(character, 'health.hitDice', '')}
+                      fullWidth
+                      variant="outlined"
+                      label="Hit Dice"
+                    />
+                  </Grid>
+                </Grid>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <Grid container spacing={1}>
+                  <Grid item xs={12}>
+                    death saves: {JSON.stringify(_get(character, 'health.deathSaves'))}
+                  </Grid>
+                </Grid>
+              </Grid>
+
+              <Grid item xs={12}></Grid>
+
+              <Grid item xs={12}>
+                <Grid container spacing={1}>
+                  <Grid item xs={2}></Grid>
+                  <Grid item xs={10}></Grid>
+                </Grid>
+              </Grid>
+            </Grid>
           </Grid>
 
           <Grid item xs={12} sm={4}>

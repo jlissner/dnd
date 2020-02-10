@@ -191,8 +191,8 @@ module.exports = {
       notes: '',
     },
   ],
-  languages: ['Common', 'Giant'],
-  proficiencies: [],
+  languages: [{ name: 'Common', notes: '' }, { name: 'Giant', notes: '' }],
+  proficiencies: [{ name: 'Riding Horses', notes: '' }],
   money: {
     cp: 0,
     sp: 0,
@@ -345,7 +345,7 @@ module.exports = {
   savingThrows: [],
   health: {
     hitDice: '1d12',
-    numOfHitDice: 8,
+    totalHitDice: 8,
     currentHp: 76,
     totalHp: 76,
     maxHp: 76,

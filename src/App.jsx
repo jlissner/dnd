@@ -30,7 +30,7 @@ function App() {
               <PlayerList gameBoard={gameBoard} />
             </Grid>
             <Grid item xs={12}>
-              <CanvasMenu />
+              {/* <CanvasMenu /> */}
             </Grid>
           </Grid>
         </Box>
