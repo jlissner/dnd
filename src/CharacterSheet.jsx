@@ -20,6 +20,15 @@ import useCharacter from './hooks/useCharacter';
 function CharacterSheet({ id }) {
   const [character, updateCharacter] = useCharacter(id);
 
+  function getModifier(attr, mod, proficient) {
+    const { modifier } = _find(character.attributes, { abbv: attr });
+    const proficiencyBonus = proficient ? character.proficiencyBonus : 0;
+    const totalModifier = modifier + mod + proficiencyBonus;
+    const symbol = totalModifier > 0 ? '+' : '';
+
+    return `${symbol}${totalModifier}`;
+  }
+
   if (!character.id) {
     return 'loading...';
   }
@@ -297,20 +306,107 @@ function CharacterSheet({ id }) {
                 </Grid>
               </Grid>
 
-              <Grid item xs={12}></Grid>
+              <Grid item xs={12}>
+                <Grid container spacing={1}>
+                  still need to show notes and correct damage/attack options
+                  {_map(_get(character, 'equipment.weapons'), wep => (
+                    <React.Fragment key={wep.name}>
+                      <Grid item xs={4}>
+                        <Typography>{wep.quantity > 1 ? `${wep.quantity}x ` : ''}{wep.name}</Typography>
+                      </Grid>
+                      <Grid item xs={2}>
+                        <Typography>{wep.properties.toLowerCase().indexOf('finesse') > -1 ? `${getModifier('str', wep.modifier, wep.proficient)} | ${getModifier('dex', wep.modifier, wep.proficient)}` : getModifier('str', wep.modifier, wep.proficient)}</Typography>
+                      </Grid>
+                      <Grid item xs={4}>
+                        <Typography>{wep.dmg instanceof Array ? wep.dmg.reduce((r, d) => r ? `${r} | ${d}` : d) : wep.dmg}</Typography>
+                      </Grid>
+                      <Grid item xs={2}>
+                        <Typography>{wep.dmgType}</Typography>
+                      </Grid>
+                    </React.Fragment>
+                  ))}
+                </Grid>
+              </Grid>
 
               <Grid item xs={12}>
                 <Grid container spacing={1}>
-                  <Grid item xs={2}></Grid>
-                  <Grid item xs={10}></Grid>
+                  <Grid item xs={2}>
+                    <Grid container spacing={4}>
+                      {_map(character.money, (val, key) => (
+                        <Grid item key={key} xs={12}>
+                          <Typography>{key}: {val}</Typography>
+                        </Grid>
+                      ))}
+                    </Grid>
+                  </Grid>
+                  <Grid item xs={10}>
+                    <Grid container spacing={1}>
+                      {_map(_get(character, 'equipment.other'), ({ name, properties }) => (
+                        <Grid item key={name} xs={12}>
+                          <Typography><strong>{name}{properties ? ':' : ''}</strong> {properties}</Typography>
+                        </Grid>
+                      ))}
+                    </Grid>
+                  </Grid>
                 </Grid>
               </Grid>
             </Grid>
           </Grid>
 
           <Grid item xs={12} sm={4}>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <Box p={2} mb={1} border={1} borderColor="rgba(0, 0, 0, 0.23)" borderRadius="4px">
+                  <Typography>{_get(character, 'personality.traits', '')}</Typography>
+                  <Typography variant="h6">Personality Traits</Typography>
+                </Box>
+
+                <Box p={2} mb={1} border={1} borderColor="rgba(0, 0, 0, 0.23)" borderRadius="4px">
+                  <Typography>{_get(character, 'personality.ideals', '')}</Typography>
+                  <Typography variant="h6">Ideals</Typography>
+                </Box>
+
+                <Box p={2} mb={1} border={1} borderColor="rgba(0, 0, 0, 0.23)" borderRadius="4px">
+                  <Typography>{_get(character, 'personality.bonds', '')}</Typography>
+                  <Typography variant="h6">Bonds</Typography>
+                </Box>
+
+                <Box p={2} border={1} borderColor="rgba(0, 0, 0, 0.23)" borderRadius="4px">
+                  <Typography>{_get(character, 'personality.flaws', '')}</Typography>
+                  <Typography variant="h6">Flaws</Typography>
+                </Box>
+
+                <Box p={2} border={1} borderColor="rgba(0, 0, 0, 0.23)" borderRadius="4px">
+                  <Typography>{_get(character, 'personality.backstory', '')}</Typography>
+                  <Typography variant="h6">Backstory</Typography>
+                </Box>
+
+                <Box p={2} border={1} borderColor="rgba(0, 0, 0, 0.23)" borderRadius="4px">
+                  <Typography>{_get(character, 'personality.notes', '')}</Typography>
+                  <Typography variant="h6">Notes</Typography>
+                </Box>
+              </Grid>
+              <Grid item xs={12}>
+                <Grid container spacing={1}>
+                  {_map(character.featuresAndTraits, ({ title, text, tags }) => (
+                    <Grid item xs={12}>
+                      <small>{tags.join(', ')}</small>
+                      <Typography><strong>{title}:</strong> {text}</Typography>
+                    </Grid>
+                  ))}
+                </Grid>
+              </Grid>
+            </Grid>
           </Grid>
         </Grid>
+      </Box>
+      <Box p={2}>
+        TODO:
+          - finish initial form
+          - add notes to everything
+          - make re-useable markdown editor
+          - do death saves
+          - refactor and update design
       </Box>
     </Paper>
   );
