@@ -16,6 +16,7 @@ import _find from 'lodash/find';
 import _get from 'lodash/get';
 import _map from 'lodash/map';
 import useCharacter from './hooks/useCharacter';
+import Attribute from './Form/Attribute';
 
 function CharacterSheet({ id }) {
   const [character, updateCharacter] = useCharacter(id);
@@ -108,12 +109,7 @@ function CharacterSheet({ id }) {
                 <Grid container spacing={4}>
                   {_map(character.attributes, attr => (
                     <Grid item xs={12} key={attr.name}>
-                      <TextField
-                        label={attr.name}
-                        value={`${attr.value} (${attr.modifier > -1 ? '+' : ''}${attr.modifier})`}
-                        variant="outlined"
-                        fullWidth
-                      />
+                      <Attribute {...attr} />
                     </Grid>
                   ))}
                 </Grid>
@@ -371,17 +367,17 @@ function CharacterSheet({ id }) {
                   <Typography variant="h6">Bonds</Typography>
                 </Box>
 
-                <Box p={2} border={1} borderColor="rgba(0, 0, 0, 0.23)" borderRadius="4px">
+                <Box p={2} mb={1} border={1} borderColor="rgba(0, 0, 0, 0.23)" borderRadius="4px">
                   <Typography>{_get(character, 'personality.flaws', '')}</Typography>
                   <Typography variant="h6">Flaws</Typography>
                 </Box>
 
-                <Box p={2} border={1} borderColor="rgba(0, 0, 0, 0.23)" borderRadius="4px">
+                <Box p={2} mb={1} border={1} borderColor="rgba(0, 0, 0, 0.23)" borderRadius="4px">
                   <Typography>{_get(character, 'personality.backstory', '')}</Typography>
                   <Typography variant="h6">Backstory</Typography>
                 </Box>
 
-                <Box p={2} border={1} borderColor="rgba(0, 0, 0, 0.23)" borderRadius="4px">
+                <Box p={2} mb={1} border={1} borderColor="rgba(0, 0, 0, 0.23)" borderRadius="4px">
                   <Typography>{_get(character, 'personality.notes', '')}</Typography>
                   <Typography variant="h6">Notes</Typography>
                 </Box>
@@ -389,7 +385,7 @@ function CharacterSheet({ id }) {
               <Grid item xs={12}>
                 <Grid container spacing={1}>
                   {_map(character.featuresAndTraits, ({ title, text, tags }) => (
-                    <Grid item xs={12}>
+                    <Grid item xs={12} key={title}>
                       <small>{tags.join(', ')}</small>
                       <Typography><strong>{title}:</strong> {text}</Typography>
                     </Grid>
