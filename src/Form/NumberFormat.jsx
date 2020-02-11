@@ -7,6 +7,10 @@ import _pick from 'lodash/pick';
 function NumberFormat(props) {
   const { prefix, thousandSeparator, ...rest } = props;
 
+  return `
+    maybe use instead of InputProps, FormControl
+    https://material-ui.com/api/form-control/`
+
   return (
     <TextField
       {...rest}
