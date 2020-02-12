@@ -1,11 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { makeStyles } from '@material-ui/core/styles';
 import {
   Box,
   TextField,
   Typography,
 } from '@material-ui/core';
-import NumberFormat from './NumberFormat';
+import ReactNumberFormat from 'react-number-format';
+
+// const useStyles = makeStyles((theme) => ({
+//   modifier: {
+//     width: '50%',
+//     borderRadius: '100%',
+//   },
+// }));
 
 function Attribute({
   name,
@@ -14,18 +22,33 @@ function Attribute({
   value,
 }) {
   return (
-    <Box border={1} color="grey.800">
-      <Typography align="center">{name}</Typography>
-      <TextField
-        value={value}
-        variant="filled"
-        fullWidth
-      />
-      <NumberFormat
-        fullWidth
+    <Box position="relative">
+      <Box border={1} borderColor="grey.500" borderRadius={4} pb={2}>
+        <Typography align="center">{name}</Typography>
+        <TextField
+          value={value}
+          variant="filled"
+          fullWidth
+        />
+      </Box>
+      <Box
+        bgcolor="paper"
+        border={1}
+        borderColor="grey.500"
+        borderRadius="50%"
+        bottom={-20}
+        component={ReactNumberFormat}
+        display="block"
+        left={0}
+        right={0}
+        mx="auto"
+        position="absolute"
         prefix={modifier > -1 ? '+' : ''}
+        textAlign="center"
         value={modifier}
         variant="filled"
+        height="40px"
+        width="40px"
       />
     </Box>
   );
