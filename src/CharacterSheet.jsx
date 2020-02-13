@@ -17,6 +17,7 @@ import _get from 'lodash/get';
 import _map from 'lodash/map';
 import useCharacter from './hooks/useCharacter';
 import Attribute from './Form/Attribute';
+import Proficiency from './Form/Proficiency';
 
 function CharacterSheet({ id }) {
   const [character, updateCharacter] = useCharacter(id);
@@ -103,19 +104,19 @@ function CharacterSheet({ id }) {
             </Grid>
           </Grid>
 
-          <Grid item xs={12} sm={4}>
+          <Grid item xs={12} sm={5}>
             <Grid container spacing={1}>
               <Grid item xs={12} sm={4}>
-                <Grid container spacing={4}>
-                  {_map(character.attributes, attr => (
-                    <Grid item xs={12} key={attr.name}>
+                <Box bgcolor="grey.100" mx={1} borderRadius={4} pt={2}>
+                  {_map(character.attributes, (attr, i) => (
+                    <Box key={attr.name} p={2} pt={0}>
                       <Attribute {...attr} />
-                    </Grid>
+                    </Box>
                   ))}
-                </Grid>
+                </Box>
               </Grid>
 
-              <Grid item xs={12} sm={8}>
+              <Grid item xs={12} sm={7}>
                 <Grid container spacing={1}>
                   <Grid item xs={12}>
                     <TextField
@@ -134,32 +135,13 @@ function CharacterSheet({ id }) {
                     />
                   </Grid>
                   <Grid item xs={12}>
-                    <Box border={1} borderColor="rgba(0, 0, 0, 0.23)" borderRadius="4px">
-                      <Grid container spacing={1}>
-                        {_map(character.attributes, attr => (
-                          <React.Fragment key={attr.name}>
-                            <Grid item xs={2}>
-                              <Checkbox
-                                icon={<RadioButtonUnchecked />}
-                                checkedIcon={<RadioButtonChecked />}
-                                checked={attr.proficient}
-                              />
-                            </Grid>
-                            <Grid item xs={3}>
-                              <TextField
-                                fullWidth
-                                value={`${attr.modifier > -1 ? '+' : ''}${attr.modifier + (attr.proficient ? character.proficiencyBonus : 0)}`}
-                              />
-                            </Grid>
-                            <Grid item xs={7}>
-                              <Typography>{attr.name}</Typography>
-                            </Grid>
-                          </React.Fragment>
-                        ))}
-                        <Grid item xs={12}>
-                          <Typography variant="subtitle1" align="center">Saving Throws</Typography>
-                        </Grid>
-                      </Grid>
+                    <Box border={1} p={1} borderColor="rgba(0, 0, 0, 0.23)" borderRadius="4px">
+                      {_map(character.attributes, attr => (
+                        <Proficiency key={attr.name} {...attr} proficiencyBonus={character.proficiencyBonus} />
+                      ))}
+                      <Box mt={1} textTransform="uppercase">
+                        <Typography variant="subtitle1" align="center">Saving Throws</Typography>
+                      </Box>
                     </Box>
                   </Grid>
 

@@ -1,19 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import ReactNumberFormat from 'react-number-format';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Box,
   TextField,
   Typography,
 } from '@material-ui/core';
-import ReactNumberFormat from 'react-number-format';
 
-// const useStyles = makeStyles((theme) => ({
-//   modifier: {
-//     width: '50%',
-//     borderRadius: '100%',
-//   },
-// }));
+const useStyles = makeStyles((theme) => ({
+  modifier: {
+    width: theme.spacing(6),
+    height: theme.spacing(6),
+  },
+  name: {
+    textTransform: 'uppercase',
+  },
+}));
 
 function Attribute({
   name,
@@ -21,22 +24,30 @@ function Attribute({
   notes,
   value,
 }) {
+  const classes = useStyles();
+
   return (
-    <Box position="relative">
-      <Box border={1} borderColor="grey.500" borderRadius={4} pb={2}>
-        <Typography align="center">{name}</Typography>
-        <TextField
+    <Box position="relative" pb={3}>
+      <Box border={1} borderColor="grey.500" borderRadius={4} pb={2} bgcolor="white">
+        <Typography align="center" className={classes.name}>{name}</Typography>
+        <Box
+          bgcolor="grey.200"
+          border={0}
+          component={ReactNumberFormat}
+          display="block"
+          p={2}
+          textAlign="center"
+          width={1}
           value={value}
-          variant="filled"
-          fullWidth
         />
       </Box>
       <Box
-        bgcolor="paper"
+        className={classes.modifier}
+        bgcolor="grey.200"
         border={1}
         borderColor="grey.500"
         borderRadius="50%"
-        bottom={-20}
+        bottom={0}
         component={ReactNumberFormat}
         display="block"
         left={0}
@@ -46,9 +57,6 @@ function Attribute({
         prefix={modifier > -1 ? '+' : ''}
         textAlign="center"
         value={modifier}
-        variant="filled"
-        height="40px"
-        width="40px"
       />
     </Box>
   );
