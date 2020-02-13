@@ -11,16 +11,24 @@ import PlayerList from './PlayerList';
 import theme from './theme';
 import useGameBoard from './hooks/useGameBoard';
 import axios from 'axios';
+import useTabs from './hooks/useTabs';
 
 function App() {
   const gameBoard = useGameBoard();
+  const [tab, TabComponent] = useTabs([
+    { value: 'a', label: 'A'},
+    { value: 'c', label: 'Tab C'},
+    { value: 'b', label: 'B'},
+    { value: 'D', label: 'D'},
+  ]);
 
   axios.get('/ping').then(res => console.log(res))
+
+  console.log({ tab })
 
   return (
     <MuiThemeProvider theme={theme}>
       <Header />
-
       <Box p={4} mt={11} height="100%">
         <GameBoard gameBoard={gameBoard}/>
 
@@ -28,6 +36,7 @@ function App() {
           <Grid container spacing={3}>
             <Grid item xs={12}>
               <PlayerList gameBoard={gameBoard} />
+              <TabComponent title="My Tabs" />
             </Grid>
             <Grid item xs={12}>
               {/* <CanvasMenu /> */}

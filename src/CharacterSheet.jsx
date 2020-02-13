@@ -139,7 +139,7 @@ function CharacterSheet({ id }) {
                       {_map(character.attributes, attr => (
                         <Proficiency key={attr.name} {...attr} proficiencyBonus={character.proficiencyBonus} />
                       ))}
-                      <Box mt={1} textTransform="uppercase">
+                      <Box mt={1}>
                         <Typography variant="subtitle1" align="center">Saving Throws</Typography>
                       </Box>
                     </Box>
