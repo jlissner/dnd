@@ -15,16 +15,8 @@ import useTabs from './hooks/useTabs';
 
 function App() {
   const gameBoard = useGameBoard();
-  const [tab, TabComponent] = useTabs([
-    { value: 'a', label: 'A'},
-    { value: 'c', label: 'Tab C'},
-    { value: 'b', label: 'B'},
-    { value: 'D', label: 'D'},
-  ]);
 
   axios.get('/ping').then(res => console.log(res))
-
-  console.log({ tab })
 
   return (
     <MuiThemeProvider theme={theme}>
@@ -36,7 +28,6 @@ function App() {
           <Grid container spacing={3}>
             <Grid item xs={12}>
               <PlayerList gameBoard={gameBoard} />
-              <TabComponent title="My Tabs" />
             </Grid>
             <Grid item xs={12}>
               {/* <CanvasMenu /> */}

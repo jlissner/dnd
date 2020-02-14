@@ -7,6 +7,8 @@ import {
   TextField,
   Typography,
 } from '@material-ui/core';
+import getNumericPrefix from '../utils/getNumericPrefix';
+import NumericInput from './NumericInput';
 
 const useStyles = makeStyles((theme) => ({
   modifier: {
@@ -30,31 +32,24 @@ function Attribute({
     <Box position="relative" pb={3}>
       <Box border={1} borderColor="grey.500" borderRadius={4} pb={2} bgcolor="white">
         <Typography align="center" className={classes.name}>{name}</Typography>
-        <Box
-          bgcolor="grey.200"
+        <NumericInput
           border={0}
-          component={ReactNumberFormat}
-          display="block"
           p={2}
-          textAlign="center"
           width={1}
           value={value}
         />
       </Box>
-      <Box
+      <NumericInput
         className={classes.modifier}
         bgcolor="grey.200"
-        border={1}
-        borderColor="grey.500"
         borderRadius="50%"
         bottom={0}
         component={ReactNumberFormat}
-        display="block"
         left={0}
         right={0}
         mx="auto"
         position="absolute"
-        prefix={modifier > -1 ? '+' : ''}
+        prefix={getNumericPrefix(modifier)}
         textAlign="center"
         value={modifier}
       />

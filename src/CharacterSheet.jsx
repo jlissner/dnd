@@ -17,6 +17,7 @@ import _get from 'lodash/get';
 import _map from 'lodash/map';
 import useCharacter from './hooks/useCharacter';
 import Attribute from './Form/Attribute';
+import HorizontalInput from './Form/HorizontalInput';
 import Proficiency from './Form/Proficiency';
 
 function CharacterSheet({ id }) {
@@ -40,12 +41,12 @@ function CharacterSheet({ id }) {
       <Box p={2}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
-            <Grid container spacing={2}>
+            <Grid container spacing={2} alignItems="center">
               <Grid item xs={12} sm={6}>
                 <TextField
                   value={character.characterName || ''}
                   fullWidth
-                  variant="outlined"
+                  variant="filled"
                   label="Character Name"
                 />
               </Grid>
@@ -55,7 +56,7 @@ function CharacterSheet({ id }) {
                     <TextField
                       value={character.className || ''}
                       fullWidth
-                      variant="outlined"
+                      variant="filled"
                       label="Class"
                     />
                   </Grid>
@@ -63,7 +64,7 @@ function CharacterSheet({ id }) {
                     <TextField
                       value={character.level}
                       fullWidth
-                      variant="outlined"
+                      variant="filled"
                       label="Level"
                     />
                   </Grid>
@@ -71,7 +72,7 @@ function CharacterSheet({ id }) {
                     <TextField
                       value={character.playerName}
                       fullWidth
-                      variant="outlined"
+                      variant="filled"
                       label="Player Name"
                     />
                   </Grid>
@@ -79,7 +80,7 @@ function CharacterSheet({ id }) {
                     <TextField
                       value={character.race}
                       fullWidth
-                      variant="outlined"
+                      variant="filled"
                       label="Race"
                     />
                   </Grid>
@@ -87,7 +88,7 @@ function CharacterSheet({ id }) {
                     <TextField
                       value={character.alignment}
                       fullWidth
-                      variant="outlined"
+                      variant="filled"
                       label="Alignment"
                     />
                   </Grid>
@@ -95,7 +96,7 @@ function CharacterSheet({ id }) {
                     <TextField
                       value={character.xp}
                       fullWidth
-                      variant="outlined"
+                      variant="filled"
                       label="Experience Points"
                     />
                   </Grid>
@@ -104,9 +105,9 @@ function CharacterSheet({ id }) {
             </Grid>
           </Grid>
 
-          <Grid item xs={12} sm={5}>
+          <Grid item xs={12} sm={6} md={4}>
             <Grid container spacing={1}>
-              <Grid item xs={12} sm={4}>
+              <Grid item xs={12} sm={5}>
                 <Box bgcolor="grey.100" mx={1} borderRadius={4} pt={2}>
                   {_map(character.attributes, (attr, i) => (
                     <Box key={attr.name} p={2} pt={0}>
@@ -117,23 +118,15 @@ function CharacterSheet({ id }) {
               </Grid>
 
               <Grid item xs={12} sm={7}>
-                <Grid container spacing={1}>
+                <Grid container spacing={2}>
                   <Grid item xs={12}>
-                    <TextField
-                      label="Inspiration"
-                      value={character.inspiration}
-                      variant="outlined"
-                      fullWidth
-                    />
+                    <HorizontalInput label="Inspiration" value={character.inspiration} />
                   </Grid>
+
                   <Grid item xs={12}>
-                    <TextField
-                      label="Proficiency Bonus"
-                      value={`+${character.proficiencyBonus}`}
-                      variant="outlined"
-                      fullWidth
-                    />
+                    <HorizontalInput label="Proficiency Bonus" value={character.proficiencyBonus} />
                   </Grid>
+
                   <Grid item xs={12}>
                     <Box border={1} p={1} borderColor="rgba(0, 0, 0, 0.23)" borderRadius="4px">
                       {_map(character.attributes, attr => (
@@ -146,36 +139,23 @@ function CharacterSheet({ id }) {
                   </Grid>
 
                   <Grid item xs={12}>
-                    <Box border={1} borderColor="rgba(0, 0, 0, 0.23)" borderRadius="4px">
-                      <Grid container spacing={1}>
+                    <Box border={1} p={1} borderColor="rgba(0, 0, 0, 0.23)" borderRadius="4px">
                         {_map(character.skills, skill => {
                           const { modifier } = _find(character.attributes, ({ abbv }) => abbv === skill.type);
 
                           return (
-                            <React.Fragment key={skill.name}>
-                              <Grid item xs={2}>
-                                <Checkbox
-                                  icon={<RadioButtonUnchecked />}
-                                  checkedIcon={<RadioButtonChecked />}
-                                  checked={skill.proficient}
-                                />
-                              </Grid>
-                              <Grid item xs={3}>
-                                <TextField
-                                  fullWidth
-                                  value={`${modifier > -1 ? '+' : ''}${modifier + (skill.proficient ? character.proficiencyBonus : 0)}`}
-                                />
-                              </Grid>
-                              <Grid item xs={7}>
-                                <Typography>{skill.name}</Typography>
-                              </Grid>
-                            </React.Fragment>
-                          )
+                            <Proficiency
+                              key={skill.name}
+                              modifier={modifier}
+                              name={skill.name}
+                              proficient={skill.proficient}
+                              proficiencyBonus={character.proficiencyBonus}
+                            />
+                          );
                         })}
-                        <Grid item xs={12}>
+                        <Box mt={1}>
                           <Typography variant="subtitle1" align="center">Skills</Typography>
-                        </Grid>
-                      </Grid>
+                        </Box>
                     </Box>
                   </Grid>
 
@@ -200,13 +180,13 @@ function CharacterSheet({ id }) {
             </Box>
           </Grid>
 
-          <Grid item xs={12} sm={4}>
+          <Grid item xs={12} sm={6} md={4}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={4}>
                 <TextField
                   value={character.ac || ''}
                   fullWidth
-                  variant="outlined"
+                  variant="filled"
                   label="Armor Class"
                 />
               </Grid>
@@ -214,7 +194,7 @@ function CharacterSheet({ id }) {
                 <TextField
                   value={`${character.initiative > -1 ? '+' : ''}${character.initiative || ''}`}
                   fullWidth
-                  variant="outlined"
+                  variant="filled"
                   label="Initiative"
                 />
               </Grid>
@@ -222,7 +202,7 @@ function CharacterSheet({ id }) {
                 <TextField
                   value={character.speed || ''}
                   fullWidth
-                  variant="outlined"
+                  variant="filled"
                   label="Speed"
                 />
               </Grid>
@@ -233,7 +213,7 @@ function CharacterSheet({ id }) {
                     <TextField
                       value={_get(character, 'health.maxHp', '')}
                       fullWidth
-                      variant="outlined"
+                      variant="filled"
                       label="Max Hit Points"
                     />
                   </Grid>
@@ -241,7 +221,7 @@ function CharacterSheet({ id }) {
                     <TextField
                       value={_get(character, 'health.currentHp', '')}
                       fullWidth
-                      variant="outlined"
+                      variant="filled"
                       label="Current Hit Points"
                     />
                   </Grid>
@@ -251,7 +231,7 @@ function CharacterSheet({ id }) {
                 <TextField
                   value={_get(character, 'health.tempHp', '')}
                   fullWidth
-                  variant="outlined"
+                  variant="filled"
                   label="Temporary Hit Points"
                 />
               </Grid>
@@ -262,7 +242,7 @@ function CharacterSheet({ id }) {
                     <TextField
                       value={_get(character, 'health.totalHitDice', '')}
                       fullWidth
-                      variant="outlined"
+                      variant="filled"
                       label="Total Hit Dice"
                     />
                   </Grid>
@@ -270,7 +250,7 @@ function CharacterSheet({ id }) {
                     <TextField
                       value={_get(character, 'health.hitDice', '')}
                       fullWidth
-                      variant="outlined"
+                      variant="filled"
                       label="Hit Dice"
                     />
                   </Grid>
@@ -331,7 +311,7 @@ function CharacterSheet({ id }) {
             </Grid>
           </Grid>
 
-          <Grid item xs={12} sm={4}>
+          <Grid item xs={12} md={4}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <Box p={2} mb={1} border={1} borderColor="rgba(0, 0, 0, 0.23)" borderRadius="4px">

@@ -12,6 +12,7 @@ import {
   RadioButtonChecked,
   RadioButtonUnchecked,
 } from '@material-ui/icons';
+import getNumericPrefix from '../utils/getNumericPrefix';
 
 const useStyles = makeStyles(theme => ({
   checkbox: {
@@ -46,7 +47,7 @@ function Proficiency({
           component={ReactNumberFormat}
           p={.5}
           px={.75}
-          prefix={modifier > -1 ? '+' : ''}
+          prefix={getNumericPrefix(modifier)}
           value={value}
           width={1}
         />
