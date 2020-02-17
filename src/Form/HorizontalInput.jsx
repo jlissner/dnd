@@ -1,6 +1,5 @@
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
-import ReactNumberFormat from 'react-number-format';
 import {
   Box,
   Grid,
@@ -12,6 +11,7 @@ import TextInput from './TextInput';
 
 function HorizontalInput({
   label,
+  onChange,
   value,
 }) {
   const inputType = typeof value;
@@ -25,10 +25,11 @@ function HorizontalInput({
           prefix={getNumericPrefix(value)}
           width="48px"
           height="48px"
+          onChange={onChange}
         />
       </Grid>
       <Grid item xs={12}>
-        <Box p={0.25} border={1} borderColor="grey.500">
+        <Box p={0.25} border={1} borderColor="rgba(0, 0, 0, 0.42)" borderLeft={0}>
           <Typography align="center">{label}</Typography>
         </Box>
       </Grid>
@@ -38,6 +39,7 @@ function HorizontalInput({
 
 HorizontalInput.propTypes = {
   label: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
   value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
 };
 

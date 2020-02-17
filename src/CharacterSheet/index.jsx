@@ -2,23 +2,21 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {
   Box,
-  Checkbox,
   Grid,
   Paper,
   TextField,
   Typography,
 } from '@material-ui/core';
-import {
-  RadioButtonChecked,
-  RadioButtonUnchecked,
-} from '@material-ui/icons';
 import _find from 'lodash/find';
 import _get from 'lodash/get';
 import _map from 'lodash/map';
-import useCharacter from './hooks/useCharacter';
-import Attribute from './Form/Attribute';
-import HorizontalInput from './Form/HorizontalInput';
-import Proficiency from './Form/Proficiency';
+import useCharacter from '../hooks/useCharacter';
+import HorizontalInput from '../Form/HorizontalInput';
+import Attribute from './Attribute';
+import DeathSaves from './DeathSaves';
+import Features from './Features';
+import Personality from './Personality';
+import Proficiency from './Proficiency';
 
 function CharacterSheet({ id }) {
   const [character, updateCharacter] = useCharacter(id);
@@ -48,6 +46,7 @@ function CharacterSheet({ id }) {
                   fullWidth
                   variant="filled"
                   label="Character Name"
+                  onChange={(e) => updateCharacter({ name: e.target.value })}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -106,25 +105,31 @@ function CharacterSheet({ id }) {
           </Grid>
 
           <Grid item xs={12} sm={6} md={4}>
-            <Grid container spacing={1}>
+            <Grid container spacing={2}>
               <Grid item xs={12} sm={5}>
-                <Box bgcolor="grey.100" mx={1} borderRadius={4} pt={2}>
+                <Grid container spacing={3}>
                   {_map(character.attributes, (attr, i) => (
-                    <Box key={attr.name} p={2} pt={0}>
+                    <Grid item xs={12} key={attr.name}>
                       <Attribute {...attr} />
-                    </Box>
+                    </Grid>
                   ))}
-                </Box>
+                </Grid>
               </Grid>
 
               <Grid item xs={12} sm={7}>
                 <Grid container spacing={2}>
                   <Grid item xs={12}>
-                    <HorizontalInput label="Inspiration" value={character.inspiration} />
+                    <HorizontalInput
+                      label="Inspiration"
+                      onChange={() => {}}
+                      value={character.inspiration} />
                   </Grid>
 
                   <Grid item xs={12}>
-                    <HorizontalInput label="Proficiency Bonus" value={character.proficiencyBonus} />
+                    <HorizontalInput
+                      label="Proficiency Bonus"
+                      onChange={() => {}}
+                      value={character.proficiencyBonus} />
                   </Grid>
 
                   <Grid item xs={12}>
@@ -259,7 +264,7 @@ function CharacterSheet({ id }) {
               <Grid item xs={12} sm={6}>
                 <Grid container spacing={1}>
                   <Grid item xs={12}>
-                    death saves: {JSON.stringify(_get(character, 'health.deathSaves'))}
+                    <DeathSaves deathSaves={_get(character, 'health.deathSaves')}/>
                   </Grid>
                 </Grid>
               </Grid>
@@ -314,45 +319,11 @@ function CharacterSheet({ id }) {
           <Grid item xs={12} md={4}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
-                <Box p={2} mb={1} border={1} borderColor="rgba(0, 0, 0, 0.23)" borderRadius="4px">
-                  <Typography>{_get(character, 'personality.traits', '')}</Typography>
-                  <Typography variant="h6">Personality Traits</Typography>
-                </Box>
-
-                <Box p={2} mb={1} border={1} borderColor="rgba(0, 0, 0, 0.23)" borderRadius="4px">
-                  <Typography>{_get(character, 'personality.ideals', '')}</Typography>
-                  <Typography variant="h6">Ideals</Typography>
-                </Box>
-
-                <Box p={2} mb={1} border={1} borderColor="rgba(0, 0, 0, 0.23)" borderRadius="4px">
-                  <Typography>{_get(character, 'personality.bonds', '')}</Typography>
-                  <Typography variant="h6">Bonds</Typography>
-                </Box>
-
-                <Box p={2} mb={1} border={1} borderColor="rgba(0, 0, 0, 0.23)" borderRadius="4px">
-                  <Typography>{_get(character, 'personality.flaws', '')}</Typography>
-                  <Typography variant="h6">Flaws</Typography>
-                </Box>
-
-                <Box p={2} mb={1} border={1} borderColor="rgba(0, 0, 0, 0.23)" borderRadius="4px">
-                  <Typography>{_get(character, 'personality.backstory', '')}</Typography>
-                  <Typography variant="h6">Backstory</Typography>
-                </Box>
-
-                <Box p={2} mb={1} border={1} borderColor="rgba(0, 0, 0, 0.23)" borderRadius="4px">
-                  <Typography>{_get(character, 'personality.notes', '')}</Typography>
-                  <Typography variant="h6">Notes</Typography>
-                </Box>
+                <Personality personality={character.personality}/>
               </Grid>
+              
               <Grid item xs={12}>
-                <Grid container spacing={1}>
-                  {_map(character.featuresAndTraits, ({ title, text, tags }) => (
-                    <Grid item xs={12} key={title}>
-                      <small>{tags.join(', ')}</small>
-                      <Typography><strong>{title}:</strong> {text}</Typography>
-                    </Grid>
-                  ))}
-                </Grid>
+                <Features features={character.featuresAndTraits} />
               </Grid>
             </Grid>
           </Grid>

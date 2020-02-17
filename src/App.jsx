@@ -5,13 +5,12 @@ import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import Header from './Header';
 import CharacterSheet from './CharacterSheet';
-import CanvasMenu from './CanvasMenu';
+// import CanvasMenu from './CanvasMenu';
 import GameBoard from './GameBoard';
 import PlayerList from './PlayerList';
 import theme from './theme';
 import useGameBoard from './hooks/useGameBoard';
 import axios from 'axios';
-import useTabs from './hooks/useTabs';
 
 function App() {
   const gameBoard = useGameBoard();

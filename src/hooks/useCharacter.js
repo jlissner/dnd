@@ -6,6 +6,10 @@ function useCharacter(id) {
   const { message, readyState, send } = useWebsocket(url);
   const [character, setCharacter] = useState({});
 
+  if (readyState !== 1) {
+    console.log('loading...')
+  }
+
   useEffect(() => {
     if (message) {
       setCharacter(JSON.parse(message));

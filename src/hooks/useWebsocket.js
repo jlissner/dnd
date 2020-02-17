@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 
 function useWebsocket(url) {
-  const ws = useMemo(() => new WebSocket(url), []);
+  const ws = useMemo(() => new WebSocket(url), [url]);
   const [readyState, setReadyState] = useState(ws.readyState);
   const [message, setMessage] = useState('');
 
