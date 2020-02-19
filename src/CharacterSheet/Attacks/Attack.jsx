@@ -1,13 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
+  Box,
   Grid,
   Typography,
 } from '@material-ui/core';
 import _find from 'lodash/find';
+import _map from 'lodash/map';
 import _reduce from 'lodash/reduce';
 import _toUpper from 'lodash/toUpper';
 import getNumberPrefix from '../../utils/getNumericPrefix';
+import Radio from '../../Form/Radio';
 
 const BASE_SAVE_DC = 8;
 
@@ -51,23 +54,29 @@ function Attack({
     dmgType,
     name,
     quantity,
+    uses,
   } = attack;
 
   return (
-    <>
-      <Grid item xs={4}>
-        <Typography>{quantity > 1 ? `${quantity}x ` : ''}{name}</Typography>
-      </Grid>
-      <Grid item xs={2}>
-        <Typography>{getModifier(attack, character)}</Typography>
-      </Grid>
-      <Grid item xs={4}>
-        <Typography>{dmg instanceof Array ? dmg.reduce((r, d) => r ? `${r} | ${d}` : d) : dmg}</Typography>
-      </Grid>
-      <Grid item xs={2}>
-        <Typography>{dmgType}</Typography>
-      </Grid>
-    </>
+    <Box mb={1}>
+      <Box
+      >
+        <Typography variant="caption">{dmgType}</Typography>
+      </Box>
+      <Box component={Typography}>
+        <strong>{quantity > 1 ? `${quantity}x ` : ''}{name}</strong>
+        {' '}
+        {getModifier(attack, character)}
+        {' '}
+        {dmg}
+        {' '}
+      </Box>
+      <Box>
+        {_map(uses, (use, i) => (
+          <Radio key={i} checked={use} />
+        ))}
+      </Box>
+    </Box>
   )
 }
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -7,29 +7,35 @@ import {
   Tab,
   Tabs,
 } from '@material-ui/core';
+import _filter from 'lodash/filter';
 import _find from 'lodash/find';
 import _get from 'lodash/get';
 import _map from 'lodash/map';
 import _reduce from 'lodash/reduce';
 import _toUpper from 'lodash/toUpper';
+import _uniq from 'lodash/uniq';
+import EditButton from '../../Form/EditButton';
 import Attack from './Attack';
 
 const useTabsStyles = makeStyles((theme) => ({
   root: {
-    position: 'relative',
-    '&::after': {
-      content: '""',
-      height: 1,
-      background: 'rgba(0, 0, 0, 0.42)',
-      position: 'absolute',
-      bottom: 1,
-      left: 0,
-      right: 0,
-      display: 'block',
-      zIndex: 1,
-    },
+    margin: theme.spacing(1),
+    marginBottom: 0,
+    // position: 'relative',
+    // '&::after': {
+    //   content: '""',
+    //   height: 1,
+    //   background: 'rgba(0, 0, 0, 0.42)',
+    //   position: 'absolute',
+    //   bottom: 1,
+    //   left: theme.spacing(-1),
+    //   right: theme.spacing(-1),
+    //   display: 'block',
+    //   zIndex: 1,
+    // },
   },
   indicator: {
+    transition: '0s all',
     backgroundColor: theme.palette.background.paper,
     borderBottom: '1px solid white',
     borderBottomColor: theme.palette.background.paper,
@@ -39,14 +45,13 @@ const useTabsStyles = makeStyles((theme) => ({
 
 const useTabStyles = makeStyles((theme) => ({
   root: {
-    borderLeft: '1px solid rgba(0, 0, 0, 0.42)',
-    borderRight: '1px solid rgba(0, 0, 0, 0.42)',
-    borderTop: '1px solid rgba(0, 0, 0, 0.42)',
     borderRadius: '4px 4px 0 0',
     '&:hover': {
     },
     '&$selected': {
-      border: 'none',
+      borderLeft: '1px solid rgba(0, 0, 0, 0.42)',
+      borderRight: '1px solid rgba(0, 0, 0, 0.42)',
+      borderTop: '1px solid rgba(0, 0, 0, 0.42)',
       background: theme.palette.background.paper,
     },
     '&:focus': {
@@ -62,26 +67,46 @@ function Attacks({
   const attacks = _get(character, 'equipment.attacks');
   const tabsClasses = useTabsStyles();
   const tabClasses = useTabStyles();
+  const categories = useMemo(() => {
+    const cats = _map(attacks, ({ category }) => category);
+
+    return _uniq(cats);
+  }, [attacks]);
+  const [tab, setTab] = useState(categories[0]);
+  const categoryAttacks = _filter(attacks, { category: tab });
 
   return (
-    <Box
-      bgcolor="rgba(0, 0, 0, 0.09)"
-      border={1}
-      borderColor="rgba(0, 0, 0, 0.42)"
-      borderRadius={4}
-      pt={1}
-    >
-      <Tabs classes={tabsClasses} value={2} variant="scrollable">
-        <Tab classes={tabClasses} label="one" value={1}/>
-        <Tab classes={tabClasses} label="two" value={2}/>
-        <Tab classes={tabClasses} label="three" value={3}/>
-      </Tabs>
-      <Box bgcolor="background.paper" p={2}>
-        {_map(attacks, atk => (
-          <Attack attack={atk} character={character} key={atk.name} />
-        ))}
+    <EditButton>
+      <Box
+        bgcolor="rgba(0, 0, 0, 0.09)"
+        border={1}
+        borderColor="rgba(0, 0, 0, 0.42)"
+        borderRadius={4}
+      >
+        <Tabs
+          classes={tabsClasses}
+          value={tab}
+          variant="scrollable"
+          onChange={(_, val) => setTab(val)}
+        >
+          {_map(categories, (cat) => (
+            <Tab classes={tabClasses} label={cat} value={cat}/>
+          ))}
+        </Tabs>
+        <Box
+          bgcolor="background.paper"
+          borderColor="rgba(0, 0, 0, 0.42)"
+          borderTop={1}
+          borderRadius="0 0 4px 4px"
+          p={2}
+          mt="-3px"
+        >
+          {_map(categoryAttacks, atk => (
+            <Attack attack={atk} character={character} key={atk.name} />
+          ))}
+        </Box>
       </Box>
-    </Box>
+    </EditButton>
   )
 }
 
