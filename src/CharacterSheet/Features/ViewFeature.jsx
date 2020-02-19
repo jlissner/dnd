@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Box,
-  Checkbox,
   Collapse,
   Divider,
   Grid,
@@ -12,18 +11,14 @@ import {
 } from '@material-ui/core';
 import {
   ExpandMore as ExpandMoreIcon,
-  RadioButtonChecked,
-  RadioButtonUnchecked,
 } from '@material-ui/icons';
 import _map from 'lodash/map';
 import Markdown from '../../Form/Markdown';
+import Radio from '../../Form/Radio';
 import If from '../../utils/If';
 import Rotate from '../../utils/Rotate';
 
 const useStyles = makeStyles((theme) => ({
-  checkbox: {
-    padding: 0,
-  },
   expandButton: {
     padding: 0,
   },
@@ -60,11 +55,9 @@ function ViewFeature({
         </Grid>
         {_map(uses, (use, i) => (
           <Grid item key={i}>
-            <Checkbox
-              className={classes.checkbox}
+            <Radio
               checked={use}
-              icon={<RadioButtonUnchecked />}
-              checkedIcon={<RadioButtonChecked />}
+              onClick={(e) => alert(`new value will be${e.target.checked}`)}
             />
           </Grid>
         ))}

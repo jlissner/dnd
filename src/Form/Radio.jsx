@@ -15,7 +15,6 @@ const useStyles = makeStyles(theme => ({
 
 function Radio({
   checked,
-  onClick,
   ...props
 }) {
   const classes = useStyles();

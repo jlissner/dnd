@@ -6,7 +6,7 @@ import {
   Typography,
 } from '@material-ui/core';
 import _map from 'lodash/map';
-import AddButton from '../Form/AddButton';
+import AddButton from '../../Form/AddButton';
 import Feature from './Feature';
 
 function Features({

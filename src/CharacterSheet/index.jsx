@@ -17,18 +17,10 @@ import DeathSaves from './DeathSaves';
 import Features from './Features';
 import Personality from './Personality';
 import Proficiency from './Proficiency';
+import Attacks from './Attacks';
 
 function CharacterSheet({ id }) {
   const [character, updateCharacter] = useCharacter(id);
-
-  function getModifier(attr, mod, proficient) {
-    const { modifier } = _find(character.attributes, { abbv: attr });
-    const proficiencyBonus = proficient ? character.proficiencyBonus : 0;
-    const totalModifier = modifier + mod + proficiencyBonus;
-    const symbol = totalModifier > 0 ? '+' : '';
-
-    return `${symbol}${totalModifier}`;
-  }
 
   if (!character.id) {
     return 'loading...';
@@ -36,6 +28,28 @@ function CharacterSheet({ id }) {
 
   return (
     <Paper component="form">
+      <Box p={2}>
+        TODO:
+        <ul>
+          <li>[x] finish initial form</li>
+          <li>[x] make re-useable markdown editor</li>
+          <li>[x] update death saves</li>
+          <li>[] update attacks</li>
+          <li>[] update equipment</li>
+          <li>[] update currency</li>
+          <li>[] update skills (need notes)</li>
+          <li>[] update languages and other proficiencies</li>
+          <li>[] verify erything has notes</li>
+          <li>[] refactor and update design</li>
+          <li>[] make the 'updateCharacter' function do as intended</li>
+          <li>[] update the route to group the websockets by character</li>
+          <li>[] create the db info needed</li>
+          <li>[] add smash character info into db</li>
+          <li>[] get the graphql is working</li>
+          <li>[] make the update call work</li>
+        </ul>      
+      </Box>
+
       <Box p={2}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
@@ -270,25 +284,10 @@ function CharacterSheet({ id }) {
               </Grid>
 
               <Grid item xs={12}>
-                <Grid container spacing={1}>
-                  still need to show notes and correct damage/attack options
-                  {_map(_get(character, 'equipment.weapons'), wep => (
-                    <React.Fragment key={wep.name}>
-                      <Grid item xs={4}>
-                        <Typography>{wep.quantity > 1 ? `${wep.quantity}x ` : ''}{wep.name}</Typography>
-                      </Grid>
-                      <Grid item xs={2}>
-                        <Typography>{wep.properties.toLowerCase().indexOf('finesse') > -1 ? `${getModifier('str', wep.modifier, wep.proficient)} | ${getModifier('dex', wep.modifier, wep.proficient)}` : getModifier('str', wep.modifier, wep.proficient)}</Typography>
-                      </Grid>
-                      <Grid item xs={4}>
-                        <Typography>{wep.dmg instanceof Array ? wep.dmg.reduce((r, d) => r ? `${r} | ${d}` : d) : wep.dmg}</Typography>
-                      </Grid>
-                      <Grid item xs={2}>
-                        <Typography>{wep.dmgType}</Typography>
-                      </Grid>
-                    </React.Fragment>
-                  ))}
-                </Grid>
+                <Attacks
+                  character={character}
+                  onSave={() => alert('make me work')}
+                />
               </Grid>
 
               <Grid item xs={12}>
@@ -328,14 +327,6 @@ function CharacterSheet({ id }) {
             </Grid>
           </Grid>
         </Grid>
-      </Box>
-      <Box p={2}>
-        TODO:
-          - finish initial form
-          - add notes to everything
-          - make re-useable markdown editor
-          - do death saves
-          - refactor and update design
       </Box>
     </Paper>
   );

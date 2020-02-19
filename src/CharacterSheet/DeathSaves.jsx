@@ -22,9 +22,9 @@ function DeathSaves({
           </Grid>
           <Grid item xs={6}>
             <Grid container spacing={1}>
-              <Grid item><Radio checked={numberOfSuccesses > 0} onClick={() => {}} /></Grid>
-              <Grid item><Radio checked={numberOfSuccesses > 1} onClick={() => {}} /></Grid>
-              <Grid item><Radio checked={numberOfSuccesses > 2} onClick={() => {}} /></Grid>
+              <Grid item><Radio checked={numberOfSuccesses > 0} onClick={(e) => alert(`new value will be${e.target.checked}`)} /></Grid>
+              <Grid item><Radio checked={numberOfSuccesses > 1} onClick={(e) => alert(`new value will be${e.target.checked}`)} /></Grid>
+              <Grid item><Radio checked={numberOfSuccesses > 2} onClick={(e) => alert(`new value will be${e.target.checked}`)} /></Grid>
             </Grid>
           </Grid>
           <Grid item xs={6}>
@@ -32,9 +32,9 @@ function DeathSaves({
           </Grid>
           <Grid item xs={6}>
             <Grid container spacing={1}>
-              <Grid item><Radio checked={numberOfFailures > 0} onClick={() => {}} /></Grid>
-              <Grid item><Radio checked={numberOfFailures > 1} onClick={() => {}} /></Grid>
-              <Grid item><Radio checked={numberOfFailures > 2} onClick={() => {}} /></Grid>
+              <Grid item><Radio checked={numberOfFailures > 0} onClick={(e) => alert(`new value will be${e.target.checked}`)} /></Grid>
+              <Grid item><Radio checked={numberOfFailures > 1} onClick={(e) => alert(`new value will be${e.target.checked}`)} /></Grid>
+              <Grid item><Radio checked={numberOfFailures > 2} onClick={(e) => alert(`new value will be${e.target.checked}`)} /></Grid>
             </Grid>
           </Grid>
         </Grid>
