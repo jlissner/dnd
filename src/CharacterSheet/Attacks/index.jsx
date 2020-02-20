@@ -6,6 +6,7 @@ import {
   Grid,
   Tab,
   Tabs,
+  Typography,
 } from '@material-ui/core';
 import _filter from 'lodash/filter';
 import _find from 'lodash/find';
@@ -21,18 +22,6 @@ const useTabsStyles = makeStyles((theme) => ({
   root: {
     margin: theme.spacing(1),
     marginBottom: 0,
-    // position: 'relative',
-    // '&::after': {
-    //   content: '""',
-    //   height: 1,
-    //   background: 'rgba(0, 0, 0, 0.42)',
-    //   position: 'absolute',
-    //   bottom: 1,
-    //   left: theme.spacing(-1),
-    //   right: theme.spacing(-1),
-    //   display: 'block',
-    //   zIndex: 1,
-    // },
   },
   indicator: {
     transition: '0s all',
@@ -81,6 +70,7 @@ function Attacks({
         bgcolor="rgba(0, 0, 0, 0.09)"
         border={1}
         borderColor="rgba(0, 0, 0, 0.42)"
+        borderColor="rgba(0, 0, 0, 0.42)"
         borderRadius={4}
       >
         <Tabs
@@ -96,14 +86,17 @@ function Attacks({
         <Box
           bgcolor="background.paper"
           borderColor="rgba(0, 0, 0, 0.42)"
+          borderBottom={1}
           borderTop={1}
-          borderRadius="0 0 4px 4px"
           p={2}
           mt="-3px"
         >
           {_map(categoryAttacks, atk => (
             <Attack attack={atk} character={character} key={atk.name} />
           ))}
+        </Box>
+        <Box p={2}>
+          <Typography align="center" variant="h6">Attacks</Typography>
         </Box>
       </Box>
     </EditButton>

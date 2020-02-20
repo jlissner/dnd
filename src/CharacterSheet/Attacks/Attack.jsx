@@ -11,6 +11,7 @@ import _reduce from 'lodash/reduce';
 import _toUpper from 'lodash/toUpper';
 import getNumberPrefix from '../../utils/getNumericPrefix';
 import Radio from '../../Form/Radio';
+import Feature from '../Features/Feature';
 
 const BASE_SAVE_DC = 8;
 
@@ -55,27 +56,39 @@ function Attack({
     name,
     quantity,
     uses,
+    range,
   } = attack;
 
   return (
-    <Box mb={1}>
-      <Box
-      >
-        <Typography variant="caption">{dmgType}</Typography>
-      </Box>
-      <Box component={Typography}>
-        <strong>{quantity > 1 ? `${quantity}x ` : ''}{name}</strong>
-        {' '}
-        {getModifier(attack, character)}
-        {' '}
-        {dmg}
-        {' '}
-      </Box>
-      <Box>
-        {_map(uses, (use, i) => (
-          <Radio key={i} checked={use} />
-        ))}
-      </Box>
+    <Box p={1}>
+      <Feature
+        onSave={() => alert('make me work')}
+        tags={[]}
+        name={`${quantity > 1 ? `${quantity}x ` : ''}${name}`}
+        longDesc={''}
+        shortDesc={`${range ? `range: ${range} | ` : ''}${getModifier(attack, character)} | ${dmg} | ${dmgType}`}
+        uses={uses}
+      />
+      {/* <Box */}
+      {/* > */}
+      {/*   <Typography variant="caption">{dmgType}</Typography> */}
+      {/* </Box> */}
+      {/* <Grid container spacing={2}> */}
+      {/*   <Grid item> */}
+      {/*     <Typography><strong>{quantity > 1 ? `${quantity}x ` : ''}{name}</strong></Typography> */}
+      {/*   </Grid> */}
+      {/*   <Grid item> */}
+      {/*     <Typography>{getModifier(attack, character)}</Typography> */}
+      {/*   </Grid> */}
+      {/*   <Grid item> */}
+      {/*     <Typography>{dmg}</Typography> */}
+      {/*   </Grid> */}
+      {/* </Grid> */}
+      {/* <Box> */}
+      {/*   {_map(uses, (use, i) => ( */}
+      {/*     <Radio key={i} checked={use} /> */}
+      {/*   ))} */}
+      {/* </Box> */}
     </Box>
   )
 }
