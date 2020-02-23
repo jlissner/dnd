@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import _find from 'lodash/find';
-import _reduce from 'lodash/reduce';
 import _toUpper from 'lodash/toUpper';
-import getNumberPrefix from '../../utils/getNumericPrefix';
+import getNumericPrefix from '../../utils/getNumericPrefix';
 import AdvancedTextSection from '../AdvancedTextSection';
 
 const BASE_SAVE_DC = 8;
@@ -16,27 +15,31 @@ function getSave(type, attributes, proficiencyBonus) {
   return `${_toUpper(save)}${dc}`
 }
 
-function getModifier(atk, character) {
+function getHit(atk, character) {
   const { modType, modifier, proficient } = atk;
   const { attributes, proficiencyBonus } = character
+  const attr = _find(attributes, { abbv: modType });
 
-  const something = _reduce(modType, (res, type) => {
-    const attr = _find(attributes, { abbv: type });
+  if (attr) {
+    const bonus = proficient ? proficiencyBonus : 0;
+    const total = modifier + attr.modifier + bonus;
 
-    if (attr) {
-      const bonus = proficient ? proficiencyBonus : 0;
-      const total = modifier + attr.modifier + bonus;
-      const mod = `${getNumberPrefix(total)}${total}`;
+    return `${getNumericPrefix(total)}${total}`;
+  }
 
-      return `${res}, ${mod}`;
-    }
+  return getSave(modType, attributes, proficiencyBonus);
+}
 
-    const save = getSave(type, attributes, proficiencyBonus);
+function getDamage(dmg, modifier) {
+  const prefix = modifier ? `${getNumericPrefix(modifier)}${modifier}` : '';
 
-    return `${res}, ${save}`
-  }, '');
+  return dmg + prefix
+}
 
-  return something.substring(2);
+function getName(name, modifier) {
+  const prefix = modifier ? `${getNumericPrefix(modifier)}${modifier} ` : '';
+
+  return prefix + name;
 }
 
 function ViewAttack({
@@ -47,18 +50,23 @@ function ViewAttack({
     dmg,
     dmgType,
     name,
-    quantity,
     uses,
     range,
+    notes,
+    modifier,
   } = attack;
+  const atkName = getName(name, modifier);
+  const atkRange = range ? `range: ${range} | ` : '';
+  const hit = getHit(attack, character);
+  const damage = getDamage(dmg, modifier);
 
   return (
     <AdvancedTextSection
       onSave={() => alert('make me work')}
       tags={[]}
-      name={`${quantity > 1 ? `${quantity}x ` : ''}${name}`}
-      longDesc={''}
-      shortDesc={`${range ? `range: ${range} | ` : ''}hit: ${getModifier(attack, character)} | dmg: ${dmg} | type: ${dmgType}`}
+      name={atkName}
+      longDesc={notes}
+      shortDesc={`${atkRange}hit: ${hit} | dmg: ${damage} | type: ${dmgType}`}
       uses={uses}
     />
   )
