@@ -239,7 +239,7 @@ module.exports = {
         range: '',
         properties: 'Versatile (ld10)',
         modifier: 1,
-        notes: '',
+        notes: 'Smash\'s most prized posesstion',
         quantity: 1,
         proficient: true,
         modType: ['str'],

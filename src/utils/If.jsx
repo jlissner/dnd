@@ -25,13 +25,14 @@ function If({
 }
 
 If.propTypes = {
-  children: PropTypes.node.isRequired,
+  children: PropTypes.node,
   conditions: PropTypes.arrayOf(PropTypes.any).isRequired,
   Component: PropTypes.oneOfType([PropTypes.node, PropTypes.shape()]),
   timeout: PropTypes.shape(),
 };
 
 If.defaultProps = {
+  children: null,
   Component: Collapse,
   timeout: {
     enter: theme.transitions.duration.standard,

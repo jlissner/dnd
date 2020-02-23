@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   Box,
@@ -16,15 +16,20 @@ import {
 } from '@material-ui/icons';
 import _isEqual from 'lodash/isEqual';
 import If from '../utils/If';
+import DeleteButton from './DeleteButton';
 
-function MarkdownInput({
+function EditContainer({
   onCancel,
+  onDelete,
   onSave,
+  Preview,
+  Form,
   value,
 }) {
   const [newVal, setNewVal] = useState(value);
   const [previewing, setPreviewing] = useState(false);
   const [saving, setSaving] = useState(false);
+  const Content = useMemo(() => (previewing ? Preview : Form), [Form, Preview, previewing]);
   const saveDisabled = _isEqual(newVal, value);
   const overlay = saving
     ? <Box
@@ -51,7 +56,7 @@ function MarkdownInput({
     onSave(newVal);
   }
 
-  const editContainer = ({ form, preview }) => (
+  return (
     <Box border={1} borderColor="grey.500" borderRadius={4} position="relative">
       {overlay}
       <Box
@@ -68,18 +73,19 @@ function MarkdownInput({
           <Button disabled={previewing} onClick={() => setPreviewing(true)}>
             <VisibilityIcon />
           </Button>
+          <Button onClick={() => alert('Learn how to write markdown here: https://www.google.com/search?client=firefox-b-1-d&q=how+to+write+markdown')}>
+            <InfoIcon />
+          </Button>
         </ButtonGroup>
         
-        <If conditions={[Boolean(onCancel)]}>
-          <ButtonGroup variant="text">
-            <Button onClick={onCancel}>
-              <CancelIcon />
-            </Button>
-          </ButtonGroup>
-        </If>
+        <ButtonGroup variant="text">
+          <Button onClick={onCancel}>
+            <CancelIcon />
+          </Button>
+        </ButtonGroup>
       </Box>
-      
-      {previewing ? preview : form}
+
+      <Content setNewVal={setNewVal} newVal={newVal} />
 
       <Box
         bgcolor="grey.300"
@@ -98,28 +104,24 @@ function MarkdownInput({
         </ButtonGroup>
 
         <ButtonGroup variant="text">
-          <Button onClick={() => alert('Learn how to write markdown here: https://www.google.com/search?client=firefox-b-1-d&q=how+to+write+markdown')}>
-            <InfoIcon />
-          </Button>
+          <If conditions={[onDelete]} component={DeleteButton} onClick={onDelete} />
         </ButtonGroup>
       </Box>
     </Box>
   );
-
-  return [editContainer, newVal, setNewVal];
 }
 
-MarkdownInput.propTypes = {
-  form: PropTypes.node.isRequired,
-  preview: PropTypes.node.isRequired,
-  onCancel: PropTypes.func,
-  onReset: PropTypes.func,
+EditContainer.propTypes = {
+  onCancel: PropTypes.func.isRequired,
+  onDelete: PropTypes.func,
   onSave: PropTypes.func.isRequired,
-  value: PropTypes.string.isRequired,
+  Preview: PropTypes.oneOfType([PropTypes.elementType, PropTypes.node]).isRequired,
+  Form: PropTypes.oneOfType([PropTypes.elementType, PropTypes.node]).isRequired,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.shape()]).isRequired,
 };
 
-MarkdownInput.defaultProps = {
-  onCancel: null,
+EditContainer.defaultProps = {
+  onDelete: null,
 };
 
-export default MarkdownInput
+export default EditContainer;

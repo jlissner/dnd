@@ -5,8 +5,8 @@ import {
   Box,
   TextField,
 } from '@material-ui/core';
+import EditContainer from './EditContainer';
 import Markdown from './Markdown';
-import useEditContainer from '../hooks/useEditContainer';
 
 const useStyles = makeStyles(theme => ({
   textArea: {
@@ -21,28 +21,31 @@ function MarkdownInput({
   value,
 }) {
   const classes = useStyles();
-  const [editContainer, newVal, setNewVal] = useEditContainer({
-    onCancel: onCancel,
-    onSave: onSave,
-    value,
-  });
-  const renderValue = newVal || 'This is a link to [google](https://google.com)';
 
-  return editContainer({
-    form: (
-      <Box pb={1} key="form">
-        <TextField
-          className={classes.textArea}
-          fullWidth
-          multiline
-          onChange={e => setNewVal(e.target.value)}
-          value={renderValue}
-          variant="outlined"
-        />
-      </Box>
-    ),
-    preview: <Box p={2} key="preview"><Markdown text={renderValue} /></Box>,
-  });
+  return (
+    <EditContainer
+      Form={({ newVal, setNewVal }) => (
+        <Box pb={1} key="form">
+          <TextField
+            className={classes.textArea}
+            fullWidth
+            multiline
+            onChange={e => setNewVal(e.target.value)}
+            value={newVal || 'This is a link to [google](https://google.com)'}
+            variant="outlined"
+          />
+        </Box>
+      )}
+      Preview={({ newVal }) => (
+        <Box p={2} key="preview">
+          <Markdown text={newVal || 'This is a link to [google](https://google.com)'} />
+        </Box>
+      )}
+      onCancel={onCancel}
+      onSave={onSave}
+      value={value}
+    />
+  );
 }
 
 MarkdownInput.propTypes = {

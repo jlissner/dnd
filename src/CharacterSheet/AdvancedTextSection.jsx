@@ -13,10 +13,10 @@ import {
   ExpandMore as ExpandMoreIcon,
 } from '@material-ui/icons';
 import _map from 'lodash/map';
-import Markdown from '../../Form/Markdown';
-import Radio from '../../Form/Radio';
-import If from '../../utils/If';
-import Rotate from '../../utils/Rotate';
+import Markdown from '../Form/Markdown';
+import Radio from '../Form/Radio';
+import If from '../utils/If';
+import Rotate from '../utils/Rotate';
 
 const useStyles = makeStyles((theme) => ({
   expandButton: {
@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function ViewFeature({
+function AdvancedTextSection({
   tags,
   name,
   longDesc,
@@ -62,7 +62,12 @@ function ViewFeature({
           </Grid>
         ))}
         
-        <Grid item className={classes.expandWrapper}>
+        <Grid
+          className={classes.expandWrapper}
+          component={If}
+          conditions={[longDesc, tags.length]}
+          item
+        >
           <Rotate deg={expanded ? 180 : 0}>
             <IconButton onClick={() => setExpanded(!expanded)} className={classes.expandButton}>
               <ExpandMoreIcon />
@@ -70,6 +75,7 @@ function ViewFeature({
           </Rotate>
         </Grid>
       </Grid>
+
       <If conditions={[shortDesc, expanded]}>
         <Box mx={-1} my={1} >
           <Divider />
@@ -88,7 +94,7 @@ function ViewFeature({
   )
 }
 
-ViewFeature.propTypes = {
+AdvancedTextSection.propTypes = {
   tags: PropTypes.arrayOf(PropTypes.string),
   name: PropTypes.string.isRequired,
   longDesc: PropTypes.string,
@@ -96,7 +102,7 @@ ViewFeature.propTypes = {
   uses: PropTypes.arrayOf(PropTypes.bool),
 };
 
-ViewFeature.defaultProps = {
+AdvancedTextSection.defaultProps = {
   name: '',
   longDesc: '',
   shortDesc: '',
@@ -104,4 +110,4 @@ ViewFeature.defaultProps = {
   uses: [],
 };
 
-export default ViewFeature;
+export default AdvancedTextSection;

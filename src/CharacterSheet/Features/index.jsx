@@ -23,6 +23,7 @@ function Features({
           <Grid item xs={12} key={feature.name}>
             <Feature
               onSave={() => console.log('make me work')}
+              onDelete={() => console.log('make me work')}
               {...feature}
             />
           </Grid>

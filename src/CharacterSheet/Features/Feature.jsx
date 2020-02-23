@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import EditButton from '../../Form/EditButton';
 import EditFeature from './EditFeature';
-import ViewFeature from './ViewFeature';
+import AdvancedTextSection from '../AdvancedTextSection';
 
 function Feature({
+  onDelete,
   onSave,
   tags,
   name,
@@ -12,12 +13,13 @@ function Feature({
   shortDesc,
   uses,
 }) {
-  const [editMode, setEditMode] = useState(!Boolean(name));
+  const [editMode, setEditMode] = useState(!name);
 
   if (editMode) {
     return (
       <EditFeature
-        setEditMode={setEditMode}
+        onCancel={() => setEditMode(false)}
+        onDelete={onDelete}
         onSave={onSave}
         tags={tags}
         name={name}
@@ -29,8 +31,8 @@ function Feature({
   }
 
   return (
-    <EditButton onClick={() => setEditMode(true) }>
-      <ViewFeature
+    <EditButton onClick={() => setEditMode(true)}>
+      <AdvancedTextSection
         tags={tags}
         name={name}
         longDesc={longDesc}
@@ -42,6 +44,7 @@ function Feature({
 }
 
 Feature.propTypes = {
+  onDelete: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
   tags: PropTypes.arrayOf(PropTypes.string),
   name: PropTypes.string.isRequired,
