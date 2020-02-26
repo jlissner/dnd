@@ -12,7 +12,6 @@ import {
   Add as AddIcon,
 } from '@material-ui/icons';
 import _filter from 'lodash/filter';
-import _get from 'lodash/get';
 import _map from 'lodash/map';
 import _uniq from 'lodash/uniq';
 import Attack from './Attack';
@@ -50,9 +49,10 @@ const useTabStyles = makeStyles((theme) => ({
 
 function Attacks({
   character,
+  onDelete,
   onSave,
 }) {
-  const attacks = _get(character, 'equipment.attacks');
+  const { attacks } = character;
   const tabsClasses = useTabsStyles();
   const tabClasses = useTabStyles();
   const categories = useMemo(() => {
@@ -95,7 +95,7 @@ function Attacks({
               <Attack
                 attack={attack}
                 character={character}
-                onDelete={() => console.log('make me work')}
+                onDelete={onDelete}
                 onSave={onSave}
               />
             </Grid>
@@ -111,6 +111,7 @@ function Attacks({
 
 Attacks.propTypes = {
   character: PropTypes.shape(),
+  onDelete: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
 };
 

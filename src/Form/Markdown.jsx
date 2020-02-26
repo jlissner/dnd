@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ReactMarkdown from 'react-markdown';
 import {
-  Button,
+  Link,
   Typography,
 } from '@material-ui/core';
 
@@ -16,7 +16,7 @@ function Markdown({
       renderers={{
         heading: ({ children, level }) => <Typography variant={`h${level}`}>{children}</Typography>,
         paragraph: ({ children }) => <Typography>{children}</Typography>,
-        link: ({ children, href }) => <Button color="primary" href={href} size="small">{children}</Button>,
+        link: ({ children, href }) => <Link color="primary" href={href} size="small">{children}</Link>,
       }}
       source={text || defaultText}
       {...props}

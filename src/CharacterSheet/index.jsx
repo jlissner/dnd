@@ -12,12 +12,13 @@ import _get from 'lodash/get';
 import _map from 'lodash/map';
 import useCharacter from '../hooks/useCharacter';
 import HorizontalInput from '../Form/HorizontalInput';
+import Attacks from './Attacks';
 import Attribute from './Attribute';
+import Equipment from './Equipment';
 import DeathSaves from './DeathSaves';
 import Features from './Features';
 import Personality from './Personality';
 import Proficiency from './Proficiency';
-import Attacks from './Attacks';
 
 function CharacterSheet({ id }) {
   const [character, updateCharacter] = useCharacter(id);
@@ -34,13 +35,13 @@ function CharacterSheet({ id }) {
           <li>[x] finish initial form</li>
           <li>[x] make re-useable markdown editor</li>
           <li>[x] update death saves</li>
-          <li>[] update attacks</li>
-          <li>[] update equipment</li>
+          <li>[x] update attacks</li>
           <li>[] update currency</li>
+          <li>[] update equipment</li>
           <li>[] update skills (need notes)</li>
           <li>[] update languages and other proficiencies</li>
-          <li>[] verify erything has notes</li>
-          <li>[] refactor and update design</li>
+          <li>[] verify everything has notes</li>
+          <li>[] create markdown helper</li>
           <li>[] make the 'updateCharacter' function do as intended</li>
           <li>[] update the route to group the websockets by character</li>
           <li>[] create the db info needed</li>
@@ -136,14 +137,17 @@ function CharacterSheet({ id }) {
                     <HorizontalInput
                       label="Inspiration"
                       onChange={() => {}}
-                      value={character.inspiration} />
+                      value={character.inspiration}
+                    />
                   </Grid>
 
                   <Grid item xs={12}>
                     <HorizontalInput
                       label="Proficiency Bonus"
                       onChange={() => {}}
-                      value={character.proficiencyBonus} />
+                      value={character.proficiencyBonus}
+                      type="number"
+                    />
                   </Grid>
 
                   <Grid item xs={12}>
@@ -286,31 +290,17 @@ function CharacterSheet({ id }) {
               <Grid item xs={12}>
                 <Attacks
                   character={character}
+                  onDelete={() => alert('make me work')}
                   onSave={() => alert('make me work')}
                 />
               </Grid>
 
               <Grid item xs={12}>
-                <Grid container spacing={1}>
-                  <Grid item xs={2}>
-                    <Grid container spacing={4}>
-                      {_map(character.money, (val, key) => (
-                        <Grid item key={key} xs={12}>
-                          <Typography>{key}: {val}</Typography>
-                        </Grid>
-                      ))}
-                    </Grid>
-                  </Grid>
-                  <Grid item xs={10}>
-                    <Grid container spacing={1}>
-                      {_map(_get(character, 'equipment.other'), ({ name, properties }) => (
-                        <Grid item key={name} xs={12}>
-                          <Typography><strong>{name}{properties ? ':' : ''}</strong> {properties}</Typography>
-                        </Grid>
-                      ))}
-                    </Grid>
-                  </Grid>
-                </Grid>
+                <Equipment
+                  character={character}
+                  onDelete={() => alert('make me work')}
+                  onSave={() => alert('make me work')}
+                />
               </Grid>
             </Grid>
           </Grid>
@@ -322,7 +312,11 @@ function CharacterSheet({ id }) {
               </Grid>
               
               <Grid item xs={12}>
-                <Features features={character.featuresAndTraits} />
+                <Features
+                  features={character.featuresAndTraits}
+                  onDelete={() => alert('make me work')}
+                  onSave={() => alert('make me work')}
+                />
               </Grid>
             </Grid>
           </Grid>

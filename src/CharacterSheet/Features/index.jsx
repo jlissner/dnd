@@ -7,10 +7,12 @@ import {
 } from '@material-ui/core';
 import _map from 'lodash/map';
 import AddButton from '../../Form/AddButton';
-import Feature from './Feature';
+import AdvancedTextSection from '../AdvancedTextSection';
 
 function Features({
   features,
+  onSave,
+  onDelete,
 }) {
   return (
     <Box
@@ -21,9 +23,9 @@ function Features({
       <Grid container spacing={2}>
         {_map(features, (feature) => (
           <Grid item xs={12} key={feature.name}>
-            <Feature
-              onSave={() => console.log('make me work')}
-              onDelete={() => console.log('make me work')}
+            <AdvancedTextSection
+              onDelete={onDelete}
+              onSave={onSave}
               {...feature}
             />
           </Grid>

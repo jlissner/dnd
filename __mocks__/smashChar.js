@@ -200,125 +200,131 @@ module.exports = {
     gp: 331,
     pp: 0,
   },
-  equipment: {
-    attacks: [
-      {
-        category: 'spells',
-        name: 'Fireball',
-        dmg: '8d6',
-        dmgType: 'Fire',
-        uses: [true, false],
-        range: '120ft',
-        notes: 'All creatures in a 20ft radius need to make a DEX save',
-        modifier: 0,
-        proficient: false,
-        modType: 'int:dex', // int is the attckers modivier, dex is what the defender has to use to beat it
-      },
-      {
-        category: 'spells',
-        name: 'Firebolt',
-        dmg: '2d10',
-        dmgType: 'Fire',
-        uses: [],
-        range: '120ft',
-        notes: 'Things hit may catch fire',
-        modifier: 0,
-        proficient: true  ,
-        modType: 'int',
-      },
-      {
-        category: 'melee',
-        name: 'Warhammer',
-        dmg: '1d10',
-        dmgType: 'Bludgening',
-        uses: [],
-        range: '',
-        notes: 'Smash\'s most prized posesstion\n\nVersatile (ld10)',
-        modifier: 1,
-        proficient: true,
-        modType: 'str',
-      }, {
-        category: 'ranged',
-        name: 'Javalin of Lightning',
-        dmg: '1d6+1',
-        dmgType: 'Piercing',
-        uses: [false],
-        range: '30/120',
-        modifier: 1,
-        notes: 'Upgradeable.\n\nOnce per day can activate to do an additional 4d6 lightning damage, DC13 dex save',
-        proficient: true,
-        modType: 'str',
-      },
-      {
-        category: 'melee',
-        name: 'Short Sword',
-        dmg: '1d6',
-        dmgType: 'Piercing',
-        uses: [],
-        notes: 'Finesse, light',
-        modifier: 0,
-        proficient: true,
-        modType: 'str',
-      },
-      {
-        category: 'melee',
-        name: 'Greataxe',
-        dmg: '1d12',
-        dmgType: 'Slashing',
-        uses: [],
-        notes: 'Heavy, two-handed',
-        modifier: 0,
-        proficient: true,
-        modType: 'str',
-      },
-      {
-        category: 'melee',
-        name: 'Battleaxe',
-        dmg: '1d8, 1d10',
-        dmgType: 'Slashing',
-        uses: [],
-        notes: 'Versatile (1d10)',
-        modifier: 0,
-        proficient: true,
-        modType: 'str',
-      },
-    ], // { name, modifier, dmg, stat, range, weight, notes }
-    other: [
-      {
-        name: 'Amulate of the Drunkard',
-        properties: 'Requires attunement.\n\nWhile wearing this amulate the user recovers 1d8 worth of hp when they drink alcohol.\n\nRoll a d20 each time you drink, once the total rolled is greater than or equal to 15, you are drunk.'
-      }, {
-        name: 'Amulate of Divine Fury',
-        properties: 'Requires attunement.\n\nA lost symbol of a dead god is engraved on this simple silver amulate.\n\nWhile attuned, the users weapon deals 1d4 radiant damage in addition to it\'s standard damage.\n\nShadow or demonic only.',
-      }, {
-        name: 'Braces of Defense',
-        properties: 'Requires attunement.\n\nSimple leather bracers with small steel studs on them.\n\nWhile wearing these bracers you gain *+2* to AC if you are wearing no other armor or shield.',
-      }, {
-        name: 'Hat of Disguise',
-        properties: 'Requires attunement.\n\nUser can cast disguise self at will.'
-      }, {
-        name: 'Bag of Holding',
-        properties: 'A bag that has a larger interior space than it\'s outer dimensions.\n\nThe bag weighs 15lbs regardless of it\'s contents.\n\nThe bag can hold up to 500lbs of items.\n\nItems in the bag cannot be larget than 64 cubic feet.'
-      }, {
-        name: 'Salted Meat',
-      }, {
-        name: 'Immoveable Rod',
-      }, {
-        name: 'Wand',
-      }, {
-        name: 'Horn',
-      }, {
-        name: 'Healing Potion',
-        properties: 'A character who drinks the magical red fiuid in this vial regains 2d4 + 2 hit points.\n\nDrinking or administering a potion takes an action.'
-      }, {
-        name: '5x Dragon Fruit from Heart Tree',
-      },
-      {
-        name: 'Marybell',
-        properties: 'My horse, has a cart',
-      },
-    ],
-  },
+  attacks: [
+    {
+      category: 'spells',
+      name: 'Fireball',
+      dmg: '8d6',
+      dmgType: 'Fire',
+      uses: [true, false],
+      range: '120ft',
+      notes: 'All creatures in a 20ft radius need to make a DEX save',
+      modifier: 0,
+      proficient: false,
+      modType: 'int:dex', // int is the attckers modivier, dex is what the defender has to use to beat it
+    },
+    {
+      category: 'spells',
+      name: 'Firebolt',
+      dmg: '2d10',
+      dmgType: 'Fire',
+      uses: [],
+      range: '120ft',
+      notes: 'Things hit may catch fire',
+      modifier: 0,
+      proficient: true  ,
+      modType: 'int',
+    },
+    {
+      category: 'melee',
+      name: 'Warhammer',
+      dmg: '1d10',
+      dmgType: 'Bludgening',
+      uses: [],
+      range: '',
+      notes: 'Smash\'s most prized posesstion\n\nVersatile (ld10)',
+      modifier: 1,
+      proficient: true,
+      modType: 'str',
+    }, {
+      category: 'ranged',
+      name: 'Javalin of Lightning',
+      dmg: '1d6+1',
+      dmgType: 'Piercing',
+      uses: [false],
+      range: '30/120',
+      modifier: 1,
+      notes: 'Upgradeable.\n\nOnce per day can activate to do an additional 4d6 lightning damage, DC13 dex save',
+      proficient: true,
+      modType: 'str',
+    },
+    {
+      category: 'melee',
+      name: 'Short Sword',
+      dmg: '1d6',
+      dmgType: 'Piercing',
+      uses: [],
+      notes: 'Finesse, light',
+      modifier: 0,
+      proficient: true,
+      modType: 'str',
+    },
+    {
+      category: 'melee',
+      name: 'Greataxe',
+      dmg: '1d12',
+      dmgType: 'Slashing',
+      uses: [],
+      notes: 'Heavy, two-handed',
+      modifier: 0,
+      proficient: true,
+      modType: 'str',
+    },
+    {
+      category: 'melee',
+      name: 'Battleaxe',
+      dmg: '1d8, 1d10',
+      dmgType: 'Slashing',
+      uses: [],
+      notes: 'Versatile (1d10)',
+      modifier: 0,
+      proficient: true,
+      modType: 'str',
+    },
+  ],
+  equipment: [
+    {
+      name: 'Amulate of the Drunkard',
+      longDesc: 'While wearing this amulate the user recovers 1d8 worth of hp when they drink alcohol.\n\nRoll a d20 each time you drink, once the total rolled is greater than or equal to 15, you are drunk.',
+      tags: ['attunement'],
+    }, {
+      name: 'Amulate of Divine Fury',
+      shortDesc: '+1d4 dmg vs shadow/demonic',
+      longDesc: 'A lost symbol of a dead god is engraved on this simple silver amulate.\n\nWhile attuned, the users weapon deals 1d4 radiant damage in addition to it\'s standard damage.\n\nShadow or demonic only.',
+      tags: ['attunement'],
+    }, {
+      name: 'Braces of Defense',
+      shortDesc: '+2 AC when not wearing armor.',
+      longDesc: 'Simple leather bracers with small steel studs on them.\n\nWhile wearing these bracers you gain *+2* to AC if you are wearing no other armor or shield.',
+      tags: ['attunement', 'armor'],
+    }, {
+      name: 'Hat of Disguise',
+      shortDesc: 'User can cast disguise self at will.',
+      tags: ['attunement'],
+    }, {
+      name: 'Bag of Holding',
+      longDesc: 'A bag that has a larger interior space than it\'s outer dimensions.\n\nThe bag weighs 15lbs regardless of it\'s contents.\n\nThe bag can hold up to 500lbs of items.\n\nItems in the bag cannot be larget than 64 cubic feet.',
+    }, {
+      name: 'Salted Meat',
+    }, {
+      name: 'Immoveable Rod',
+    }, {
+      name: 'Wand',
+    }, {
+      name: 'Horn',
+    }, {
+      name: 'Healing Potion',
+      shortDesc: '2d4+2',
+      longDesc: 'A character who drinks the magical red fiuid in this vial regains 2d4 + 2 hit points.\n\nDrinking or administering a potion takes an action.',
+    }, {
+      name: '5x Dragon Fruit from Heart Tree',
+    },
+    {
+      name: 'Marybell',
+      longDesc: 'My horse, has a cart',
+      tags: ['mount'],
+    },
+  ],
   status: [],
   featuresAndTraits: [
     {

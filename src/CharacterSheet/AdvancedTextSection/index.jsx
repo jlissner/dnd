@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import EditButton from '../../Form/EditButton';
-import EditFeature from './EditFeature';
-import AdvancedTextSection from '../AdvancedTextSection';
+import EditAdvancedTextSection from './EditAdvancedTextSection';
+import ViewAdvancedTextSection from './ViewAdvancedTextSection';
 
-function Feature({
+function AdvancedTextSection({
   onDelete,
   onSave,
   tags,
@@ -17,7 +17,7 @@ function Feature({
 
   if (editMode) {
     return (
-      <EditFeature
+      <EditAdvancedTextSection
         onCancel={() => setEditMode(false)}
         onDelete={onDelete}
         onSave={onSave}
@@ -32,7 +32,7 @@ function Feature({
 
   return (
     <EditButton onClick={() => setEditMode(true)}>
-      <AdvancedTextSection
+      <ViewAdvancedTextSection
         tags={tags}
         name={name}
         longDesc={longDesc}
@@ -43,7 +43,7 @@ function Feature({
   );
 }
 
-Feature.propTypes = {
+AdvancedTextSection.propTypes = {
   onDelete: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
   tags: PropTypes.arrayOf(PropTypes.string),
@@ -53,7 +53,7 @@ Feature.propTypes = {
   uses: PropTypes.arrayOf(PropTypes.bool),
 };
 
-Feature.defaultProps = {
+AdvancedTextSection.defaultProps = {
   name: '',
   longDesc: '',
   shortDesc: '',
@@ -61,4 +61,4 @@ Feature.defaultProps = {
   uses: [],
 };
 
-export default Feature;
+export default AdvancedTextSection;

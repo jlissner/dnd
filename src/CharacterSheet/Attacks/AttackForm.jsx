@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {
   Box,
+  Checkbox,
+  FormControlLabel,
   Grid,
   TextField,
 } from '@material-ui/core';
@@ -100,6 +102,17 @@ function AttackForm({
             onChange={(e) => updateVal({ modifier: _toNumber(e.target.value) })}
             value={modifier}
             variant="filled"
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={proficient}
+                onChange={() => updateVal({ proficient: !proficient })}
+              />
+            }
+            label="Proficient"
           />
         </Grid>
 

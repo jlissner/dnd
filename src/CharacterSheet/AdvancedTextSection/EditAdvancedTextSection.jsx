@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import EditContainer from '../../Form/EditContainer';
-import FeatureForm from './FeatureForm';
-import AdvancedTextSection from '../AdvancedTextSection';
+import AdvancedTextSectionForm from './AdvancedTextSectionForm';
+import ViewAdvancedTextSection from './ViewAdvancedTextSection';
 
-function EditFeature({
+function EditAdvancedTextSection({
   onCancel,
   onDelete,
   onSave,
@@ -24,8 +24,8 @@ function EditFeature({
 
   return (
     <EditContainer
-      Form={FeatureForm}
-      Preview={({ newVal }) => <AdvancedTextSection {...newVal} />}
+      Form={AdvancedTextSectionForm}
+      Preview={({ newVal }) => <ViewAdvancedTextSection {...newVal} />}
       onCancel={onCancel}
       onDelete={onDelete}
       onSave={onSave}
@@ -34,7 +34,7 @@ function EditFeature({
   );
 }
 
-EditFeature.propTypes = {
+EditAdvancedTextSection.propTypes = {
   onCancel: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
@@ -45,7 +45,7 @@ EditFeature.propTypes = {
   uses: PropTypes.arrayOf(PropTypes.bool),
 };
 
-EditFeature.defaultProps = {
+EditAdvancedTextSection.defaultProps = {
   name: '',
   longDesc: '',
   shortDesc: '',
@@ -53,4 +53,4 @@ EditFeature.defaultProps = {
   uses: [],
 };
 
-export default EditFeature;
+export default EditAdvancedTextSection;

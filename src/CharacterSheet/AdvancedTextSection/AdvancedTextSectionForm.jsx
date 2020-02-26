@@ -10,7 +10,7 @@ function updateTags(tagsText) {
   return tagsText.replace(', ', ',').split(',');
 }
 
-function FeatureForm({
+function AdvancedTextSectionForm({
   newVal,
   setNewVal,
 }) {
@@ -78,9 +78,9 @@ function FeatureForm({
   )
 }
 
-FeatureForm.propTypes = {
+AdvancedTextSectionForm.propTypes = {
   newVal: PropTypes.shape().isRequired,
   setNewVal: PropTypes.func.isRequired,
 };
 
-export default FeatureForm;
+export default AdvancedTextSectionForm;
