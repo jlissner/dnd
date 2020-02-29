@@ -6,9 +6,10 @@ import {
   Box,
   Button,
 } from '@material-ui/core';
-import getNumericPrefix from '../utils/getNumericPrefix';
-import useNotes from '../hooks/useNotes';
-import NumericInput from '../Form/NumericInput';
+import getNumericPrefix from '../../utils/getNumericPrefix';
+import getTotalModifier from '../../utils/getTotalModifier';
+import useNotes from '../../hooks/useNotes';
+import NumericInput from '../../Form/NumericInput';
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -21,11 +22,17 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Attribute({
-  name,
-  modifier,
-  notes,
-  value,
+  attribute,
+  character,
 }) {
+  const {
+    abbv,
+    bonusModifier,
+    name,
+    notes,
+    value,
+  } = attribute;
+  const modifier = getTotalModifier(character, abbv, false, bonusModifier);
   const [ref, openNotes, notesComponent] = useNotes(notes);
   const classes = useStyles();
   const renderedName = notes ? `${name}*` : name;
@@ -77,10 +84,8 @@ function Attribute({
 }
 
 Attribute.propTypes = {
-  name: PropTypes.string.isRequired,
-  modifier: PropTypes.number.isRequired,
-  notes: PropTypes.string.isRequired,
-  value: PropTypes.number.isRequired,
+  attribute: PropTypes.shape().isRequired,
+  character: PropTypes.shape().isRequired,
 };
 
 export default Attribute;

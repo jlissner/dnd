@@ -1,33 +1,30 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import _find from 'lodash/find';
 import _toUpper from 'lodash/toUpper';
 import getNumericPrefix from '../../utils/getNumericPrefix';
+import getTotalModifier from '../../utils/getTotalModifier';
 import ViewAdvancedTextSection from '../AdvancedTextSection/ViewAdvancedTextSection';
 
 const BASE_SAVE_DC = 8;
 
-function getSave(type, attributes, proficiencyBonus) {
+function getSave(character, type) {
   const  [attr, save] = type.split(':');
-  const { modifier } = _find(attributes, { abbv: attr });
-  const dc = BASE_SAVE_DC + proficiencyBonus + modifier;
+  const dc = getTotalModifier(character, attr, true, BASE_SAVE_DC);
 
   return `${_toUpper(save)}${dc}`
 }
 
 function getHit(atk, character) {
-  const { modType, modifier, proficient } = atk;
-  const { attributes, proficiencyBonus } = character
-  const attr = _find(attributes, { abbv: modType });
+  const { modType, bonusModifier, proficient } = atk;
+  const isSave = modType.indexOf(':') > -1;
 
-  if (attr) {
-    const bonus = proficient ? proficiencyBonus : 0;
-    const total = modifier + attr.modifier + bonus;
+  if (!isSave) {
+    const modifier = getTotalModifier(character, modType, proficient, bonusModifier);
 
-    return `${getNumericPrefix(total)}${total}`;
+    return `${getNumericPrefix(modifier)}${modifier}`;
   }
 
-  return getSave(modType, attributes, proficiencyBonus);
+  return getSave(character, modType);
 }
 
 function getDamage(dmg, modifier) {

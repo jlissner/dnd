@@ -7,18 +7,17 @@ import {
   TextField,
   Typography,
 } from '@material-ui/core';
-import _find from 'lodash/find';
 import _get from 'lodash/get';
 import _map from 'lodash/map';
 import useCharacter from '../hooks/useCharacter';
 import HorizontalInput from '../Form/HorizontalInput';
 import Attacks from './Attacks';
-import Attribute from './Attribute';
+import Attributes from './Attributes';
 import Equipment from './Equipment';
 import DeathSaves from './DeathSaves';
 import Features from './Features';
 import Personality from './Personality';
-import Proficiency from './Proficiency';
+import Proficiencies from './Proficiencies';
 
 function CharacterSheet({ id }) {
   const [character, updateCharacter] = useCharacter(id);
@@ -26,6 +25,8 @@ function CharacterSheet({ id }) {
   if (!character.id) {
     return 'loading...';
   }
+
+  console.log({ character })
 
   return (
     <Paper component="form">
@@ -48,7 +49,7 @@ function CharacterSheet({ id }) {
           <li>[] add smash character info into db</li>
           <li>[] get the graphql is working</li>
           <li>[] make the update call work</li>
-        </ul>      
+        </ul>
       </Box>
 
       <Box p={2}>
@@ -122,13 +123,7 @@ function CharacterSheet({ id }) {
           <Grid item xs={12} sm={6} md={4}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={5}>
-                <Grid container spacing={3}>
-                  {_map(character.attributes, (attr, i) => (
-                    <Grid item xs={12} key={attr.name}>
-                      <Attribute {...attr} />
-                    </Grid>
-                  ))}
-                </Grid>
+                <Attributes character={character} />
               </Grid>
 
               <Grid item xs={12} sm={7}>
@@ -153,12 +148,11 @@ function CharacterSheet({ id }) {
                   <Grid item xs={12}>
                     <Box border={1} borderColor="rgba(0, 0, 0, 0.42)" borderRadius={4}>
                       <Box p={1.5}>
-                        {_map(character.attributes, attr => (
-                          <Proficiency key={attr.name} {...attr} proficiencyBonus={character.proficiencyBonus} />
-                        ))}
+                        {console.log({ character })}
+                        <Proficiencies character={character} proficiencies={character.savingThrows} />
                       </Box>
                       <Box
-                        p={1} 
+                        p={1}
                         bgcolor="rgba(0, 0, 0, 0.09)"
                         borderColor="rgba(0, 0, 0, 0.42)"
                         borderRadius="0 0 4px 4px"
@@ -172,22 +166,10 @@ function CharacterSheet({ id }) {
                   <Grid item xs={12}>
                     <Box border={1} borderColor="rgba(0, 0, 0, 0.42)" borderRadius={4}>
                       <Box p={1.5}>
-                        {_map(character.skills, skill => {
-                          const { modifier } = _find(character.attributes, ({ abbv }) => abbv === skill.type);
-
-                          return (
-                            <Proficiency
-                              key={skill.name}
-                              modifier={modifier}
-                              name={skill.name}
-                              proficient={skill.proficient}
-                              proficiencyBonus={character.proficiencyBonus}
-                            />
-                          );
-                        })}
+                        <Proficiencies character={character} proficiencies={character.skills} />
                       </Box>
                       <Box
-                        p={1} 
+                        p={1}
                         bgcolor="rgba(0, 0, 0, 0.09)"
                         borderColor="rgba(0, 0, 0, 0.42)"
                         borderRadius="0 0 4px 4px"
@@ -326,7 +308,7 @@ function CharacterSheet({ id }) {
               <Grid item xs={12}>
                 <Personality personality={character.personality}/>
               </Grid>
-              
+
               <Grid item xs={12}>
                 <Features
                   features={character.featuresAndTraits}

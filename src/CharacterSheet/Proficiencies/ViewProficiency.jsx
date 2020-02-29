@@ -14,6 +14,7 @@ import {
 } from '@material-ui/icons';
 import getNumericPrefix from '../../utils/getNumericPrefix';
 import useNotes from '../../hooks/useNotes';
+import getTotalModifier from '../../utils/getTotalModifier';
 
 const useStyles = makeStyles(theme => ({
   checkbox: {
@@ -22,15 +23,19 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function Proficiency({
-  name,
-  modifier,
-  proficiencyBonus,
-  proficient,
-  notes,
+  proficiency,
+  character,
 }) {
+  const {
+    bonusModifier,
+    name,
+    notes,
+    proficient,
+    type,
+  } = proficiency;
+  const modifier = getTotalModifier(character, type, proficient, bonusModifier);
   const classes = useStyles();
   const [ref, openNotes, notesComponent] = useNotes(notes);
-  const value = modifier + (proficient ? proficiencyBonus : 0);
   const displayName = notes
     ? `${name}*`
     : name;
@@ -54,7 +59,7 @@ function Proficiency({
           p={.5}
           px={.75}
           prefix={getNumericPrefix(modifier)}
-          value={value}
+          value={modifier}
           width={1}
           disabled
         />
