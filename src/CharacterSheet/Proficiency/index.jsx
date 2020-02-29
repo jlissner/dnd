@@ -6,13 +6,14 @@ import {
   Box,
   Checkbox,
   Grid,
-  Typography,
+  Button,
 } from '@material-ui/core';
 import {
   RadioButtonChecked,
   RadioButtonUnchecked,
 } from '@material-ui/icons';
-import getNumericPrefix from '../utils/getNumericPrefix';
+import getNumericPrefix from '../../utils/getNumericPrefix';
+import useNotes from '../../hooks/useNotes';
 
 const useStyles = makeStyles(theme => ({
   checkbox: {
@@ -25,12 +26,17 @@ function Proficiency({
   modifier,
   proficiencyBonus,
   proficient,
+  notes,
 }) {
   const classes = useStyles();
+  const [ref, openNotes, notesComponent] = useNotes(notes);
   const value = modifier + (proficient ? proficiencyBonus : 0);
+  const displayName = notes
+    ? `${name}*`
+    : name;
 
   return (
-    <Grid container spacing={1} wrap="nowrap" alignItems="center">
+    <Grid container spacing={1} wrap="nowrap" alignItems="center" ref={ref}>
       <Grid item>
         <Checkbox
           className={classes.checkbox}
@@ -41,7 +47,7 @@ function Proficiency({
       </Grid>
       <Grid item xs={3}>
         <Box
-          bgcolor="grey.200"
+          bgcolor="rgba(0, 0, 0, 0.09)"
           border={1}
           borderRadius={4}
           component={ReactNumberFormat}
@@ -50,11 +56,13 @@ function Proficiency({
           prefix={getNumericPrefix(modifier)}
           value={value}
           width={1}
+          disabled
         />
       </Grid>
       <Grid item xs={12}>
-        <Typography>{name}</Typography>
+        <Button onClick={openNotes} size="small">{displayName}</Button>
       </Grid>
+      {notesComponent}
     </Grid>
   )
 }

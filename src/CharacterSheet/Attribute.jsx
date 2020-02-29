@@ -6,7 +6,6 @@ import {
   Box,
   Button,
 } from '@material-ui/core';
-import { MoreHoriz as MoreIcon } from '@material-ui/icons';
 import getNumericPrefix from '../utils/getNumericPrefix';
 import useNotes from '../hooks/useNotes';
 import NumericInput from '../Form/NumericInput';
@@ -47,7 +46,6 @@ function Attribute({
           fullWidth
           onClick={openNotes}
           variant="contained"
-          endIcon={<MoreIcon />}
         >
           {renderedName}
         </Button>

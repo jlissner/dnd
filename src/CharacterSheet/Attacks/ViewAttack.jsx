@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import _find from 'lodash/find';
 import _toUpper from 'lodash/toUpper';
 import getNumericPrefix from '../../utils/getNumericPrefix';
-import AdvancedTextSection from '../AdvancedTextSection';
+import ViewAdvancedTextSection from '../AdvancedTextSection/ViewAdvancedTextSection';
 
 const BASE_SAVE_DC = 8;
 
@@ -61,7 +61,7 @@ function ViewAttack({
   const damage = getDamage(dmg, modifier);
 
   return (
-    <AdvancedTextSection
+    <ViewAdvancedTextSection
       onSave={() => alert('make me work')}
       tags={[]}
       name={atkName}

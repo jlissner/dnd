@@ -36,8 +36,8 @@ function CharacterSheet({ id }) {
           <li>[x] make re-useable markdown editor</li>
           <li>[x] update death saves</li>
           <li>[x] update attacks</li>
-          <li>[] update currency</li>
-          <li>[] update equipment</li>
+          <li>[x] update currency</li>
+          <li>[x] update equipment</li>
           <li>[] update skills (need notes)</li>
           <li>[] update languages and other proficiencies</li>
           <li>[] verify everything has notes</li>
@@ -151,18 +151,27 @@ function CharacterSheet({ id }) {
                   </Grid>
 
                   <Grid item xs={12}>
-                    <Box border={1} p={1} borderColor="rgba(0, 0, 0, 0.23)" borderRadius="4px">
-                      {_map(character.attributes, attr => (
-                        <Proficiency key={attr.name} {...attr} proficiencyBonus={character.proficiencyBonus} />
-                      ))}
-                      <Box mt={1}>
-                        <Typography variant="subtitle1" align="center">Saving Throws</Typography>
+                    <Box border={1} borderColor="rgba(0, 0, 0, 0.42)" borderRadius={4}>
+                      <Box p={1.5}>
+                        {_map(character.attributes, attr => (
+                          <Proficiency key={attr.name} {...attr} proficiencyBonus={character.proficiencyBonus} />
+                        ))}
+                      </Box>
+                      <Box
+                        p={1} 
+                        bgcolor="rgba(0, 0, 0, 0.09)"
+                        borderColor="rgba(0, 0, 0, 0.42)"
+                        borderRadius="0 0 4px 4px"
+                        borderTop={1}
+                      >
+                        <Typography variant="h6" align="center">Saving Throws</Typography>
                       </Box>
                     </Box>
                   </Grid>
 
                   <Grid item xs={12}>
-                    <Box border={1} p={1} borderColor="rgba(0, 0, 0, 0.23)" borderRadius="4px">
+                    <Box border={1} borderColor="rgba(0, 0, 0, 0.42)" borderRadius={4}>
+                      <Box p={1.5}>
                         {_map(character.skills, skill => {
                           const { modifier } = _find(character.attributes, ({ abbv }) => abbv === skill.type);
 
@@ -176,9 +185,16 @@ function CharacterSheet({ id }) {
                             />
                           );
                         })}
-                        <Box mt={1}>
-                          <Typography variant="subtitle1" align="center">Skills</Typography>
-                        </Box>
+                      </Box>
+                      <Box
+                        p={1} 
+                        bgcolor="rgba(0, 0, 0, 0.09)"
+                        borderColor="rgba(0, 0, 0, 0.42)"
+                        borderRadius="0 0 4px 4px"
+                        borderTop={1}
+                      >
+                        <Typography variant="h6" align="center">Skills</Typography>
+                      </Box>
                     </Box>
                   </Grid>
 

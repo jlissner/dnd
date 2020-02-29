@@ -14,7 +14,7 @@ function DeathSaves({
   const numberOfFailures = deathSaves.length - numberOfSuccesses;
 
   return (
-    <Box border={1} borderColor="rgba(0, 0, 0, 0.42)" p={1.25}>
+    <Box border={1} borderColor="rgba(0, 0, 0, 0.42)" p={1.25} borderRadius={4}>
       <Box mb={1}>
         <Grid container spacing={1}>
           <Grid item xs={6}>
