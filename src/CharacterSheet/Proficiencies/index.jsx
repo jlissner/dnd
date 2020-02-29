@@ -22,8 +22,12 @@ function Proficiencies({
 
 Proficiencies.propTypes = {
   proficiencies: PropTypes.arrayOf(PropTypes.shape()).isRequired,
-  onDelete: PropTypes.func.isRequired,
+  onDelete: PropTypes.func,
   onSave: PropTypes.func.isRequired,
+};
+
+Proficiencies.propTypes = {
+  onDelete: undefined,
 };
 
 export default Proficiencies;

@@ -42,6 +42,7 @@ function EditContainer({
         display="flex"
         justifyContent="center"
         alignItems="center"
+        zIndex={1}
       >
         <CircularProgress />
       </Box>
@@ -77,7 +78,7 @@ function EditContainer({
             <InfoIcon />
           </Button>
         </ButtonGroup>
-        
+
         <ButtonGroup variant="text">
           <Button onClick={onCancel}>
             <CancelIcon />
@@ -104,7 +105,9 @@ function EditContainer({
         </ButtonGroup>
 
         <ButtonGroup variant="text">
-          <If conditions={[onDelete]} component={DeleteButton} onClick={onDelete} />
+          <If conditions={[onDelete]}>
+            <DeleteButton onClick={onDelete}/>
+          </If>
         </ButtonGroup>
       </Box>
     </Box>
@@ -121,7 +124,7 @@ EditContainer.propTypes = {
 };
 
 EditContainer.defaultProps = {
-  onDelete: null,
+  onDelete: undefined,
 };
 
 export default EditContainer;

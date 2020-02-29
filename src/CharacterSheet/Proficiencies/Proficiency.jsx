@@ -35,8 +35,12 @@ function Proficiency({
 Proficiency.propTypes = {
   Proficiency: PropTypes.shape().isRequired,
   character: PropTypes.shape().isRequired,
-  onDelete: PropTypes.func.isRequired,
+  onDelete: PropTypes.func,
   onSave: PropTypes.func.isRequired,
+};
+
+Proficiency.propTypes = {
+  onDelete: undefined,
 };
 
 export default Proficiency;

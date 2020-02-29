@@ -26,8 +26,6 @@ function CharacterSheet({ id }) {
     return 'loading...';
   }
 
-  console.log({ character })
-
   return (
     <Paper component="form">
       <Box p={2}>
@@ -148,8 +146,11 @@ function CharacterSheet({ id }) {
                   <Grid item xs={12}>
                     <Box border={1} borderColor="rgba(0, 0, 0, 0.42)" borderRadius={4}>
                       <Box p={1.5}>
-                        {console.log({ character })}
-                        <Proficiencies character={character} proficiencies={character.savingThrows} />
+                        <Proficiencies
+                          character={character}
+                          onSave={() => alert('make me work!') }
+                          proficiencies={character.savingThrows}
+                        />
                       </Box>
                       <Box
                         p={1}
@@ -166,7 +167,12 @@ function CharacterSheet({ id }) {
                   <Grid item xs={12}>
                     <Box border={1} borderColor="rgba(0, 0, 0, 0.42)" borderRadius={4}>
                       <Box p={1.5}>
-                        <Proficiencies character={character} proficiencies={character.skills} />
+                        <Proficiencies
+                          character={character}
+                          onDelete={() => alert('make me work!') }
+                          onSave={() => alert('make me work!') }
+                          proficiencies={character.skills}
+                        />
                       </Box>
                       <Box
                         p={1}

@@ -5,12 +5,13 @@ import {
   Popover,
 } from '@material-ui/core';
 import Markdown from '../Form/Markdown';
-import EditButton from '../Form/EditButton';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    maxWidth: 300,
-    overflow: 'visible',
+    maxWidth: 600,
+    overflow: 'ellipsis',
+    textOverflow: 'ellipsis',
+
   },
 }));
 
@@ -41,11 +42,9 @@ function useNotes(notes) {
       }}
       onClose={() => setElement(null)}
     >
-      <EditButton onClick={() => alert('make me work')}>
-        <Box p={1}>
-          <Markdown text={notes || 'Add Notes'} />
-        </Box>      
-      </EditButton>
+      <Box p={1}>
+        <Markdown text={notes || 'No Notes'} />
+      </Box>
     </Popover>
   );
 

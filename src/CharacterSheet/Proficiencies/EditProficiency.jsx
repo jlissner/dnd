@@ -1,1 +1,43 @@
-export default () => 'editing!'
+import React from 'react';
+import PropTypes from 'prop-types';
+import EditContainer from '../../Form/EditContainer';
+import ViewProficiency from './ViewProficiency';
+import ProficiencyForm from './ProficiencyForm';
+
+function EditProficiency({
+  character,
+  onCancel,
+  onDelete,
+  onSave,
+  proficiency,
+}) {
+  return (
+    <EditContainer
+      onCancel={onCancel}
+      onDelete={onDelete}
+      onSave={onSave}
+      Preview={({ newVal }) => (
+        <ViewProficiency
+          character={character}
+          proficiency={newVal}
+        />
+      )}
+      Form={ProficiencyForm}
+      value={proficiency}
+    />
+  )
+}
+
+EditProficiency.propTypes = {
+  character: PropTypes.shape().isRequired,
+  onCancel: PropTypes.func.isRequired,
+  onDelete: PropTypes.func,
+  onSave: PropTypes.func.isRequired,
+  proficiency: PropTypes.shape().isRequired,
+};
+
+EditProficiency.propTypes = {
+  onDelete: undefined,
+};
+
+export default EditProficiency;
