@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import _noop from 'lodash/noop';
 import EditButton from '../../Form/EditButton';
 import EditProficiency from './EditProficiency';
 import ViewProficiency from './ViewProficiency';
@@ -40,7 +41,7 @@ Proficiency.propTypes = {
 };
 
 Proficiency.propTypes = {
-  onDelete: undefined,
+  onDelete: _noop,
 };
 
 export default Proficiency;

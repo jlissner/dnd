@@ -2,42 +2,49 @@ import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { Collapse } from '@material-ui/core';
 import _filter from 'lodash/filter';
+import _keys from 'lodash/keys';
+import _pick from 'lodash/pick';
 import theme from '../theme';
 
 function If({
   children,
   conditions,
-  Component,
   timeout,
-  ...props
+  component,
+  collapsedHeight,
 }) {
   const visible = useMemo(() => Boolean(_filter(conditions, Boolean).length), [conditions]);
+  const componentProps = _keys(Component.propTypes);
+  const validProps = _pick(props, componentProps);
 
   return (
-    <Component
+    <Collapse
       in={visible}
       timeout={timeout}
-      {...props}
+      component={component}
+      collapsedHeight={collapsedHeight}
     >
       {children}
-    </Component>
+    </Collapse>
   );
 }
 
 If.propTypes = {
   children: PropTypes.node,
   conditions: PropTypes.arrayOf(PropTypes.any).isRequired,
-  Component: PropTypes.oneOfType([PropTypes.node, PropTypes.shape()]),
   timeout: PropTypes.shape(),
+  component: PropTypes.elementType,
+  collapsedHeight: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 
 If.defaultProps = {
   children: null,
-  Component: Collapse,
   timeout: {
     enter: theme.transitions.duration.standard,
     exit: theme.transitions.duration.standard,
   },
+  component: 'div',
+  collapsedHeight: 0,
 };
 
 export default If;

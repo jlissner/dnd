@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import _map from 'lodash/map';
+import _noop from 'lodash/noop';
 import Proficiency from './Proficiency';
 
 function Proficiencies({
@@ -27,7 +28,7 @@ Proficiencies.propTypes = {
 };
 
 Proficiencies.propTypes = {
-  onDelete: undefined,
+  onDelete: _noop,
 };
 
 export default Proficiencies;

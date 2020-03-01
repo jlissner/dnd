@@ -23,7 +23,7 @@ function TextInput({
 }
 
 TextInput.propTypes = {
-  value: PropTypes.string.isRequired,
+  value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
 };
 
 export default TextInput;

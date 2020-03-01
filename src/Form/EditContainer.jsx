@@ -15,6 +15,7 @@ import {
   Visibility as VisibilityIcon,
 } from '@material-ui/icons';
 import _isEqual from 'lodash/isEqual';
+import _noop from 'lodash/noop';
 import If from '../utils/If';
 import DeleteButton from './DeleteButton';
 
@@ -105,7 +106,7 @@ function EditContainer({
         </ButtonGroup>
 
         <ButtonGroup variant="text">
-          <If conditions={[onDelete]}>
+          <If conditions={[onDelete === _noop]}>
             <DeleteButton onClick={onDelete}/>
           </If>
         </ButtonGroup>
@@ -124,7 +125,7 @@ EditContainer.propTypes = {
 };
 
 EditContainer.defaultProps = {
-  onDelete: undefined,
+  onDelete: _noop,
 };
 
 export default EditContainer;

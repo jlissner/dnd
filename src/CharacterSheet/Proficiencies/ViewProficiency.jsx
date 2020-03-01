@@ -22,7 +22,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function Proficiency({
+function ViewProficiency({
   proficiency,
   character,
 }) {
@@ -72,11 +72,9 @@ function Proficiency({
   )
 }
 
-Proficiency.propTypes = {
-  name: PropTypes.string.isRequired,
-  modifier: PropTypes.number.isRequired,
-  proficiencyBonus: PropTypes.number.isRequired,
-  proficient: PropTypes.bool.isRequired,
+ViewProficiency.propTypes = {
+  character: PropTypes.shape().isRequired,
+  proficiency: PropTypes.shape().isRequired,
 };
 
-export default Proficiency;
+export default ViewProficiency;
