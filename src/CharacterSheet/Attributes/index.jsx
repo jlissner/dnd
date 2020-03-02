@@ -6,6 +6,7 @@ import Attribute from './Attribute';
 
 function Attributes({
   character,
+  onSave,
 }) {
   return (
     <Grid container spacing={3}>
@@ -20,6 +21,7 @@ function Attributes({
 
 Attributes.propTypes = {
   character: PropTypes.shape().isRequired,
+  onSave: PropTypes.func.isRequired,
 };
 
 export default Attributes;

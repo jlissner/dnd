@@ -106,7 +106,7 @@ function EditContainer({
         </ButtonGroup>
 
         <ButtonGroup variant="text">
-          <If conditions={[onDelete === _noop]}>
+          <If conditions={[onDelete !== _noop]}>
             <DeleteButton onClick={onDelete}/>
           </If>
         </ButtonGroup>

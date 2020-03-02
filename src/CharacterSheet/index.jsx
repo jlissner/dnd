@@ -121,7 +121,10 @@ function CharacterSheet({ id }) {
           <Grid item xs={12} sm={6} md={4}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={5}>
-                <Attributes character={character} />
+                <Attributes
+                  character={character}
+                  onSave={() => console.log('make me work')}
+                />
               </Grid>
 
               <Grid item xs={12} sm={7}>

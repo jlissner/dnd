@@ -2,8 +2,6 @@ import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { Collapse } from '@material-ui/core';
 import _filter from 'lodash/filter';
-import _keys from 'lodash/keys';
-import _pick from 'lodash/pick';
 import theme from '../theme';
 
 function If({
@@ -14,8 +12,6 @@ function If({
   collapsedHeight,
 }) {
   const visible = useMemo(() => Boolean(_filter(conditions, Boolean).length), [conditions]);
-  const componentProps = _keys(Component.propTypes);
-  const validProps = _pick(props, componentProps);
 
   return (
     <Collapse
