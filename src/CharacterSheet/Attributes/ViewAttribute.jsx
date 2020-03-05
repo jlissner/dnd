@@ -32,7 +32,7 @@ function ViewAttribute({
     notes,
     value,
   } = attribute;
-  const modifier = getTotalModifier(character, abbv, false, bonusModifier);
+  const modifier = getTotalModifier(character, abbv, false, bonusModifier, value);
   const [ref, openNotes, notesComponent] = useNotes(notes);
   const classes = useStyles();
   const renderedName = notes ? `${name}*` : name;

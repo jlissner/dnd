@@ -16,6 +16,7 @@ const useStyles = makeStyles(( theme ) => ({
     height: size => theme.spacing(size),
     minHeight: 0,
     width: size => theme.spacing(size),
+    zIndex: 100,
   },
   editIcon: {
     fontSize: size => theme.spacing(size / 2),

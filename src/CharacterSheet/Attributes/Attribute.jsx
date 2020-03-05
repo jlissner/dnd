@@ -17,6 +17,7 @@ function Attribute({
         attribute={attribute}
         character={character}
         onSave={onSave}
+        onCancel={() => setEditMode(false)}
       />
     );
   }

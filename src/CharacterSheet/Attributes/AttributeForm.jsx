@@ -2,35 +2,29 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {
   Box,
-  Checkbox,
-  FormControlLabel,
   Grid,
   TextField,
-  MenuItem,
 } from '@material-ui/core';
 
-function ProficiencyForm({
-  setNewVal,
+function AttributeForm({
   newVal,
+  setNewVal,
 }) {
   const {
-    bonusModifier,
     name,
+    value,
+    bonusModifier,
     notes,
-    proficient,
-    type,
   } = newVal;
-
-  console.log({ newVal })
 
   return (
     <Box p={2}>
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <TextField
+            disabled
             fullWidth
             label="Name"
-            onChange={(e) => setNewVal({ ...newVal, name: e.target.value})}
             value={name}
             variant="filled"
           />
@@ -38,29 +32,10 @@ function ProficiencyForm({
         <Grid item xs={12}>
           <TextField
             fullWidth
-            label="type"
-            onChange={(e) => setNewVal({ ...newVal, type: e.target.value})}
-            select
-            value={type}
+            label="Value"
+            onChange={(e) => setNewVal({ ...newVal, value: e.target.value })}
+            value={value}
             variant="filled"
-          >
-            <MenuItem value="str">Strength</MenuItem>
-            <MenuItem value="dex">Dexterity</MenuItem>
-            <MenuItem value="con">Constitution</MenuItem>
-            <MenuItem value="int">Intelligence</MenuItem>
-            <MenuItem value="wis">Wisdom</MenuItem>
-            <MenuItem value="cha">Charisma</MenuItem>
-          </TextField>
-        </Grid>
-        <Grid item xs={12}>
-          <FormControlLabel
-            control={(
-              <Checkbox
-                checked={proficient}
-                onChange={(e) => setNewVal({ ...newVal, proficient: !proficient })}
-              />
-            )}
-            label="Proficient"
           />
         </Grid>
         <Grid item xs={12}>
@@ -87,9 +62,9 @@ function ProficiencyForm({
   )
 }
 
-ProficiencyForm.propTypes = {
-  setNewVal: PropTypes.func.isRequired,
+AttributeForm.propTypes = {
   newVal: PropTypes.shape().isRequired,
+  setNewVal: PropTypes.func.isRequired,
 };
 
-export default ProficiencyForm;
+export default AttributeForm;
