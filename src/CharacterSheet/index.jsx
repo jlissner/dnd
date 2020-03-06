@@ -18,6 +18,7 @@ import DeathSaves from './DeathSaves';
 import Features from './Features';
 import Personality from './Personality';
 import Proficiencies from './Proficiencies';
+import TextSection from './TextSection';
 
 function CharacterSheet({ id }) {
   const [character, updateCharacter] = useCharacter(id);
@@ -37,8 +38,8 @@ function CharacterSheet({ id }) {
           <li>[x] update attacks</li>
           <li>[x] update currency</li>
           <li>[x] update equipment</li>
-          <li>[] update skills (need notes)</li>
-          <li>[] update languages and other proficiencies</li>
+          <li>[x] update skills (need notes)</li>
+          <li>[x] update languages and other proficiencies</li>
           <li>[] verify everything has notes</li>
           <li>[] create markdown helper</li>
           <li>[] make the 'updateCharacter' function do as intended</li>
@@ -191,23 +192,16 @@ function CharacterSheet({ id }) {
 
                 </Grid>
               </Grid>
+
+              <Grid item xs={12}>
+                <TextSection
+                  label="Languages And Proficiencies"
+                  onSave={() => console.log('make me work')}
+                  value={character.languagesAndProficiencies}
+                />
+              </Grid>
             </Grid>
 
-            <Box mt={2} border={1} borderColor="rgba(0, 0, 0, 0.23)" borderRadius="4px">
-              <Typography align="center" variant="h5">Languages</Typography>
-              <Box p={2}>
-                {_map(character.languages, language => (
-                  <Typography key={language.name}>{language.name}</Typography>
-                ))}
-              </Box>
-
-              <Typography align="center" variant="h5">Other Proficiencies</Typography>
-              <Box p={2}>
-                {_map(character.proficiencies, proficiency => (
-                  <Typography key={proficiency.name}>{proficiency.name}</Typography>
-                ))}
-              </Box>
-            </Box>
           </Grid>
 
           <Grid item xs={12} sm={6} md={4}>

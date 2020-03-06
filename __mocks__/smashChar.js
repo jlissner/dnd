@@ -223,8 +223,7 @@ module.exports = {
       notes: '',
     },
   ],
-  languages: [{ name: 'Common', notes: '' }, { name: 'Giant', notes: '' }],
-  proficiencies: [{ name: 'Riding Horses', notes: '' }],
+  languagesAndProficiencies: '### Languages\n- Common\n- Giant\n### Proficiencies\n- Riding a Horse',
   money: {
     cp: 0,
     sp: 0,
@@ -457,15 +456,6 @@ module.exports = {
   personality: [
     { label: 'Flaws', text: 'single minded, dumb' },
   ],
-  appearance: {
-    age: null,
-    height: '7\'7',
-    weight: '315lbs',
-    eyes: 'grey',
-    skin: 'grey with tattoos',
-    hair: 'bald',
-    notes: '',
-  },
   spells: [],
   spellSlots: [],
 }

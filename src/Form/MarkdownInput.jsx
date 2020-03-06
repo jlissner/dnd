@@ -9,10 +9,7 @@ import EditContainer from './EditContainer';
 import Markdown from './Markdown';
 
 const useStyles = makeStyles(theme => ({
-  textArea: {
-    padding: theme.spacing(1),
-    paddingBottom: 0,
-  },
+
 }));
 
 function MarkdownInput({
@@ -25,19 +22,20 @@ function MarkdownInput({
   return (
     <EditContainer
       Form={({ newVal, setNewVal }) => (
-        <Box pb={1} key="form">
+        <Box p={2}>
           <TextField
             className={classes.textArea}
             fullWidth
+            label="Text"
             multiline
             onChange={e => setNewVal(e.target.value)}
             value={newVal || 'This is a link to [google](https://google.com)'}
-            variant="outlined"
+            variant="filled"
           />
         </Box>
       )}
       Preview={({ newVal }) => (
-        <Box p={2} key="preview">
+        <Box p={2}>
           <Markdown text={newVal || 'This is a link to [google](https://google.com)'} />
         </Box>
       )}

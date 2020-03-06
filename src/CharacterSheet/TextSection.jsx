@@ -23,10 +23,8 @@ function TextSection({
         />
       : <EditButton onClick={() => setEditMode(true)}>
           <Box
-            bgcolor="rgba(0, 0, 0, 0.09)"
             borderRadius={4}
-            mb={1}
-            p={1}
+            p={2}
           >
             <Markdown text={value || 'Nothing here yet...'} />
           </Box>
@@ -38,10 +36,19 @@ function TextSection({
   }, [value])
 
   return (
-    <Box border={1} p={1} borderColor="rgba(0, 0, 0, 0.42)" borderRadius={4}>
-      {content}
+    <Box
+      bgcolor="rgba(0, 0, 0, 0.09)"
+      border={1}
+      borderColor="rgba(0, 0, 0, 0.42)"
+      borderRadius={4}
+    >
+      <Box bgcolor="background.paper" borderRadius="4px 4px 0 0">
+        {content}
+      </Box>
 
-      <Typography align="center" variant="h6">{label}</Typography>
+      <Box borderColor="rgba(0, 0, 0, 0.42)" borderTop={1} p={2}>
+        <Typography align="center" variant="h6">{label}</Typography>
+      </Box>
     </Box>
   )
 }

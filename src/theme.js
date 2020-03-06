@@ -21,6 +21,16 @@ const theme = createMuiTheme({
 			paper: '#FFFEBD',
 		}
 	},
+	overrides: {
+		MuiTableCell: {
+			root: {
+				borderBottomColor: 'rgba(0, 0, 0, 0.42)',
+			},
+			head: {
+				fontWeight: 700,
+			},
+		},
+	},
 });
 
 export default theme;

@@ -64,15 +64,15 @@ function ViewAdvancedTextSection({
         
         <Grid
           className={classes.expandWrapper}
-          component={If}
-          conditions={[longDesc, tags.length]}
           item
         >
-          <Rotate deg={expanded ? 180 : 0}>
-            <IconButton onClick={() => setExpanded(!expanded)} className={classes.expandButton}>
-              <ExpandMoreIcon />
-            </IconButton>
-          </Rotate>
+          <If conditions={[longDesc, tags.length]}>
+            <Rotate deg={expanded ? 180 : 0}>
+              <IconButton onClick={() => setExpanded(!expanded)} className={classes.expandButton}>
+                <ExpandMoreIcon />
+              </IconButton>
+            </Rotate>
+          </If>
         </Grid>
       </Grid>
 
