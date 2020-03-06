@@ -12,7 +12,7 @@ function Attributes({
     <Grid container spacing={3}>
       {_map(character.attributes, (attribute, i) => (
         <Grid item xs={12} key={attribute.name}>
-          <Attribute attribute={attribute} character={character} />
+          <Attribute attribute={attribute} character={character} onSave={onSave} />
         </Grid>
       ))}
     </Grid>
