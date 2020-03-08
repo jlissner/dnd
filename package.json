@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@babel/core": "7.8.4",
+    "@graphile-contrib/pg-simplify-inflector": "^5.0.0-beta.1",
     "@svgr/webpack": "4.3.3",
     "@typescript-eslint/eslint-plugin": "^2.10.0",
     "@typescript-eslint/parser": "^2.10.0",
@@ -50,6 +51,7 @@
     "postcss-normalize": "8.0.1",
     "postcss-preset-env": "6.7.0",
     "postcss-safe-parser": "4.0.1",
+    "postgraphile": "^4.5.5",
     "react": "^16.12.0",
     "react-app-polyfill": "^1.0.6",
     "react-dev-utils": "^10.1.0",
@@ -170,8 +172,8 @@
   },
   "nodemonConfig": {
     "ignore": [
-      "src/*",
-      "public/*"
+      "client/*",
+      "server/public/*"
     ]
   }
 }
