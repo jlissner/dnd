@@ -2,11 +2,12 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser')
 const path = require('path');
-const registerRoutes = require('./routes');
 
+const registerWebsockets = require('express-ws');
+registerWebsockets(app); // needs to happen before routes
+
+const routes = require('./routes');
 const port = process.env.PORT || 8080;
-
-registerRoutes(app);
 
 if (process.env.NODE_ENV === 'development') {
   const webpack = require('webpack');
@@ -22,6 +23,7 @@ if (process.env.NODE_ENV === 'development') {
   app.use(webpackHotMiddleware(compiler));
 }
 
+app.use(routes)
 app.use(bodyParser.json({ type: 'application/*+json' }));
 app.use(express.static(path.resolve('./build')));
 

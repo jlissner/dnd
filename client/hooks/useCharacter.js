@@ -17,7 +17,7 @@ function useCharacter(id) {
   }, [message])
 
   function updateCharacter(char) {
-    send(char);
+    send(JSON.stringify(char));
   }
 
   return [

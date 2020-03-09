@@ -57,11 +57,11 @@ function CharacterSheet({ id }) {
             <Grid container spacing={2} alignItems="center">
               <Grid item xs={12} sm={6}>
                 <TextField
-                  value={character.characterName || ''}
+                  value={character.name || ''}
                   fullWidth
                   variant="filled"
                   label="Character Name"
-                  onChange={(e) => updateCharacter({ name: e.target.value })}
+                  onChange={(e) => updateCharacter({ ...character, name: e.target.value })}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>

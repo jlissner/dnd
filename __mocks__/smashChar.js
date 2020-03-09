@@ -1,7 +1,6 @@
 module.exports = {
   id: '1',
-  playerName: 'Joe',
-  characterName: 'Smash',
+  name: 'Smash',
   className: 'Barbarian',
   subClass: 'Bezerker',
   level: '8',
@@ -446,7 +445,7 @@ module.exports = {
   health: {
     hitDice: '1d12',
     totalHitDice: 8,
-    currentHp: 76,
+    currentHp: 62,
     totalHp: 76,
     maxHp: 76,
     tempHp: 0,
