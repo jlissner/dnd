@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import EditContainer from '../../Form/EditContainer';
-import AdvancedTextSectionForm from './AdvancedTextSectionForm';
+import advancedTextSectionForm from './advancedTextSectionForm';
 import ViewAdvancedTextSection from './ViewAdvancedTextSection';
 
 function EditAdvancedTextSection({
@@ -24,7 +24,7 @@ function EditAdvancedTextSection({
 
   return (
     <EditContainer
-      Form={AdvancedTextSectionForm}
+      form={advancedTextSectionForm}
       Preview={({ newVal }) => <ViewAdvancedTextSection {...newVal} />}
       onCancel={onCancel}
       onDelete={onDelete}

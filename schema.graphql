@@ -12,7 +12,7 @@ type Character implements Node {
   nodeId: ID!
   idPk: BigInt!
   userFk: BigInt!
-  name: String
+  attributes: JSON
 }
 
 """
@@ -28,7 +28,7 @@ input CharacterCondition {
 input CharacterInput {
   idPk: BigInt
   userFk: BigInt!
-  name: String
+  attributes: JSON
 }
 
 """
@@ -37,7 +37,7 @@ Represents an update to a `Character`. Fields that are set will be updated.
 input CharacterPatch {
   idPk: BigInt
   userFk: BigInt
-  name: String
+  attributes: JSON
 }
 
 """A connection to a list of `Character` values."""
@@ -243,6 +243,11 @@ type DeleteUserPayload {
     orderBy: [UsersOrderBy!] = [PRIMARY_KEY_ASC]
   ): UsersEdge
 }
+
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON
 
 """
 The root mutation type which contains root level fields which mutate data.

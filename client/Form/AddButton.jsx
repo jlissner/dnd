@@ -10,6 +10,7 @@ import {
 
 function AddButton({
   BoxProps,
+  onAdd,
   ...props
 }) {
   return (
@@ -23,7 +24,7 @@ function AddButton({
       width="25%"
       {...BoxProps}
     >
-      <Button fullWidth {...props}>
+      <Button fullWidth onClick={onAdd} {...props}>
         <AddIcon />
       </Button>
     </Box>
@@ -32,6 +33,7 @@ function AddButton({
 
 AddButton.propTypes = {
   BoxProps: PropTypes.shape(),
+  onAdd: PropTypes.func.isRequired,
 };
 
 AddButton.defaultProps = {

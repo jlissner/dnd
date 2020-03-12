@@ -9,15 +9,21 @@ import Markdown from '../Form/Markdown';
 import MarkdownInput from '../Form/MarkdownInput';
 
 function TextSection({
+  accessor,
   label,
-  onSave,
+  updateCharacter,
   value,
 }) {
   const [editMode, setEditMode] = useState(false);
+
+  function save({ text }) {
+    updateCharacter({ [accessor]: text })
+  }
+
   const content = useMemo(() => (
     editMode
       ? <MarkdownInput
-          onSave={onSave}
+          onSave={save}
           onCancel={() => setEditMode(false)}
           value={value}
         />
@@ -29,7 +35,7 @@ function TextSection({
             <Markdown text={value || 'Nothing here yet...'} />
           </Box>
         </EditButton>
-  ), [editMode, onSave, value])
+  ), [editMode, save, value])
 
   useEffect(() => {
     setEditMode(false);
@@ -54,13 +60,13 @@ function TextSection({
 }
 
 TextSection.propTypes = {
+  accessor: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
-  onSave: PropTypes.func,
+  updateCharacter: PropTypes.func.isRequired,
   value: PropTypes.string,
 };
 
 TextSection.defaultProps = {
-  onSave: null,
   value: '',
 }
 

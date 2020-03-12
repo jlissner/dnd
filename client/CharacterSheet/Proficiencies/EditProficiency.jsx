@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import _noop from 'lodash/noop';
 import EditContainer from '../../Form/EditContainer';
 import ViewProficiency from './ViewProficiency';
-import ProficiencyForm from './ProficiencyForm';
+import proficiencyForm from './proficiencyForm';
 
 function EditProficiency({
   character,
@@ -23,7 +23,7 @@ function EditProficiency({
           proficiency={newVal}
         />
       )}
-      Form={ProficiencyForm}
+      form={proficiencyForm}
       value={proficiency}
     />
   )

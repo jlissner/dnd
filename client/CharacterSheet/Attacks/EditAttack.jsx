@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import EditContainer from '../../Form/EditContainer';
-import AttackForm from './AttackForm';
+import attackForm from './attackForm';
 import ViewAttack from './ViewAttack';
 
 function EditAttack({
@@ -13,7 +13,7 @@ function EditAttack({
 }) {
   return (
     <EditContainer
-      Form={AttackForm}
+      form={attackForm}
       Preview={({ newVal }) => <ViewAttack attack={newVal} character={character} />}
       onCancel={onCancel}
       onDelete={onDelete}

@@ -6,6 +6,8 @@ import {
   Box,
   Button,
 } from '@material-ui/core';
+import _cloneDeep from 'lodash/cloneDeep';
+import _findIndex from 'lodash/findIndex';
 import getNumericPrefix from '../../utils/getNumericPrefix';
 import getTotalModifier from '../../utils/getTotalModifier';
 import useNotes from '../../hooks/useNotes';
@@ -27,12 +29,16 @@ function ViewAttribute({
 }) {
   const {
     abbv,
-    bonusModifier,
     name,
     notes,
     value,
   } = attribute;
-  const modifier = getTotalModifier(character, abbv, false, bonusModifier, value);
+  const attrIndex = _findIndex(character.attributes, { name });
+  const charWithUpdatedAttribute = _cloneDeep(character);
+
+  charWithUpdatedAttribute.attributes[attrIndex] = attribute;
+
+  const modifier = getTotalModifier(charWithUpdatedAttribute, abbv);
   const [ref, openNotes, notesComponent] = useNotes(notes);
   const classes = useStyles();
   const renderedName = notes ? `${name}*` : name;

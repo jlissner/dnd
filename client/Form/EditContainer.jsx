@@ -17,22 +17,32 @@ import {
 import _isEqual from 'lodash/isEqual';
 import _noop from 'lodash/noop';
 import If from '../utils/If';
+import validate from '../utils/validate';
 import DeleteButton from './DeleteButton';
+import Form from './index';
 
 function EditContainer({
   onCancel,
   onDelete,
   onSave,
   Preview,
-  Form,
+  form,
   value,
 }) {
+  const [validatedForm, setValidatedForm] = useState(form);
   const [newVal, setNewVal] = useState(value);
   const [previewing, setPreviewing] = useState(false);
   const [saving, setSaving] = useState(false);
-  const Content = useMemo(() => (previewing ? Preview : Form), [Form, Preview, previewing]);
+  const [deleting, setDeleting] = useState(false);
+  const content = useMemo(() => {
+    if (previewing) {
+      return <Preview newVal={newVal} />
+    }
+
+    return <Form form={validatedForm} setValue={setNewVal} value={newVal} />
+  }, [validatedForm, newVal, setNewVal, Preview, previewing]);
   const saveDisabled = _isEqual(newVal, value);
-  const overlay = saving
+  const overlay = (saving || deleting)
     ? <Box
         bgcolor="rgba(0, 0, 0, .25)"
         position="absolute"
@@ -50,12 +60,26 @@ function EditContainer({
     : null;
 
   useEffect(() => {
-    setSaving(false);
-  }, [value]);
+    if (saving && saveDisabled) {
+      onCancel();
+    }
+  }, [onCancel, saving, saveDisabled]);
 
   function save(newVal) {
+    const { hasError, validatedSchema } = validate(form, newVal);
+
+    if (hasError) {
+      setValidatedForm(validatedSchema);
+      return;
+    }
+
     setSaving(true);
     onSave(newVal);
+  }
+
+  function handleDelete() {
+    setDeleting(true);
+    onDelete();
   }
 
   return (
@@ -65,6 +89,7 @@ function EditContainer({
         bgcolor="grey.300"
         borderBottom={1}
         borderColor="grey.500"
+        borderRadius="4px 4px 0 0"
         display="flex"
         justifyContent="space-between"
       >
@@ -87,12 +112,13 @@ function EditContainer({
         </ButtonGroup>
       </Box>
 
-      <Content setNewVal={setNewVal} newVal={newVal} />
+      {content}
 
       <Box
         bgcolor="grey.300"
         borderTop={1}
         borderColor="grey.500"
+        borderRadius="0 0 4px 4px"
         display="flex"
         justifyContent="space-between"
       >
@@ -107,7 +133,7 @@ function EditContainer({
 
         <ButtonGroup variant="text">
           <If conditions={[onDelete !== _noop]}>
-            <DeleteButton onClick={onDelete}/>
+            <DeleteButton onClick={handleDelete}/>
           </If>
         </ButtonGroup>
       </Box>
@@ -116,11 +142,11 @@ function EditContainer({
 }
 
 EditContainer.propTypes = {
+  form: PropTypes.arrayOf(PropTypes.shape()).isRequired,
   onCancel: PropTypes.func.isRequired,
   onDelete: PropTypes.func,
   onSave: PropTypes.func.isRequired,
   Preview: PropTypes.oneOfType([PropTypes.elementType, PropTypes.node]).isRequired,
-  Form: PropTypes.oneOfType([PropTypes.elementType, PropTypes.node]).isRequired,
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.shape()]).isRequired,
 };
 

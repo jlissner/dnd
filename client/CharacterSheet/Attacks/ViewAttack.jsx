@@ -50,12 +50,12 @@ function ViewAttack({
     uses,
     range,
     notes,
-    modifier,
+    bonusModifier,
   } = attack;
-  const atkName = getName(name, modifier);
+  const atkName = getName(name, bonusModifier);
   const atkRange = range ? `range: ${range} | ` : '';
   const hit = getHit(attack, character);
-  const damage = getDamage(dmg, modifier);
+  const damage = getDamage(dmg, bonusModifier);
 
   return (
     <ViewAdvancedTextSection

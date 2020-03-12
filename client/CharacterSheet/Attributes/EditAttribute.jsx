@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import EditContainer from '../../Form/EditContainer';
-import AttributeForm from './AttributeForm';
+import attributeForm from './attributeForm';
 import ViewAttribute from './ViewAttribute';
 
 function EditAttribute({
@@ -14,7 +14,7 @@ function EditAttribute({
     <EditContainer
       onCancel={onCancel}
       onSave={onSave}
-      Form={AttributeForm}
+      form={attributeForm}
       Preview={({ newVal }) => <ViewAttribute attribute={newVal} character={character} />}
       value={attribute}
     />

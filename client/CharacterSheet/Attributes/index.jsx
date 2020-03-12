@@ -6,13 +6,23 @@ import Attribute from './Attribute';
 
 function Attributes({
   character,
-  onSave,
+  updateCharacter,
 }) {
+  function saveAttribute(attributeIndex) {
+    return (updatedAttribute) => {
+      const updatedAttributes = character.attributes;
+
+      updatedAttributes[attributeIndex] = updatedAttribute;
+
+      updateCharacter({ ...character, attributes: updatedAttributes });
+    }
+  }
+
   return (
     <Grid container spacing={3}>
       {_map(character.attributes, (attribute, i) => (
         <Grid item xs={12} key={attribute.name}>
-          <Attribute attribute={attribute} character={character} onSave={onSave} />
+          <Attribute attribute={attribute} character={character} onSave={saveAttribute(i)} />
         </Grid>
       ))}
     </Grid>
@@ -21,7 +31,7 @@ function Attributes({
 
 Attributes.propTypes = {
   character: PropTypes.shape().isRequired,
-  onSave: PropTypes.func.isRequired,
+  updateCharacter: PropTypes.func.isRequired,
 };
 
 export default Attributes;

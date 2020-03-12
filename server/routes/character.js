@@ -2,26 +2,27 @@ const express = require('express');
 const router = express.Router();
 const axios = require('axios');
 const charData = require('../../__mocks__/smashChar');
-const { wsBroadcaster } = require('../lib');
+const { wsBroadcaster, graphql } = require('../lib');
 
-async function updateCharacterName(id, name) {
-  const res = await axios.post('http://localhost:3000/graphql', {
-    query: `
-      mutation {
-        updateCharacter(input: {
-          idPk: "${id}"
-          patch: {
-            name: "${name}"
-          }}) {
-          character {
-            name
-          }
+const { objToGraphqlStr } = graphql;
+
+async function updateCharacter(id, attributes) {
+  const query = `
+    mutation {
+      updateCharacter(input: {
+        idPk: "${id}"
+        patch: {
+          ${objToGraphqlStr({ attributes })}
+        }}) {
+        character {
+          attributes
         }
       }
-    `
-  });
+    }
+  `;
+  const res = await axios.post('http://localhost:3000/graphql', { query });
 
-  return res.data.data.updateCharacter.character;
+  return res.data.data.updateCharacter.character.attributes;
 }
 
 async function fetchCharacter(id) {
@@ -29,13 +30,13 @@ async function fetchCharacter(id) {
     query: `
       query {
         character(idPk: "${id}") {
-          name
+          attributes
         }
       }
     `
   });
 
-  return res.data.data.character;
+  return res.data.data.character.attributes;
 }
 
 async function openCharacterWs(id, ws) {
@@ -46,7 +47,7 @@ async function openCharacterWs(id, ws) {
   wsBroadcaster.broadcast({
     category: 'characters',
     key: id,
-    data: JSON.stringify({ ...charData, ...character }),
+    data: JSON.stringify({ id, ...character }),
   });
 }
 
@@ -55,15 +56,27 @@ router.ws('/:id', async (ws, req) => {
 
   openCharacterWs(id, ws);
 
-  ws.on('message', async (msg) => {
-    const { name } = JSON.parse(msg);
-    const updatedCharacter = await updateCharacterName(id, name);
+  ws.on('message', async (action) => {
+    try {
+      const { type, payload } = JSON.parse(action);
 
-    wsBroadcaster.broadcast({
-      category: 'characters',
-      key: id,
-      data: JSON.stringify({ ...charData, ...updatedCharacter }),
-    });
+      switch (type) {
+        case 'UPDATE': {
+          const updatedCharacter = await updateCharacter(id, payload);
+
+          return wsBroadcaster.broadcast({
+            category: 'characters',
+            key: id,
+            data: JSON.stringify({ id, ...updatedCharacter }),
+          });
+        }
+        default: {
+          return console.error(`Action type: ${type} is not recongnized.`);
+        }
+      }
+    } catch (err) {
+      console.error(err);
+    }
   });
 });
 

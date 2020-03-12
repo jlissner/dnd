@@ -19,7 +19,7 @@ function Proficiency({
       <EditProficiency
         proficiency={proficiency}
         character={character}
-        onCancel={() => setEditMode(false)}
+        onCancel={name ? () => setEditMode(false) : onDelete}
         onDelete={onDelete}
         onSave={onSave}
       />
@@ -28,7 +28,7 @@ function Proficiency({
 
   return (
     <EditButton onClick={() => setEditMode(true)}>
-      <ViewProficiency proficiency={proficiency} character={character} />
+      <ViewProficiency proficiency={proficiency} character={character} onSave={onSave} />
     </EditButton>
   )
 }

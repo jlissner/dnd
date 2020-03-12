@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import ReactNumberFormat from 'react-number-format';
 import { makeStyles } from '@material-ui/core/styles';
@@ -24,6 +24,7 @@ const useStyles = makeStyles(theme => ({
 
 function ViewProficiency({
   proficiency,
+  onSave,
   character,
 }) {
   const {
@@ -35,19 +36,33 @@ function ViewProficiency({
   } = proficiency;
   const modifier = getTotalModifier(character, type, proficient, bonusModifier);
   const classes = useStyles();
+  const [saving, setSaving] = useState(false);
   const [ref, openNotes, notesComponent] = useNotes(notes);
   const displayName = notes
     ? `${name}*`
     : name;
 
+    useEffect(() => {
+      if (saving) {
+        setSaving(false);
+      }
+    }, [proficient]);
+
+  function handleClick() {
+    setSaving(true);
+    onSave({ ...proficiency, proficient: !proficient });
+  }
+
   return (
     <Grid container spacing={1} wrap="nowrap" alignItems="center" ref={ref}>
       <Grid item>
         <Checkbox
-          className={classes.checkbox}
-          icon={<RadioButtonUnchecked />}
           checkedIcon={<RadioButtonChecked />}
           checked={proficient}
+          className={classes.checkbox}
+          disabled={saving}
+          icon={<RadioButtonUnchecked />}
+          onClick={handleClick}
         />
       </Grid>
       <Grid item xs={3}>
@@ -74,6 +89,7 @@ function ViewProficiency({
 
 ViewProficiency.propTypes = {
   character: PropTypes.shape().isRequired,
+  onSave: PropTypes.func.isRequired,
   proficiency: PropTypes.shape().isRequired,
 };
 

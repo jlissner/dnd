@@ -16,8 +16,11 @@ function useCharacter(id) {
     }
   }, [message])
 
-  function updateCharacter(char) {
-    send(JSON.stringify(char));
+  function updateCharacter(attributes) {
+    const type = 'UPDATE';
+    const action = JSON.stringify({ type, payload: { ...character, ...attributes } });
+    
+    send(action);
   }
 
   return [

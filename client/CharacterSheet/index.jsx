@@ -8,17 +8,15 @@ import {
   Typography,
 } from '@material-ui/core';
 import _get from 'lodash/get';
-import _map from 'lodash/map';
 import useCharacter from '../hooks/useCharacter';
-import HorizontalInput from '../Form/HorizontalInput';
 import Attacks from './Attacks';
 import Attributes from './Attributes';
 import Equipment from './Equipment';
 import DeathSaves from './DeathSaves';
 import Features from './Features';
-import Personality from './Personality';
 import Proficiencies from './Proficiencies';
 import TextSection from './TextSection';
+import SaveableInput from '../Form/SaveableInput';
 
 function CharacterSheet({ id }) {
   const [character, updateCharacter] = useCharacter(id);
@@ -40,14 +38,22 @@ function CharacterSheet({ id }) {
           <li>[x] update equipment</li>
           <li>[x] update skills (need notes)</li>
           <li>[x] update languages and other proficiencies</li>
-          <li>[] verify everything has notes</li>
+          <li>[x] verify everything has notes</li>
+          <li>[x] make the 'updateCharacter' function do as intended</li>
+          <li>[x] update the route to group the websockets by character</li>
+          <li>[x] create the db info needed</li>
+          <li>[x] add smash character info into db</li>
+          <li>[x] get the graphql is working</li>
+          <li>[x] make the update call work for header</li>
+          <li>[x] make the update call work for attributes</li>
+          <li>[x] make the update call work for saving throws and skills</li>
+          <li>[x] make the update call work for saving languages and proficiencies</li>
+          <li>[] make the update call work for saving health stuff</li>
+          <li>[] make the update call work for saving attacks</li>
+          <li>[] make the update call work for saving equipment</li>
+          <li>[x] make the update call work for saving personality</li>
+          <li>[] make the update call work for saving features and traits</li>
           <li>[] create markdown helper</li>
-          <li>[] make the 'updateCharacter' function do as intended</li>
-          <li>[] update the route to group the websockets by character</li>
-          <li>[] create the db info needed</li>
-          <li>[] add smash character info into db</li>
-          <li>[] get the graphql is working</li>
-          <li>[] make the update call work</li>
         </ul>
       </Box>
 
@@ -56,62 +62,54 @@ function CharacterSheet({ id }) {
           <Grid item xs={12}>
             <Grid container spacing={2} alignItems="center">
               <Grid item xs={12} sm={6}>
-                <TextField
-                  value={character.name || ''}
-                  fullWidth
-                  variant="filled"
+                <SaveableInput
+                  value={character.name}
                   label="Character Name"
-                  onChange={(e) => updateCharacter({ ...character, name: e.target.value })}
+                  onSave={(name) => updateCharacter({ name })}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
                 <Grid container spacing={1}>
                   <Grid item xs={12} sm={4}>
-                    <TextField
-                      value={character.className || ''}
-                      fullWidth
-                      variant="filled"
+                    <SaveableInput
+                      onSave={(className) => updateCharacter({ className })}
+                      value={character.className}
                       label="Class"
                     />
                   </Grid>
                   <Grid item xs={12} sm={4}>
-                    <TextField
+                    <SaveableInput
                       value={character.level}
-                      fullWidth
-                      variant="filled"
                       label="Level"
+                      onSave={level => updateCharacter({ level })}
                     />
                   </Grid>
                   <Grid item xs={12} sm={4}>
-                    <TextField
-                      value={character.playerName}
-                      fullWidth
-                      variant="filled"
-                      label="Player Name"
+                    <SaveableInput
+                      value={character.background}
+                      label="Background"
+                      onSave={background => updateCharacter({ background })}
                     />
                   </Grid>
                   <Grid item xs={12} sm={4}>
-                    <TextField
+                    <SaveableInput
                       value={character.race}
-                      fullWidth
-                      variant="filled"
                       label="Race"
+                      onSave={race => updateCharacter({ race })}
                     />
                   </Grid>
                   <Grid item xs={12} sm={4}>
-                    <TextField
+                    <SaveableInput
                       value={character.alignment}
-                      fullWidth
-                      variant="filled"
                       label="Alignment"
+                      onSave={alignment => updateCharacter({ alignment })}
                     />
                   </Grid>
                   <Grid item xs={12} sm={4}>
-                    <TextField
+                    <SaveableInput
                       value={character.xp}
-                      fullWidth
-                      variant="filled"
                       label="Experience Points"
+                      onSave={xp => updateCharacter({ xp })}
                     />
                   </Grid>
                 </Grid>
@@ -124,26 +122,27 @@ function CharacterSheet({ id }) {
               <Grid item xs={12} sm={5}>
                 <Attributes
                   character={character}
-                  onSave={() => console.log('make me work')}
+                  updateCharacter={updateCharacter}
                 />
               </Grid>
 
               <Grid item xs={12} sm={7}>
                 <Grid container spacing={2}>
                   <Grid item xs={12}>
-                    <HorizontalInput
-                      label="Inspiration"
-                      onChange={() => {}}
+                    <SaveableInput
                       value={character.inspiration}
+                      label="Inspiration"
+                      onSave={inspiration => updateCharacter({ inspiration })}
                     />
                   </Grid>
 
                   <Grid item xs={12}>
-                    <HorizontalInput
-                      label="Proficiency Bonus"
-                      onChange={() => {}}
+                    <SaveableInput
                       value={character.proficiencyBonus}
-                      type="number"
+                      label="Proficiency Bonus"
+                      onSave={proficiencyBonus => updateCharacter({
+                        proficiencyBonus: parseInt(proficiencyBonus, 10),
+                      })}
                     />
                   </Grid>
 
@@ -151,9 +150,10 @@ function CharacterSheet({ id }) {
                     <Box border={1} borderColor="rgba(0, 0, 0, 0.42)" borderRadius={4}>
                       <Box p={1.5}>
                         <Proficiencies
+                          fixedList
+                          category="savingThrows"
                           character={character}
-                          onSave={() => alert('make me work!') }
-                          proficiencies={character.savingThrows}
+                          updateCharacter={updateCharacter}
                         />
                       </Box>
                       <Box
@@ -172,10 +172,9 @@ function CharacterSheet({ id }) {
                     <Box border={1} borderColor="rgba(0, 0, 0, 0.42)" borderRadius={4}>
                       <Box p={1.5}>
                         <Proficiencies
+                          category="skills"
                           character={character}
-                          onDelete={() => alert('make me work!') }
-                          onSave={() => alert('make me work!') }
-                          proficiencies={character.skills}
+                          updateCharacter={updateCharacter}
                         />
                       </Box>
                       <Box
@@ -195,8 +194,9 @@ function CharacterSheet({ id }) {
 
               <Grid item xs={12}>
                 <TextSection
+                  accessor="languagesAndProficiencies"
                   label="Languages And Proficiencies"
-                  onSave={() => console.log('make me work')}
+                  updateCharacter={updateCharacter}
                   value={character.languagesAndProficiencies}
                 />
               </Grid>
@@ -309,7 +309,12 @@ function CharacterSheet({ id }) {
           <Grid item xs={12} md={4}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
-                <Personality personality={character.personality}/>
+                <TextSection
+                  accessor="personality"
+                  label="Personality"
+                  updateCharacter={updateCharacter}
+                  value={character.personality}
+                />
               </Grid>
 
               <Grid item xs={12}>
