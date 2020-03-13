@@ -9,6 +9,7 @@ import {
 } from '@material-ui/core';
 import _get from 'lodash/get';
 import useCharacter from '../hooks/useCharacter';
+import ArmorClass from './ArmorClass';
 import Attacks from './Attacks';
 import Attributes from './Attributes';
 import Equipment from './Equipment';
@@ -48,10 +49,10 @@ function CharacterSheet({ id }) {
           <li>[x] make the update call work for attributes</li>
           <li>[x] make the update call work for saving throws and skills</li>
           <li>[x] make the update call work for saving languages and proficiencies</li>
+          <li>[x] make the update call work for saving personality</li>
           <li>[] make the update call work for saving health stuff</li>
           <li>[] make the update call work for saving attacks</li>
           <li>[] make the update call work for saving equipment</li>
-          <li>[x] make the update call work for saving personality</li>
           <li>[] make the update call work for saving features and traits</li>
           <li>[] create markdown helper</li>
         </ul>
@@ -201,12 +202,12 @@ function CharacterSheet({ id }) {
                 />
               </Grid>
             </Grid>
-
           </Grid>
 
           <Grid item xs={12} sm={6} md={4}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={4}>
+                <ArmorClass character={character} updateCharacter={updateCharacter} />
                 <TextField
                   value={character.ac || ''}
                   fullWidth
