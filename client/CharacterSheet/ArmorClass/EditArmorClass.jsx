@@ -1,5 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import EditContainer from '../../Form/EditContainer';
+import ViewArmorClass from './ViewArmorClass';
+import armorClassForm from './armorClassForm';
 
 function EditArmorClass({
   onCancel,
@@ -7,9 +10,15 @@ function EditArmorClass({
   character,
 }) {
   return (
-    <div>
-      Hello World
-    </div>
+    <EditContainer
+      bgcolor="background.paper"
+      form={armorClassForm}
+      Preview={({ newVal }) => <ViewArmorClass character={{ ...character, ac: newVal }} />}
+      onCancel={onCancel}
+      onSave={onSave}
+      value={character.ac}
+      width={320}
+    />
   )
 }
 

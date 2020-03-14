@@ -208,12 +208,6 @@ function CharacterSheet({ id }) {
             <Grid container spacing={2}>
               <Grid item xs={12} sm={4}>
                 <ArmorClass character={character} updateCharacter={updateCharacter} />
-                <TextField
-                  value={character.ac || ''}
-                  fullWidth
-                  variant="filled"
-                  label="Armor Class"
-                />
               </Grid>
               <Grid item xs={12} sm={4}>
                 <TextField

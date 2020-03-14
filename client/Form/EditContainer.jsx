@@ -22,12 +22,14 @@ import DeleteButton from './DeleteButton';
 import Form from './index';
 
 function EditContainer({
+  bgcolor,
   onCancel,
   onDelete,
   onSave,
   Preview,
   form,
   value,
+  width,
 }) {
   const [validatedForm, setValidatedForm] = useState(form);
   const [newVal, setNewVal] = useState(value);
@@ -83,7 +85,15 @@ function EditContainer({
   }
 
   return (
-    <Box border={1} borderColor="grey.500" borderRadius={4} position="relative">
+    <Box
+      bgcolor={bgcolor}
+      border={1}
+      borderColor="grey.500"
+      borderRadius={4}
+      position="relative"
+      width={width}
+      zIndex={100}
+    >
       {overlay}
       <Box
         bgcolor="grey.300"
@@ -142,16 +152,20 @@ function EditContainer({
 }
 
 EditContainer.propTypes = {
+  bgcolor: PropTypes.string,
   form: PropTypes.arrayOf(PropTypes.shape()).isRequired,
   onCancel: PropTypes.func.isRequired,
   onDelete: PropTypes.func,
   onSave: PropTypes.func.isRequired,
   Preview: PropTypes.oneOfType([PropTypes.elementType, PropTypes.node]).isRequired,
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.shape()]).isRequired,
+  width: PropTypes.number,
 };
 
 EditContainer.defaultProps = {
+  bgcolor: 'transparent',
   onDelete: _noop,
+  width: 1,
 };
 
 export default EditContainer;

@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Box, Grid } from '@material-ui/core';
+import _isNil from 'lodash/isNil';
 import _map from 'lodash/map';
 import _startCase from 'lodash/startCase';
 import FormItem from './FormItem';
@@ -20,7 +21,9 @@ function Form({
         {_map(form, ({
           label,
           accessor,
-          type = 'text',
+          helperText,
+          title,
+          type,
           options,
           defaultValue,
           xs = 12,
@@ -42,11 +45,13 @@ function Form({
             <FormItem
               disabled={disabled}
               accessor={accessor}
+              helperText={helperText}
               label={label || _startCase(accessor)}
               options={options}
               updateValue={updateValue}
+              title={title}
               type={type}
-              value={value[accessor] || defaultValue}
+              value={_isNil(value[accessor]) ? defaultValue : value[accessor]}
               required={required}
               error={error}
             />

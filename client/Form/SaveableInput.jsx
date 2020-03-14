@@ -29,10 +29,9 @@ function SaveableInput({
   const valueChanged = String(value) !== String(newVal);
 
   useEffect(() => {
-    if (saving && !valueChanged) {
-      setSaving(false);
-    }
-  }, [saving, value, newVal, valueChanged]);
+    setSaving(false);
+    setNewVal(value);
+  }, [value])
 
   function save() {
     if (valueChanged) {
