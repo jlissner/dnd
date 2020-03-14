@@ -44,6 +44,7 @@ function FormItem({
   label,
   options,
   required,
+  text,
   title,
   type,
   updateValue,
@@ -69,6 +70,9 @@ function FormItem({
     switch (type) {
       case 'divider': {
         return <Divider />
+      }
+      case 'static-text': {
+        return <Typography variant={variant}>{text}</Typography>
       }
       case 'checkbox': {
         return (
@@ -160,6 +164,10 @@ function FormItem({
         );
       }
       case 'modifiers': {
+        const addButtonDisabled = value.length
+          ? !_last(value).name
+          : false;
+
         return (
           <>
             {_map(value, (mod, i) => (
@@ -195,7 +203,7 @@ function FormItem({
               </Grid>
             ))}
             <AddButton
-              disabled={!_last(value).name}
+              disabled={addButtonDisabled}
               onAdd={() => updateValue([...value, { active: false, name: '', value: 0 }], accessor)}
             />
           </>
@@ -241,7 +249,8 @@ FormItem.propTypes = {
     value: PropTypes.string.isRequired,
   })),
   required: PropTypes.bool,
-  title: PropTypes.string.isRequired,
+  text: PropTypes.string,
+  title: PropTypes.string,
   type: PropTypes.string.isRequired,
   updateValue: PropTypes.func.isRequired,
   value: PropTypes.oneOfType([
@@ -262,6 +271,7 @@ FormItem.defaultProps = {
   fullWidth: true,
   options: [],
   required: false,
+  text: '',
   title: '',
   helperText: '',
   variant: 'filled',

@@ -9,15 +9,17 @@ import {
 } from '@material-ui/core';
 import _get from 'lodash/get';
 import useCharacter from '../hooks/useCharacter';
+import SaveableInput from '../Form/SaveableInput';
 import ArmorClass from './ArmorClass';
 import Attacks from './Attacks';
 import Attributes from './Attributes';
-import Equipment from './Equipment';
 import DeathSaves from './DeathSaves';
+import Equipment from './Equipment';
 import Features from './Features';
+import Initiative from './Initiative'
 import Proficiencies from './Proficiencies';
+import Speed from './Speed';
 import TextSection from './TextSection';
-import SaveableInput from '../Form/SaveableInput';
 
 function CharacterSheet({ id }) {
   const [character, updateCharacter] = useCharacter(id);
@@ -210,20 +212,10 @@ function CharacterSheet({ id }) {
                 <ArmorClass character={character} updateCharacter={updateCharacter} />
               </Grid>
               <Grid item xs={12} sm={4}>
-                <TextField
-                  value={`${character.initiative > -1 ? '+' : ''}${character.initiative || ''}`}
-                  fullWidth
-                  variant="filled"
-                  label="Initiative"
-                />
+                <Initiative character={character} updateCharacter={updateCharacter} />
               </Grid>
               <Grid item xs={12} sm={4}>
-                <TextField
-                  value={character.speed || ''}
-                  fullWidth
-                  variant="filled"
-                  label="Speed"
-                />
+                <Speed character={character} updateCharacter={updateCharacter} />
               </Grid>
 
               <Grid item xs={12}>
@@ -278,7 +270,7 @@ function CharacterSheet({ id }) {
               <Grid item xs={12} sm={6}>
                 <Grid container spacing={1}>
                   <Grid item xs={12}>
-                    <DeathSaves deathSaves={_get(character, 'health.deathSaves')}/>
+                    <DeathSaves character={character} updateCharacter={updateCharacter} />
                   </Grid>
                 </Grid>
               </Grid>

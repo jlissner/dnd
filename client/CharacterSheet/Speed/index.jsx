@@ -1,22 +1,22 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import EditButton from '../../Form/EditButton';
-import EditArmorClass from './EditArmorClass';
-import ViewArmorClass from './ViewArmorClass';
+import EditSpeed from './EditSpeed';
+import ViewSpeed from './ViewSpeed';
 
-function ArmorClass({
+function Speed({
   character,
   updateCharacter,
 }) {
   const [editMode, setEditMode] = useState(false);
 
-  function save(ac) {
-    updateCharacter({ ac })
+  function save(speed) {
+    updateCharacter({ speed });
   }
 
   if (editMode) {
     return (
-      <EditArmorClass
+      <EditSpeed
         onCancel={() => setEditMode(false)}
         onSave={save}
         character={character}
@@ -26,16 +26,16 @@ function ArmorClass({
 
   return (
     <EditButton onClick={() => setEditMode(true)}>
-      <ViewArmorClass
+      <ViewSpeed
         character={character}
       />
     </EditButton>
   );
 }
 
-ArmorClass.propTypes = {
+Speed.propTypes = {
   character: PropTypes.shape().isRequired,
   updateCharacter: PropTypes.func.isRequired,
 };
 
-export default ArmorClass;
+export default Speed;

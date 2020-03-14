@@ -21,18 +21,12 @@ function Form({
         {_map(form, ({
           label,
           accessor,
-          helperText,
-          title,
-          type,
-          options,
           defaultValue,
           xs = 12,
           sm,
           md,
           lg,
-          required,
-          error,
-          disabled,
+          ...formProps
         }) => (
           <Grid
             key={accessor}
@@ -43,23 +37,17 @@ function Form({
             lg={lg}
           >
             <FormItem
-              disabled={disabled}
               accessor={accessor}
-              helperText={helperText}
               label={label || _startCase(accessor)}
-              options={options}
               updateValue={updateValue}
-              title={title}
-              type={type}
               value={_isNil(value[accessor]) ? defaultValue : value[accessor]}
-              required={required}
-              error={error}
+              {...formProps}
             />
           </Grid>
         ))}
       </Grid>
     </Box>
-  )
+  );
 }
 
 Form.propTypes = {

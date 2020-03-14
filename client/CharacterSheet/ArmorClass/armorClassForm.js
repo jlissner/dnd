@@ -1,5 +1,5 @@
 const armorClassForm = [
-  { accessor: 'base', type: 'number' },
+  { accessor: 'base', label: 'Base AC', type: 'number', required: true },
   { accessor: 'divider1', type: 'divider' },
   {
     accessor: 'attributes',

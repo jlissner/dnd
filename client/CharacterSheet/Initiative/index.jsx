@@ -1,22 +1,22 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import EditButton from '../../Form/EditButton';
-import EditArmorClass from './EditArmorClass';
-import ViewArmorClass from './ViewArmorClass';
+import EditInitiative from './EditInitiative';
+import ViewInitiative from './ViewInitiative';
 
-function ArmorClass({
+function Initiative({
   character,
   updateCharacter,
 }) {
   const [editMode, setEditMode] = useState(false);
 
-  function save(ac) {
-    updateCharacter({ ac })
+  function save(initiative) {
+    updateCharacter({ initiative });
   }
 
   if (editMode) {
     return (
-      <EditArmorClass
+      <EditInitiative
         onCancel={() => setEditMode(false)}
         onSave={save}
         character={character}
@@ -26,16 +26,16 @@ function ArmorClass({
 
   return (
     <EditButton onClick={() => setEditMode(true)}>
-      <ViewArmorClass
+      <ViewInitiative
         character={character}
       />
     </EditButton>
   );
 }
 
-ArmorClass.propTypes = {
+Initiative.propTypes = {
   character: PropTypes.shape().isRequired,
   updateCharacter: PropTypes.func.isRequired,
 };
 
-export default ArmorClass;
+export default Initiative;

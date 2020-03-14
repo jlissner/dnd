@@ -1,8 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { makeStyles } from '@material-ui/core/styles';
 import { Box, Typography } from '@material-ui/core';
 import _noop from 'lodash/noop';
 import useNotes from '../hooks/useNotes';
+
+const useStyles = makeStyles(() => ({
+  title: {
+    cursor: hasNotes => (hasNotes ? 'pointer' : 'default'),
+
+    '&:hover': {
+      backgroundColor: hasNotes => (hasNotes ? 'rgba(0, 0, 0, 0.09)' : 'none'),
+    },
+  },
+}));
 
 function Simple({
   children,
@@ -10,6 +21,7 @@ function Simple({
   label,
   notes,
 }) {
+  const classes = useStyles(hasNotes);
   const [ref, openNotes, notesComponent] = useNotes(notes);
 
   return (
@@ -21,7 +33,6 @@ function Simple({
         bgcolor="rgba(0, 0, 0, 0.09)"
         p={1}
         ref={ref}
-        onClick={hasNotes ? openNotes : _noop}
       >
         <Box
           border={1}
@@ -31,7 +42,7 @@ function Simple({
         >
           {children}
         </Box>
-        <Box pt={1}>
+        <Box mt={1} className={classes.title} onClick={hasNotes ? openNotes : _noop}>
           <Typography align="center" variant="body2">
             {label}{notes ? '*' : ''}
           </Typography>
