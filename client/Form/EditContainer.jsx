@@ -42,7 +42,7 @@ function EditContainer({
     }
 
     return <Form form={validatedForm} setValue={setNewVal} value={newVal} />
-  }, [validatedForm, newVal, setNewVal, Preview, previewing]);
+  }, [validatedForm, newVal, setNewVal, previewing]);
   const saveDisabled = _isEqual(newVal, value);
   const overlay = (saving || deleting)
     ? <Box

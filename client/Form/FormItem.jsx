@@ -66,7 +66,8 @@ function FormItem({
       <Typography variant="h6">{title}</Typography>
     </If>
   ), [title]);
-  const input = useMemo(() => {
+  
+  function renderInput() {
     switch (type) {
       case 'divider': {
         return <Divider />
@@ -227,12 +228,12 @@ function FormItem({
         );
       }
     }
-  }, [accessor, disabled, error, fullWidth, label, options, required, type, updateValue, value, variant])
+  }
 
   return (
     <>
       {titleComp}
-      {input}
+      {renderInput()}
     </>
   )
 }

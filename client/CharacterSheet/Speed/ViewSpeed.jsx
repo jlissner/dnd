@@ -6,8 +6,6 @@ import {
 } from '@material-ui/core';
 import _reduce from 'lodash/reduce';
 import { Simple } from '../../Displays';
-import getTotalModifier from '../../utils/getTotalModifier';
-import getNumericPrefix from '../../utils/getNumericPrefix';
 
 function calculateSpeed({ speed, ...character }) {
   const { base, modifiers } = speed;

@@ -119,7 +119,8 @@ function DeathSaves({
 }
 
 DeathSaves.propTypes = {
-  deathSaves: PropTypes.arrayOf(PropTypes.bool).isRequired,
+  character: PropTypes.shape().isRequired,
+  updateCharacter: PropTypes.func.isRequired,
 };
 
 export default DeathSaves;

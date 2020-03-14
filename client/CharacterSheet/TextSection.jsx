@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   Box,
@@ -16,9 +16,9 @@ function TextSection({
 }) {
   const [editMode, setEditMode] = useState(false);
 
-  function save({ text }) {
+  const save = useCallback(({ text }) => {
     updateCharacter({ [accessor]: text })
-  }
+  }, [accessor, updateCharacter])
 
   const content = useMemo(() => (
     editMode

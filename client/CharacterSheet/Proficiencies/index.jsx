@@ -20,7 +20,7 @@ function Proficiencies({
 
   useEffect(() => {
     setProficiencies(character[category]);
-  }, [character[category]]);
+  }, [character, category]);
 
   function save(index, updatedProficiency) {
     const updatedProficiencies = _cloneDeep(proficiencies);

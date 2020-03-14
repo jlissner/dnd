@@ -43,9 +43,7 @@ function ViewProficiency({
     : name;
 
     useEffect(() => {
-      if (saving) {
-        setSaving(false);
-      }
+      setSaving(false);
     }, [proficient]);
 
   function handleClick() {
