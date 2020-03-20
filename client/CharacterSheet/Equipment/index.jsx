@@ -10,12 +10,19 @@ import AddButton from '../../Form/AddButton';
 import AdvancedTextSection from '../AdvancedTextSection';
 import Currency from './Currency';
 
-function EquipmentIndex({
+function Equipment({
   character,
-  onDelete,
-  onSave,
+  updateCharacter,
 }) {
   const { equipment, money } = character;
+
+  function onDelete() {
+    alert('delete me');
+  }
+
+  function onSave() {
+    alert('save me');
+  }
 
   return (
     <Box
@@ -26,7 +33,7 @@ function EquipmentIndex({
     >
       <Grid container spacing={1} wrap="nowrap">
         <Box width={100} ml={-2.5}>
-          <Currency money={money} />
+          <Currency money={money} updateCharacter={updateCharacter} />
         </Box>
         <Box pl={2}>
           {_map(equipment, (equip) => (
@@ -56,10 +63,9 @@ function EquipmentIndex({
   )
 }
 
-EquipmentIndex.propTypes = {
+Equipment.propTypes = {
   character: PropTypes.shape().isRequired,
-  onDelete: PropTypes.func.isRequired,
-  onSave: PropTypes.func.isRequired,
+  updateCharacter: PropTypes.func.isRequired,
 };
 
-export default EquipmentIndex;
+export default Equipment;

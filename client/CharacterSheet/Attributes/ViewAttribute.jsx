@@ -1,17 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ReactNumberFormat from 'react-number-format';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Box,
   Button,
+  Typography,
 } from '@material-ui/core';
 import _cloneDeep from 'lodash/cloneDeep';
 import _findIndex from 'lodash/findIndex';
 import getNumericPrefix from '../../utils/getNumericPrefix';
 import getTotalModifier from '../../utils/getTotalModifier';
 import useNotes from '../../hooks/useNotes';
-import NumericInput from '../../Form/NumericInput';
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -62,28 +61,34 @@ function ViewAttribute({
         >
           {renderedName}
         </Button>
-        <NumericInput
-          border={0}
+        <Box
           p={2}
           width={1}
-          value={value}
-        />
+          bgcolor="grey.200"
+        >
+          <Typography align="center">{value}</Typography>
+        </Box>
         <Box bgcolor="primary.main" p={1} />
       </Box>
-      <NumericInput
+      <Box
+        border={1}
+        borderColor="rgba(0, 0, 0, 0.42)"
+        display="flex"
+        p={.5}
+        justifyContent="center"
+        alignItems="center"
         className={classes.modifier}
         bgcolor="grey.200"
         borderRadius="50%"
         bottom={0}
-        component={ReactNumberFormat}
         left={0}
         right={0}
         mx="auto"
         position="absolute"
-        prefix={getNumericPrefix(modifier)}
         textAlign="center"
-        value={modifier}
-      />
+      >
+        <Typography align="center">{`${getNumericPrefix(modifier)}${modifier}`}</Typography>
+      </Box>
       {notesComponent}
     </Box>
   );

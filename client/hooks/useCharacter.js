@@ -5,10 +5,7 @@ function useCharacter(id) {
   const url = `ws://${window.location.host}/character/${id}`;
   const { message, readyState, send } = useWebsocket(url);
   const [character, setCharacter] = useState({});
-
-  if (readyState !== 1) {
-    console.log('loading...')
-  }
+  const loading = readyState === 0;
 
   useEffect(() => {
     if (message) {
@@ -26,6 +23,7 @@ function useCharacter(id) {
   return [
     character,
     updateCharacter,
+    loading,
   ];
 }
 

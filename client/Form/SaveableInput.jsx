@@ -4,10 +4,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import {
   CircularProgress,
   InputAdornment,
-  TextField,
 } from '@material-ui/core';
 import { Save as SaveIcon } from '@material-ui/icons';
 import _noop from 'lodash/noop';
+import FormItem from './FormItem';
 
 const useStyles = makeStyles((theme) => ({
   save: {
@@ -18,8 +18,10 @@ const useStyles = makeStyles((theme) => ({
 
 function SaveableInput({
   label,
+  savingIndicator,
   onSave,
   saveOnBlur,
+  type,
   value,
   ...props
 }) {
@@ -40,9 +42,15 @@ function SaveableInput({
     }
   }
 
+  function handleEnter(evt) {
+    if (evt.keyCode === 13) {
+      save();
+    }
+  }
+
   function endAdornment() {
-    if (saving) {
-      return <InputAdornment position="end"><CircularProgress size={16} /></InputAdornment>
+    if (savingIndicator && saving) {
+      return <InputAdornment position="end">{savingIndicator}</InputAdornment>
     }
 
     if (!saveOnBlur && valueChanged) {
@@ -61,31 +69,36 @@ function SaveableInput({
   }
 
   return (
-    <TextField
+    <FormItem
       disabled={saving}
-      fullWidth
       InputProps={{
         endAdornment: endAdornment(),
       }}
       label={label}
-      onChange={(evt) => setNewVal(evt.target.value)}
+      setValue={setNewVal}
       onBlur={saveOnBlur ? save : _noop}
+      onKeyDown={handleEnter}
+      type={type}
       value={newVal}
-      variant="filled"
       {...props}
     />
   )
 }
 
 SaveableInput.propTypes = {
-  label: PropTypes.string.isRequired,
+  label: PropTypes.string,
   onSave: PropTypes.func.isRequired,
   saveOnBlur: PropTypes.bool,
+  savingIndicator: PropTypes.node,
+  type: PropTypes.string,
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
 };
 
 SaveableInput.defaultProps = {
+  label: '',
+  type: 'text',
   saveOnBlur: false,
+  savingIndicator: <CircularProgress size={16} />,
 };
 
 export default SaveableInput;

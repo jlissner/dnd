@@ -10,6 +10,7 @@ import {
 import _get from 'lodash/get';
 import useCharacter from '../hooks/useCharacter';
 import SaveableInput from '../Form/SaveableInput';
+import HorizontalInput from '../Form/HorizontalInput';
 import ArmorClass from './ArmorClass';
 import Attacks from './Attacks';
 import Attributes from './Attributes';
@@ -132,7 +133,7 @@ function CharacterSheet({ id }) {
               <Grid item xs={12} sm={7}>
                 <Grid container spacing={2}>
                   <Grid item xs={12}>
-                    <SaveableInput
+                    <HorizontalInput
                       value={character.inspiration}
                       label="Inspiration"
                       onSave={inspiration => updateCharacter({ inspiration })}
@@ -140,12 +141,13 @@ function CharacterSheet({ id }) {
                   </Grid>
 
                   <Grid item xs={12}>
-                    <SaveableInput
+                    <HorizontalInput
                       value={character.proficiencyBonus}
                       label="Proficiency Bonus"
                       onSave={proficiencyBonus => updateCharacter({
                         proficiencyBonus: parseInt(proficiencyBonus, 10),
                       })}
+                      type="number"
                     />
                   </Grid>
 
@@ -286,8 +288,7 @@ function CharacterSheet({ id }) {
               <Grid item xs={12}>
                 <Equipment
                   character={character}
-                  onDelete={() => alert('make me work')}
-                  onSave={() => alert('make me work')}
+                  updateCharacter={updateCharacter}
                 />
               </Grid>
             </Grid>

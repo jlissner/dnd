@@ -10,12 +10,9 @@ import GameBoard from './GameBoard';
 import PlayerList from './PlayerList';
 import theme from './theme';
 import useGameBoard from './hooks/useGameBoard';
-import axios from 'axios';
 
 function App() {
   const gameBoard = useGameBoard();
-
-  axios.get('/ping').then(res => console.log(res))
 
   return (
     <MuiThemeProvider theme={theme}>

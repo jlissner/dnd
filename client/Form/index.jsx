@@ -37,9 +37,8 @@ function Form({
             lg={lg}
           >
             <FormItem
-              accessor={accessor}
               label={label || _startCase(accessor)}
-              updateValue={updateValue}
+              setValue={(newValue) => updateValue(newValue, accessor)}
               value={_isNil(value[accessor]) ? defaultValue : value[accessor]}
               {...formProps}
             />

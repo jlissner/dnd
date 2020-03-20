@@ -6,12 +6,17 @@ import HorizontalInput from '../../Form/HorizontalInput';
 
 function Currency({
   money,
+  updateCharacter,
 }) {
+  function onSave(newVal, key) {
+    updateCharacter({ money: { ...money, [key]: parseInt(newVal, 10) }});
+  }
+
   return _map(money, (val, key) => (
     <Box key={key} pb={1}>
       <HorizontalInput
         label={key.toUpperCase()}
-        onChange={() => {}}
+        onSave={(newVal) => onSave(newVal, key)}
         value={val}
         inputFirst={false}
       />
