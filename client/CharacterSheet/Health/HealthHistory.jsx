@@ -2,14 +2,17 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import {
-  Box,
   Divider,
   Grid,
   Typography,
 } from '@material-ui/core';
 import _map from 'lodash/map';
+import { getNumericPrefix } from '../../utils';
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    borderLeft: '1px solid rgba(0, 0, 0, 0.09)',
+  },
   positive: {
     color: theme.palette.success.main,
   },
@@ -32,10 +35,8 @@ function HealthHistory({
 }) {
   const classes = useStyles();
 
-  console.log({ startHealth })
-
   return (
-    <Grid container>
+    <Grid container className={classes.root}>
       <Grid item xs={12}>
         <Typography align="right">{startHealth}</Typography>
       </Grid>
@@ -43,7 +44,7 @@ function HealthHistory({
         <React.Fragment key={i}>
           <Grid item xs={12}>
             <Typography align="right" className={classes[getClassName(modifier)]}>
-              {modifier}
+              {getNumericPrefix(modifier)}{modifier}
             </Typography>
           </Grid>
           <Grid item xs={12}>

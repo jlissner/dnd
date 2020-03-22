@@ -14,6 +14,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import _filter from 'lodash/filter';
 import _last from 'lodash/last';
 import _map from 'lodash/map';
+import _noop from 'lodash/noop';
 import _omit from 'lodash/omit';
 import _trimStart from 'lodash/trimStart';
 import _xor from 'lodash/xor';
@@ -37,6 +38,7 @@ function FormItem({
   inputProps,
   InputProps,
   label,
+  onEnter,
   options,
   required,
   text,
@@ -47,6 +49,12 @@ function FormItem({
   variant,
   ...props
 }) {
+  function handleEnter(evt) {
+    if (evt.keyCode === 13) {
+      onEnter();
+    }
+  }
+
   const defaultProps = {
     disabled,
     error,
@@ -57,6 +65,7 @@ function FormItem({
     required,
     variant,
     value,
+    onKeyDown: handleEnter,
   };
   const inputPropsForAll = _omit(inputProps, ['useNumericPrefix', 'prefix']);
   const titleComp = useMemo(() => (
@@ -64,7 +73,8 @@ function FormItem({
       <Typography variant="h6">{title}</Typography>
     </If>
   ), [title]);
-  
+
+
   function renderInput() {
     switch (type) {
       case 'divider': {
@@ -155,7 +165,7 @@ function FormItem({
       case 'uses': {
         function updateUses(numOfUses) {
           try {
-            return Array(numOfUses).fill(false).map((use, i) => value[i] || use); 
+            return Array(numOfUses).fill(false).map((use, i) => value[i] || use);
           } catch (err) {
             return [];
           }
@@ -257,6 +267,7 @@ FormItem.propTypes = {
   inputProps: PropTypes.shape(),
   InputProps: PropTypes.shape(),
   label: PropTypes.string,
+  onEnter: PropTypes.func,
   options: PropTypes.arrayOf(PropTypes.shape({
     label: PropTypes.string,
     value: PropTypes.string.isRequired,
@@ -286,6 +297,7 @@ FormItem.defaultProps = {
   inputProps: {},
   InputProps: {},
   label: '',
+  onEnter: _noop,
   options: [],
   required: false,
   text: '',

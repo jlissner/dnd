@@ -46,6 +46,11 @@ function UpdateHealth({
     const modifier = getModifier(hp, newVal, type);
     const newTotal = hp + modifier;
 
+    if (modifier === 0) {
+      updateHealthHistory(newHistory);
+      return;
+    }
+
     setNewHistory({ newTotal, modifier })
     setSaving(true);
 
@@ -55,16 +60,21 @@ function UpdateHealth({
   useEffect(() => {
     setNewVal('');
     setSaving(false);
-    updateHealthHistory(newHistory);
+
+    if (newHistory) {
+      updateHealthHistory(newHistory);
+      setNewHistory(null);
+    }
   }, [hp]);
 
   return (
     <FormItem
       disabled={saving}
-      label="Update HP"
       value={newVal}
       setValue={setNewVal}
       onBlur={save}
+      onEnter={save}
+      label="Update"
     />
   )
 }

@@ -42,6 +42,7 @@ function getName(name, modifier) {
 function ViewAttack({
   attack,
   character,
+  onSave,
 }) {
   const {
     dmg,
@@ -57,9 +58,16 @@ function ViewAttack({
   const hit = getHit(attack, character);
   const damage = getDamage(dmg, bonusModifier);
 
+  function save({ uses: newUses }) {
+    onSave({
+      ...attack,
+      uses: newUses,
+    })
+  }
+
   return (
     <ViewAdvancedTextSection
-      onSave={() => alert('make me work')}
+      onSave={save}
       tags={[]}
       name={atkName}
       longDesc={notes}

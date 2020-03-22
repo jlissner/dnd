@@ -27,7 +27,7 @@ function Attack({
 
   return (
     <EditButton onClick={() => setEditMode(true)}>
-      <ViewAttack attack={attack} character={character} />
+      <ViewAttack attack={attack} character={character} onSave={onSave} />
     </EditButton>
   )
 }

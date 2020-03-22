@@ -54,10 +54,10 @@ function CharacterSheet({ id }) {
           <li>[x] make the update call work for saving throws and skills</li>
           <li>[x] make the update call work for saving languages and proficiencies</li>
           <li>[x] make the update call work for saving personality</li>
-          <li>[] make the update call work for saving health stuff</li>
-          <li>[] make the update call work for saving attacks</li>
-          <li>[] make the update call work for saving equipment</li>
-          <li>[] make the update call work for saving features and traits</li>
+          <li>[x] make the update call work for saving attacks</li>
+          <li>[x] make the update call work for saving equipment</li>
+          <li>[x] make the update call work for saving features and traits</li>
+          <li>[x] make the update call work for saving health stuff</li>
           <li>[] create markdown helper</li>
         </ul>
       </Box>
@@ -229,7 +229,7 @@ function CharacterSheet({ id }) {
                       updateCharacter={updateCharacter}
                     />
                   </Grid>
-                  
+
                   <Grid item xs={12} md={6}>
                     <Grid container spacing={1}>
                       <Grid item xs={12}>
@@ -247,19 +247,17 @@ function CharacterSheet({ id }) {
                         />
                       </Grid>
                       <Grid item xs={12}>
-                        <TextField
-                          value={_get(character, 'health.totalHitDice', '')}
-                          fullWidth
-                          variant="filled"
-                          label="Total Hit Dice"
+                        <HorizontalInput
+                          value={character.health.totalHitDice}
+                          label="Total Hit Die"
+                          onSave={totalHitDice => updateCharacter({ health: { ...character.health, totalHitDice } })}
                         />
                       </Grid>
                       <Grid item xs={12}>
-                        <TextField
-                          value={_get(character, 'health.hitDice', '')}
-                          fullWidth
-                          variant="filled"
-                          label="Hit Dice"
+                        <HorizontalInput
+                          value={character.health.hitDice}
+                          label="Hit Die"
+                          onSave={hitDice => updateCharacter({ health: { ...character.health, hitDice } })}
                         />
                       </Grid>
                       <Grid item xs={12}>
