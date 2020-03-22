@@ -17,6 +17,7 @@ import Attributes from './Attributes';
 import DeathSaves from './DeathSaves';
 import Equipment from './Equipment';
 import Features from './Features';
+import Health from './Health';
 import Initiative from './Initiative'
 import Proficiencies from './Proficiencies';
 import Speed from './Speed';
@@ -222,57 +223,49 @@ function CharacterSheet({ id }) {
 
               <Grid item xs={12}>
                 <Grid container spacing={1}>
-                  <Grid item xs={12}>
-                    <TextField
-                      value={_get(character, 'health.maxHp', '')}
-                      fullWidth
-                      variant="filled"
-                      label="Max Hit Points"
+                  <Grid item xs={12} md={6}>
+                    <Health
+                      character={character}
+                      updateCharacter={updateCharacter}
                     />
                   </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      value={_get(character, 'health.currentHp', '')}
-                      fullWidth
-                      variant="filled"
-                      label="Current Hit Points"
-                    />
-                  </Grid>
-                </Grid>
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  value={_get(character, 'health.tempHp', '')}
-                  fullWidth
-                  variant="filled"
-                  label="Temporary Hit Points"
-                />
-              </Grid>
-
-              <Grid item xs={12} sm={6}>
-                <Grid container spacing={1}>
-                  <Grid item xs={12}>
-                    <TextField
-                      value={_get(character, 'health.totalHitDice', '')}
-                      fullWidth
-                      variant="filled"
-                      label="Total Hit Dice"
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      value={_get(character, 'health.hitDice', '')}
-                      fullWidth
-                      variant="filled"
-                      label="Hit Dice"
-                    />
-                  </Grid>
-                </Grid>
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <Grid container spacing={1}>
-                  <Grid item xs={12}>
-                    <DeathSaves character={character} updateCharacter={updateCharacter} />
+                  
+                  <Grid item xs={12} md={6}>
+                    <Grid container spacing={1}>
+                      <Grid item xs={12}>
+                        <HorizontalInput
+                          value={character.health.maxHp}
+                          label="Max HP"
+                          onSave={maxHp => updateCharacter({ health: { ...character.health, maxHp } })}
+                        />
+                      </Grid>
+                      <Grid item xs={12}>
+                        <HorizontalInput
+                          value={character.health.tempHp}
+                          label="Temp HP"
+                          onSave={tempHp => updateCharacter({ health: { ...character.health, tempHp } })}
+                        />
+                      </Grid>
+                      <Grid item xs={12}>
+                        <TextField
+                          value={_get(character, 'health.totalHitDice', '')}
+                          fullWidth
+                          variant="filled"
+                          label="Total Hit Dice"
+                        />
+                      </Grid>
+                      <Grid item xs={12}>
+                        <TextField
+                          value={_get(character, 'health.hitDice', '')}
+                          fullWidth
+                          variant="filled"
+                          label="Hit Dice"
+                        />
+                      </Grid>
+                      <Grid item xs={12}>
+                        <DeathSaves character={character} updateCharacter={updateCharacter} />
+                      </Grid>
+                    </Grid>
                   </Grid>
                 </Grid>
               </Grid>
@@ -280,8 +273,7 @@ function CharacterSheet({ id }) {
               <Grid item xs={12}>
                 <Attacks
                   character={character}
-                  onDelete={() => alert('make me work')}
-                  onSave={() => alert('make me work')}
+                  updateCharacter={updateCharacter}
                 />
               </Grid>
 
@@ -307,9 +299,8 @@ function CharacterSheet({ id }) {
 
               <Grid item xs={12}>
                 <Features
-                  features={character.featuresAndTraits}
-                  onDelete={() => alert('make me work')}
-                  onSave={() => alert('make me work')}
+                  features={character.features}
+                  updateCharacter={updateCharacter}
                 />
               </Grid>
             </Grid>

@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -6,14 +6,23 @@ import {
   Grid,
   Tab,
   Tabs,
+  TextField,
   Typography,
 } from '@material-ui/core';
 import { 
   Add as AddIcon,
 } from '@material-ui/icons';
 import _filter from 'lodash/filter';
+import _isEqual from 'lodash/isEqual';
+import _last from 'lodash/last';
 import _map from 'lodash/map';
 import _uniq from 'lodash/uniq';
+import {
+  Confirm,
+  removeByIndex,
+  replaceByIndex,
+} from '../../utils';
+import AddButton from '../../Form/AddButton';
 import Attack from './Attack';
 
 const useTabsStyles = makeStyles((theme) => ({
@@ -26,20 +35,34 @@ const useTabsStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.paper,
     borderBottom: '1px solid white',
     borderBottomColor: theme.palette.background.paper,
+    left: '0 !important',
+    right: 0,
+    width: 'auto !important',
     zIndex: 2,
   },
 }));
 
 const useTabStyles = makeStyles((theme) => ({
   root: {
+    borderLeft: '1px solid rgba(0, 0, 0, 0.42)',
+    borderTop: '1px solid rgba(0, 0, 0, 0.42)',
     borderRadius: '4px 4px 0 0',
+    marginTop: theme.spacing(1),
+
+    '&:last-child': {
+      borderRight: '1px solid rgba(0, 0, 0, 0.42)',
+    },
+
     '&:hover': {
     },
     '&$selected': {
-      borderLeft: '1px solid rgba(0, 0, 0, 0.42)',
+      marginTop: 0,
       borderRight: '1px solid rgba(0, 0, 0, 0.42)',
-      borderTop: '1px solid rgba(0, 0, 0, 0.42)',
       background: theme.palette.background.paper,
+
+      '& + $root': {
+        borderLeft: 'none',
+      },
     },
     '&:focus': {
     },
@@ -47,21 +70,67 @@ const useTabStyles = makeStyles((theme) => ({
   selected: {},
 }));
 
+function createNewAttack(category) {
+  return {
+    bonusModifier: 0,
+    dmg: '',
+    dmgType: '',
+    category,
+    name: '',
+    notes: '',
+    range: '',
+    uses: 0,
+  }
+}
+
 function Attacks({
   character,
-  onDelete,
-  onSave,
+  updateCharacter,
 }) {
   const { attacks } = character;
+  const [newAttacks, setNewAttacks] = useState(attacks);
+  const [newTab, setNewTab] = useState('');
   const tabsClasses = useTabsStyles();
   const tabClasses = useTabStyles();
   const categories = useMemo(() => {
-    const cats = _map(attacks, ({ category }) => category);
+    const cats = _map(newAttacks, ({ category }) => category);
 
     return _uniq(cats);
-  }, [attacks]);
+  }, [newAttacks]);
   const [tab, setTab] = useState(categories[0]);
-  const categoryAttacks = _filter(attacks, { category: tab });
+  const addDisabled = !_last(newAttacks).name
+
+  useEffect(() => {
+    setNewAttacks(attacks);
+  }, [attacks]);
+
+  function onDelete(index) {
+    const categoryOfDeletedItem = newAttacks[index].category;
+    const numberOfItemsInCategory = _filter(newAttacks, { category: categoryOfDeletedItem}).length;
+    const updatedAttacks = removeByIndex(newAttacks, index);
+
+    if (numberOfItemsInCategory === 1) {
+      setTab(categories[0])
+    }
+
+    if (_isEqual(updatedAttacks, attacks)) {
+      setNewAttacks(updatedAttacks);
+    } else {
+      updateCharacter({ attacks: updatedAttacks });
+    }
+  }
+
+  function onSave(newAttack, index) {
+    const updatedAttacks = replaceByIndex(newAttacks, newAttack, index);
+
+    updateCharacter({ attacks: updatedAttacks });
+  }
+
+  function onAdd(category) {
+    if (category) {
+      setNewAttacks([...newAttacks, createNewAttack(category)]);
+    }
+  }
 
   return (
     <Box
@@ -74,12 +143,38 @@ function Attacks({
         classes={tabsClasses}
         value={tab}
         variant="scrollable"
-        onChange={(_, val) => val && setTab(val)}
+        onChange={(_, val) => categories.indexOf(val) > -1 && setTab(val)}
       >
         {_map(categories, (cat) => (
-          <Tab classes={tabClasses} key={cat} label={cat} value={cat}/>
+          <Tab
+            classes={tabClasses}
+            disabled={addDisabled}
+            key={cat}
+            label={cat}
+            value={cat}
+          />
         ))}
-        <Tab onClick={() => alert('make me work')} value={false} label={<AddIcon />} />
+        <Confirm
+          Component={Tab}
+          classes={tabClasses}
+          disabled={addDisabled}
+          label={<AddIcon />}
+          text={(
+            <TextField
+              fullWidth
+              label="Title"
+              value={newTab}
+              variant="filled"
+              onChange={(evt) => setNewTab(evt.target.value)}
+            />
+          )}
+          title="New Category"
+          onConfirm={() => {
+            onAdd(newTab);
+            setTab(newTab);
+            setNewTab('');
+          }}
+        />
       </Tabs>
       <Box
         bgcolor="background.paper"
@@ -90,16 +185,19 @@ function Attacks({
         mt="-3px"
       >
         <Grid container spacing={2}>
-          {_map(categoryAttacks, attack => (
+          {_map(newAttacks, (attack, i) => attack.category === tab && (
             <Grid item xs={12} key={attack.name}>
               <Attack
                 attack={attack}
                 character={character}
-                onDelete={onDelete}
-                onSave={onSave}
+                onDelete={() => onDelete(i)}
+                onSave={(newAttack) => onSave({ ...newAttack, category: tab }, i)}
               />
             </Grid>
           ))}
+          <Grid item xs={12}>
+            <AddButton disabled={addDisabled} onAdd={() => onAdd(tab)} />
+          </Grid>
         </Grid>
       </Box>
       <Box p={2}>
@@ -111,8 +209,7 @@ function Attacks({
 
 Attacks.propTypes = {
   character: PropTypes.shape(),
-  onDelete: PropTypes.func.isRequired,
-  onSave: PropTypes.func.isRequired,
+  updateCharacter: PropTypes.func.isRequired,
 };
 
 export default Attacks;

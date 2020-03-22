@@ -1,27 +1,59 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   Box,
   Grid,
   Typography,
 } from '@material-ui/core';
+import _isEqual from 'lodash/isEqual';
+import _last from 'lodash/last';
 import _map from 'lodash/map';
+import {
+  removeByIndex,
+  replaceByIndex,
+} from '../../utils';
 import AddButton from '../../Form/AddButton';
 import AdvancedTextSection from '../AdvancedTextSection';
 import Currency from './Currency';
+
+const NEW_EQUIPMENT_TEMPLATE = {
+  name: '',
+  uses: [],
+  shortDesc: '',
+  longDesc: '',
+  tags: [],
+};
 
 function Equipment({
   character,
   updateCharacter,
 }) {
   const { equipment, money } = character;
+  const [newEquipment, setNewEquipment] = useState(equipment);
+  const addButtonDisabled = !_last(newEquipment).name;
 
-  function onDelete() {
-    alert('delete me');
+  useEffect(() => {
+    setNewEquipment(equipment);
+  }, [equipment])
+
+  function onAdd() {
+    setNewEquipment([...newEquipment, NEW_EQUIPMENT_TEMPLATE]);
   }
 
-  function onSave() {
-    alert('save me');
+  function onDelete(index) {
+    const updatedEquipment = removeByIndex(newEquipment, index);
+
+    if (_isEqual(updatedEquipment, equipment)) {
+      setNewEquipment([...updatedEquipment])
+    } else {
+      updateCharacter({ equipment: updatedEquipment });
+    }
+  }
+
+  function onSave(updatedItem, index) {
+    const updatedEquipment = replaceByIndex(newEquipment, updatedItem, index);
+
+    updateCharacter({ equipment: updatedEquipment });
   }
 
   return (
@@ -36,16 +68,16 @@ function Equipment({
           <Currency money={money} updateCharacter={updateCharacter} />
         </Box>
         <Box pl={2}>
-          {_map(equipment, (equip) => (
+          {_map(newEquipment, (equip, i) => (
             <Box key={equip.name} pb={1}>
               <AdvancedTextSection
-                onDelete={onDelete}
-                onSave={onSave}
+                onDelete={() => onDelete(i)}
+                onSave={(newItem) => onSave(newItem, i)}
                 {...equip}
               />
             </Box>
           ))}
-          <AddButton />
+          <AddButton disabled={addButtonDisabled} onAdd={onAdd} />
         </Box>
       </Grid>
       <Box

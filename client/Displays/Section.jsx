@@ -15,7 +15,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function Simple({
+function Section({
   children,
   hasNotes,
   label,
@@ -31,20 +31,24 @@ function Simple({
       borderColor="rgba(0, 0, 0, 0.42)"
       borderRadius={4}
       bgcolor="rgba(0, 0, 0, 0.09)"
-      p={1}
       ref={ref}
       {...props}
     >
       <Box
-        border={1}
-        borderColor="rgba(0, 0, 0, 0.42)"
-        borderRadius={4}
         bgcolor="background.paper"
+        borderRadius="4px 4px 0 0"
       >
         {children}
       </Box>
-      <Box mt={1} className={classes.title} onClick={hasNotes ? openNotes : _noop}>
-        <Typography align="center" variant="body2">
+
+      <Box
+        className={classes.title}
+        onClick={hasNotes ? openNotes : _noop}
+        borderColor="rgba(0, 0, 0, 0.42)"
+        borderTop={1}
+        p={2}
+      >
+        <Typography align="center" variant="h6">
           {label}{notes ? '*' : ''}
         </Typography>
       </Box>
@@ -53,16 +57,16 @@ function Simple({
   )
 }
 
-Simple.propTypes = {
+Section.propTypes = {
   children: PropTypes.node.isRequired,
+  hasNotes: PropTypes.bool,
   label: PropTypes.string.isRequired,
   notes: PropTypes.string,
-  hasNotes: PropTypes.bool,
 };
 
-Simple.defaultProps = {
+Section.defaultProps = {
   notes: '',
   hasNotes: true,
 }
 
-export default Simple;
+export default Section;

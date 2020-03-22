@@ -1,9 +1,12 @@
 import _isNaN from 'lodash/isNaN';
 
 function getNumericValue(text, defaultValue = 0) {
-  const textToParse = text[0] === '0' && text.length > 1 ? text.substring(1) : text;
+  const firstChar = text[0];
+  const removeableFirstChar = firstChar === '0' || firstChar === '+';
+  const removeFirstChar = removeableFirstChar && text.length > 1;
+  const textToParse = removeFirstChar  ? text.substring(1) : text;
   
-  if (textToParse === '-') {
+  if (textToParse === '-' || textToParse === '+') {
     return textToParse;
   }
 

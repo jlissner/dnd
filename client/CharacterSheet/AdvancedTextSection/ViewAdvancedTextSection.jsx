@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -12,7 +12,9 @@ import {
 import {
   ExpandMore as ExpandMoreIcon,
 } from '@material-ui/icons';
+import _fill from 'lodash/fill';
 import _map from 'lodash/map';
+import Badge from '../../Displays/Badge';
 import Markdown from '../../Form/Markdown';
 import Radio from '../../Form/Radio';
 import If from '../../utils/If';
@@ -37,9 +39,33 @@ function ViewAdvancedTextSection({
   shortDesc,
   uses,
   setEditMode,
+  onSave,
 }) {
   const classes = useStyles();
   const [expanded, setExpanded] = useState(false);
+  const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    setSaving(false);
+  }, [uses]);
+
+  function save(val, index) {
+    setSaving(true);
+
+    const total = uses.length;
+    const totalUsed = val ? index + 1 : index;
+    const totalUnused = total - totalUsed;
+    const newUsed = _fill(Array(totalUsed), true);
+    const newUnused = _fill(Array(totalUnused), false);
+
+    onSave({
+      name,
+      tags,
+      longDesc,
+      shortDesc,
+      uses: [...newUsed, ...newUnused],
+    })
+  }
 
   return (
     <Box
@@ -57,7 +83,8 @@ function ViewAdvancedTextSection({
           <Grid item key={i}>
             <Radio
               checked={use}
-              onClick={(e) => alert(`new value will be${e.target.checked}`)}
+              disabled={saving}
+              onClick={(evt) => save(evt.target.checked, i)}
             />
           </Grid>
         ))}
@@ -87,7 +114,7 @@ function ViewAdvancedTextSection({
           <Box bgcolor="rgba(0, 0, 0, 0.09)" my={1} p={1}>
             <Markdown text={longDesc} />
           </Box>
-          <small>{tags.join(', ')}</small>
+          {_map(tags, (tag) => (<Badge key={tag} text={tag}/>))}
         </>
       </Collapse>
     </Box>

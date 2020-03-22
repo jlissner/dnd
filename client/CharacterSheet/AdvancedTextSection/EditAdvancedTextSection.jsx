@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Box } from '@material-ui/core';
 import EditContainer from '../../Form/EditContainer';
 import advancedTextSectionForm from './advancedTextSectionForm';
 import ViewAdvancedTextSection from './ViewAdvancedTextSection';
@@ -23,14 +24,16 @@ function EditAdvancedTextSection({
   }
 
   return (
-    <EditContainer
-      form={advancedTextSectionForm}
-      Preview={({ newVal }) => <ViewAdvancedTextSection {...newVal} />}
-      onCancel={onCancel}
-      onDelete={onDelete}
-      onSave={onSave}
-      value={value}
-    />
+    <Box bgcolor="background.paper" borderRadius={4} > 
+      <EditContainer
+        form={advancedTextSectionForm}
+        Preview={({ newVal }) => <ViewAdvancedTextSection {...newVal} />}
+        onCancel={onCancel}
+        onDelete={onDelete}
+        onSave={onSave}
+        value={value}
+      />
+    </Box>
   );
 }
 

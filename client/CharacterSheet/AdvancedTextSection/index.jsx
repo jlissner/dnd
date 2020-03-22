@@ -38,6 +38,7 @@ function AdvancedTextSection({
         longDesc={longDesc}
         shortDesc={shortDesc}
         uses={uses}
+        onSave={onSave}
       />
     </EditButton>
   );

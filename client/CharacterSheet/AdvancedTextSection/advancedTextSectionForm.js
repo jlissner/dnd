@@ -18,6 +18,7 @@ const advancedTextSectionForm = [
     accessor: 'tags',
     type: 'list',
     defaultValue: [],
+    helperText: 'Comma delineated'
   },
 ];
 

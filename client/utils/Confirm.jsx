@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   Button,
+  Box,
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
+  Typography,
 } from '@material-ui/core';
 
 function Confirm({
@@ -36,7 +38,7 @@ function Confirm({
       >
         <DialogTitle>{title}</DialogTitle>
         <DialogContent>
-          <DialogContentText>
+          <DialogContentText component="div">
             {text}
           </DialogContentText>
         </DialogContent>
@@ -51,7 +53,7 @@ function Confirm({
 
 Confirm.propTypes = {
   Component: PropTypes.oneOfType([PropTypes.node, PropTypes.elementType]).isRequired,
-  text: PropTypes.string,
+  text: PropTypes.node,
   title: PropTypes.string,
   onConfirm: PropTypes.func.isRequired,
 };

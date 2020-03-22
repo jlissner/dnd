@@ -15,6 +15,7 @@ import _filter from 'lodash/filter';
 import _last from 'lodash/last';
 import _map from 'lodash/map';
 import _omit from 'lodash/omit';
+import _trimStart from 'lodash/trimStart';
 import _xor from 'lodash/xor';
 import If from '../utils/If';
 import getNumericValue from '../utils/getNumericValue';
@@ -22,7 +23,10 @@ import AddButton from './AddButton';
 import NumericInput from './NumericInput';
 
 function updateTags(tagsText) {
-  return tagsText.replace(', ', ',').split(',');
+  return tagsText
+    .replace(', ', ',')
+    .split(',')
+    .map(_trimStart);
 }
 
 function FormItem({
@@ -260,7 +264,7 @@ FormItem.propTypes = {
   required: PropTypes.bool,
   text: PropTypes.string,
   title: PropTypes.string,
-  type: PropTypes.string.isRequired,
+  type: PropTypes.string,
   setValue: PropTypes.func.isRequired,
   value: PropTypes.oneOfType([
     PropTypes.number,
@@ -285,6 +289,7 @@ FormItem.defaultProps = {
   options: [],
   required: false,
   text: '',
+  type: 'text',
   title: '',
   variant: 'filled',
   value: '',
