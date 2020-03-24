@@ -4,10 +4,8 @@ import {
   Box,
   Grid,
   Paper,
-  TextField,
   Typography,
 } from '@material-ui/core';
-import _get from 'lodash/get';
 import useCharacter from '../hooks/useCharacter';
 import SaveableInput from '../Form/SaveableInput';
 import HorizontalInput from '../Form/HorizontalInput';

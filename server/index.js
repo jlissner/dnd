@@ -7,7 +7,6 @@ const registerWebsockets = require('express-ws');
 registerWebsockets(app); // needs to happen before routes
 
 const routes = require('./routes');
-const port = process.env.PORT || 8080;
 
 if (process.env.NODE_ENV === 'development') {
   const webpack = require('webpack');

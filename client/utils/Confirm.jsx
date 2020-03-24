@@ -2,13 +2,11 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   Button,
-  Box,
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
-  Typography,
 } from '@material-ui/core';
 
 function Confirm({

@@ -6,7 +6,7 @@ const { wsBroadcaster, graphql } = require('../lib');
 
 const { objToGraphqlStr } = graphql;
 
-async function updateCharacter(id, attributes) {
+async function updateCharacter(hostname, protocol, id, attributes) {
   const query = `
     mutation {
       updateCharacter(input: {
@@ -20,13 +20,13 @@ async function updateCharacter(id, attributes) {
       }
     }
   `;
-  const res = await axios.post('http://localhost:3000/graphql', { query });
+  const res = await axios.post(`${protocol}://${hostname}/graphql`, { query });
 
   return res.data.data.updateCharacter.character.attributes;
 }
 
-async function fetchCharacter(id) {
-  const res = await axios.post('http://localhost:3000/graphql', {
+async function fetchCharacter(hostname, protocol, id) {
+  const res = await axios.post(`${protocol}://${hostname}/graphql`, {
     query: `
       query {
         character(idPk: "${id}") {
@@ -39,10 +39,10 @@ async function fetchCharacter(id) {
   return res.data.data.character.attributes;
 }
 
-async function openCharacterWs(id, ws) {
+async function openCharacterWs(hostname, protocol, id, ws) {
   wsBroadcaster.registerWs({ category: 'characters', key: id, ws });
 
-  const character = await fetchCharacter(id);
+  const character = await fetchCharacter(hostname, protocol, id);
 
   wsBroadcaster.broadcast({
     category: 'characters',
@@ -53,8 +53,9 @@ async function openCharacterWs(id, ws) {
 
 router.ws('/:id', async (ws, req) => {
   const { id } = req.params;
+  const { hostname, protocol } = req;
 
-  openCharacterWs(id, ws);
+  openCharacterWs(hostname, protocol, id, ws);
 
   ws.on('message', async (action) => {
     try {
@@ -62,7 +63,7 @@ router.ws('/:id', async (ws, req) => {
 
       switch (type) {
         case 'UPDATE': {
-          const updatedCharacter = await updateCharacter(id, payload);
+          const updatedCharacter = await updateCharacter(hostname, protocol, id, payload);
 
           return wsBroadcaster.broadcast({
             category: 'characters',

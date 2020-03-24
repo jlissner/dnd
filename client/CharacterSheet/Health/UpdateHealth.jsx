@@ -58,13 +58,16 @@ function UpdateHealth({
   }
 
   useEffect(() => {
-    setNewVal('');
-    setSaving(false);
-
-    if (newHistory) {
+    if (newHistory && !saving) {
       updateHealthHistory(newHistory);
       setNewHistory(null);
     }
+  }, [newHistory, saving, updateHealthHistory])
+
+  useEffect(() => {
+    setNewVal('');
+    setSaving(false);
+
   }, [hp]);
 
   return (
