@@ -7,7 +7,7 @@ passport.use(new GoogleStrategy({
     callbackURL: 'http://lvh.me/auth/google/callback',
   },
   function(accessToken, refreshToken, profile, cb) {
-    console.log({ accessToken, refreshToken });
+    console.log('id', profile);
     cb(null, profile.id );
     // User.findOrCreate({ googleId: profile.id }, function (err, user) {
     //   return cb(err, user);
