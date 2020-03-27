@@ -5,17 +5,24 @@ const bodyParser = require('body-parser')
 const path = require('path');
 const initWs = require('express-ws');
 const initPassport = require('./lib/passport');
-const passport = require('passport');
-const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const redis = require('redis');
+const redisClient = redis.createClient();
+const redisStore = require('connect-redis')(session);
 
+redisClient.on('error', (err) => {
+  console.log('Redis error: ', err);
+});
 
-app.use(require('cookie-parser')());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json({ type: 'application/*+json' }));
-app.use(require('express-session')({ secret: process.env.SESSION_SECRET, resave: true, saveUninitialized: true }));
-
-app.use(passport.initialize());
-app.use(passport.session());
+app.use(require('express-session')({
+  secret: process.env.SESSION_SECRET,
+  name: '_redisPractice',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false },
+  store: new redisStore({ host: 'localhost', port: 6379, client: redisClient, ttl: 86400 }),
+}));
 
 initWs(app); // needs to happen before routes
 initPassport(app);
