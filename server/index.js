@@ -6,8 +6,11 @@ const path = require('path');
 const initWs = require('express-ws');
 const initPassport = require('./lib/passport');
 const redis = require('redis');
-const redisClient = redis.createClient();
-const redisStore = require('connect-redis')(session);
+const redisClient = redis.createClient({
+  host: 'rpg-together-redis.rtrpch.0001.usw2.cache.amazonaws.com',
+  port: 6379,
+});
+const RedisStore = require('connect-redis')(session);
 
 redisClient.on('error', (err) => {
   console.log('Redis error: ', err);
@@ -21,7 +24,10 @@ app.use(require('express-session')({
   resave: false,
   saveUninitialized: true,
   cookie: { secure: false },
-  store: new redisStore({ host: 'localhost', port: 6379, client: redisClient, ttl: 86400 }),
+  store: new RedisStore({
+    client: redisClient,
+    ttl: 86400,
+  }),
 }));
 
 initWs(app); // needs to happen before routes
