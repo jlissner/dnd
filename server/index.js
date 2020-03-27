@@ -51,7 +51,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 app.get('/*', (req, res) => {
-  res.sendFile(path.resolve('./public/index.html'));
+  res.sendFile(path.resolve('./server/public/index.html'));
 });
 
 module.exports = app;
