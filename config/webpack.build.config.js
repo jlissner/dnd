@@ -1,7 +1,10 @@
 const path = require('path');
 const webpack = require('webpack');
-const TerserPlugin = require('terser-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');
+const TerserPlugin = require('terser-webpack-plugin');
+const getClientEnvironment = require('./env');
+const env = getClientEnvironment('');
 
 module.exports = {
   entry: [
@@ -35,7 +38,7 @@ module.exports = {
   output: {
     path: path.resolve('./server/build'),
     filename: 'static/js/[name].[contenthash:8].js',
-    // publicPath: '/',
+    publicPath: '/',
   },
   plugins: [
     new HtmlWebpackPlugin(
@@ -61,6 +64,7 @@ module.exports = {
         }
       )
     ),
+    new InterpolateHtmlPlugin(HtmlWebpackPlugin, env.raw),
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: JSON.stringify('production'),
