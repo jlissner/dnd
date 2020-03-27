@@ -65,13 +65,12 @@ const resolveModule = (resolveFn, filePath) => {
   return resolveFn(`${filePath}.js`);
 };
 
-// config after eject: we're in ./config/
 module.exports = {
   dotenv: resolveApp('.env'),
   appPath: resolveApp('.'),
-  appBuild: resolveApp('server/build'),
-  appPublic: resolveApp('server/public'),
-  appHtml: resolveApp('server/public/index.html'),
+  appBuild: resolveApp('./server/build'),
+  appPublic: resolveApp('./server/public'),
+  appHtml: resolveApp('./server/build/index.html'),
   appIndexJs: resolveModule(resolveApp, 'client/index'),
   appPackageJson: resolveApp('package.json'),
   appSrc: resolveApp('client'),

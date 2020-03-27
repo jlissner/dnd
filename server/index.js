@@ -1,35 +1,17 @@
 const express = require('express');
-const session = require('express-session');
 const app = express();
 const bodyParser = require('body-parser')
 const path = require('path');
 const initWs = require('express-ws');
-const initPassport = require('./lib/passport');
-const redis = require('redis');
-const redisClient = redis.createClient({
-  host: 'rpg-together-redis.rtrpch.0001.usw2.cache.amazonaws.com',
-  port: 6379,
-});
-const RedisStore = require('connect-redis')(session);
-
-redisClient.on('error', (err) => {
-  console.log('Redis error: ', err);
-});
+const {
+  initPassport,
+  initSession,
+} = require('./lib');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json({ type: 'application/*+json' }));
-app.use(require('express-session')({
-  secret: process.env.SESSION_SECRET,
-  name: '_redisPractice',
-  resave: false,
-  saveUninitialized: true,
-  cookie: { secure: false },
-  store: new RedisStore({
-    client: redisClient,
-    ttl: 86400,
-  }),
-}));
 
+initSession(app)
 initWs(app); // needs to happen before routes
 initPassport(app);
 
