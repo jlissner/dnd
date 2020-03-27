@@ -34,7 +34,7 @@ initWs(app); // needs to happen before routes
 initPassport(app);
 
 app.use(require('./routes'))
-app.use(express.static(path.resolve('./build')));
+app.use(express.static(path.resolve('./server/build')));
 
 if (process.env.NODE_ENV === 'development') {
   const webpack = require('webpack');
