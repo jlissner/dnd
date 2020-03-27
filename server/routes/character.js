@@ -4,9 +4,9 @@ const axios = require('axios');
 const charData = require('../../__mocks__/smashChar');
 const { wsBroadcaster, graphql } = require('../lib');
 
-const { objToGraphqlStr } = graphql;
+const { callGraphql, objToGraphqlStr } = graphql;
 
-async function updateCharacter(hostname, protocol, id, attributes) {
+async function updateCharacter(id, attributes) {
   const query = `
     mutation {
       updateCharacter(input: {
@@ -20,29 +20,27 @@ async function updateCharacter(hostname, protocol, id, attributes) {
       }
     }
   `;
-  const res = await axios.post(`${protocol}://${hostname}/graphql`, { query });
+  const res = await callGraphql(query);
 
-  return res.data.data.updateCharacter.character.attributes;
+  return res.data.updateCharacter.character.attributes;
 }
 
-async function fetchCharacter(hostname, protocol, id) {
-  const res = await axios.post(`${protocol}://${hostname}/graphql`, {
-    query: `
-      query {
-        character(idPk: "${id}") {
-          attributes
-        }
+async function fetchCharacter(id) {
+  const res = await callGraphql(`
+    query {
+      character(idPk: "${id}") {
+        attributes
       }
-    `
-  });
+    }
+  `);
 
-  return res.data.data.character.attributes;
+  return res.data.character.attributes;
 }
 
-async function openCharacterWs(hostname, protocol, id, ws) {
+async function openCharacterWs(id, ws) {
   wsBroadcaster.registerWs({ category: 'characters', key: id, ws });
 
-  const character = await fetchCharacter(hostname, protocol, id);
+  const character = await fetchCharacter(id);
 
   wsBroadcaster.broadcast({
     category: 'characters',
@@ -55,7 +53,7 @@ router.ws('/:id', async (ws, req) => {
   const { id } = req.params;
   const { hostname, protocol } = req;
 
-  openCharacterWs(hostname, protocol, id, ws);
+  openCharacterWs(id, ws);
 
   ws.on('message', async (action) => {
     try {
@@ -63,7 +61,7 @@ router.ws('/:id', async (ws, req) => {
 
       switch (type) {
         case 'UPDATE': {
-          const updatedCharacter = await updateCharacter(hostname, protocol, id, payload);
+          const updatedCharacter = await updateCharacter(id, payload);
 
           return wsBroadcaster.broadcast({
             category: 'characters',

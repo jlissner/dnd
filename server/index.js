@@ -3,18 +3,25 @@ const session = require('express-session');
 const app = express();
 const bodyParser = require('body-parser')
 const path = require('path');
+const initWs = require('express-ws');
+const initPassport = require('./lib/passport');
+const passport = require('passport');
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
+
 
 app.use(require('cookie-parser')());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json({ type: 'application/*+json' }));
-app.use(session({
-  secret: process.env.SESSION_SECRET,
-  resave: true,
-  saveUninitialized: true,
-}));
+app.use(require('express-session')({ secret: process.env.SESSION_SECRET, resave: true, saveUninitialized: true }));
 
-require('express-ws')(app); // needs to happen before routes
-require('./lib/passport')(app);
+app.use(passport.initialize());
+app.use(passport.session());
 
+initWs(app); // needs to happen before routes
+initPassport(app);
+
+app.use(require('./routes'))
+app.use(express.static(path.resolve('./build')));
 
 if (process.env.NODE_ENV === 'development') {
   const webpack = require('webpack');
@@ -30,10 +37,7 @@ if (process.env.NODE_ENV === 'development') {
   app.use(webpackHotMiddleware(compiler));
 }
 
-app.use(require('./routes'))
-app.use(express.static(path.resolve('./build')));
-
-app.get('/', function (req, res) {
+app.get('/*', (req, res) => {
   res.sendFile(path.resolve('./build/index.html'));
 });
 

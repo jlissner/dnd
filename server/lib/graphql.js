@@ -1,5 +1,29 @@
+const { pool } = require('./db');
+const { graphql } = require('graphql');
+const { watchPostGraphileSchema, withPostGraphileContext } = require('postgraphile');
+const postgraphileConfig = require('../../config/postgraphile');
 const _reduce = require('lodash/reduce');
 const _trimStart = require('lodash/trimStart');
+
+const graphqlConfig = {
+  schema: null,
+  releaseWatcher: null,
+};
+
+async function init() {
+  const releaseWatcher = await watchPostGraphileSchema(
+    pool,
+    ['app'],
+    postgraphileConfig,
+    schema => {
+      graphqlConfig.schema = schema;
+    },
+  );
+
+  graphqlConfig.releaseWatcher = releaseWatcher;
+}
+
+init();
 
 function objToGraphqlStr(obj) {
   function arrToGraphqlStr(arr) {
@@ -41,6 +65,25 @@ function objToGraphqlStr(obj) {
   return _trimStart(str, ', ');
 }
 
+function callGraphql(query) {
+  const { schema } = graphqlConfig;
+
+  if (!schema) {
+    throw new Error('Still setting up shema');
+  }
+
+  return new Promise((res) => {
+    withPostGraphileContext({ pgPool: pool }, (context) => {
+      graphqlConfig.context = context;
+    
+      graphql(schema, query, {}, context).then(res);
+    });
+  })
+
+}
+
 module.exports = {
   objToGraphqlStr,
+  callGraphql,
+  graphqlConfig,
 }

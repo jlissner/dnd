@@ -4,12 +4,11 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: 'http://lvh.me/auth/google/callback'
+    callbackURL: 'http://lvh.me/auth/google/callback',
   },
   function(accessToken, refreshToken, profile, cb) {
-    console.log({ accessToken, refreshToken, profile, cb });
-    console.log(1)
-    cb(null, profile );
+    console.log({ accessToken, refreshToken });
+    cb(null, profile.id );
     // User.findOrCreate({ googleId: profile.id }, function (err, user) {
     //   return cb(err, user);
     // });
@@ -17,9 +16,6 @@ passport.use(new GoogleStrategy({
 ));
 
 passport.serializeUser((id, cb) => {
-  console.log(2)
-
-  console.log({ id, cb })
   cb(null, id)
 });
 
@@ -32,7 +28,6 @@ passport.deserializeUser((id, cb) => {
 //
 //     cb(null, results.rows[0])
 //   })
-  console.log(3)
   cb(null, id)
 });
 
