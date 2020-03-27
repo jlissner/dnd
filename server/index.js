@@ -5,16 +5,16 @@ const bodyParser = require('body-parser')
 const path = require('path');
 const initWs = require('express-ws');
 const initPassport = require('./lib/passport');
-const redis = require('redis');
-const redisClient = redis.createClient({
-  host: 'rpg-together-redis.rtrpch.0001.usw2.cache.amazonaws.com',
-  port: 6379,
-});
-const RedisStore = require('connect-redis')(session);
-
-redisClient.on('error', (err) => {
-  console.log('Redis error: ', err);
-});
+// const redis = require('redis');
+// const redisClient = redis.createClient({
+//   host: 'rpg-together-redis.rtrpch.0001.usw2.cache.amazonaws.com',
+//   port: 6379,
+// });
+// const RedisStore = require('connect-redis')(session);
+//
+// redisClient.on('error', (err) => {
+//   console.log('Redis error: ', err);
+// });
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json({ type: 'application/*+json' }));
@@ -24,17 +24,17 @@ app.use(require('express-session')({
   resave: false,
   saveUninitialized: true,
   cookie: { secure: false },
-  store: new RedisStore({
-    client: redisClient,
-    ttl: 86400,
-  }),
+  // store: new RedisStore({
+  //   client: redisClient,
+  //   ttl: 86400,
+  // }),
 }));
 
 initWs(app); // needs to happen before routes
 initPassport(app);
 
 app.use(require('./routes'))
-app.use(express.static(path.resolve('./build')));
+app.use(express.static(path.resolve('./public')));
 
 if (process.env.NODE_ENV === 'development') {
   const webpack = require('webpack');
@@ -51,7 +51,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 app.get('/*', (req, res) => {
-  res.sendFile(path.resolve('./build/index.html'));
+  res.sendFile(path.resolve('./public/index.html'));
 });
 
 module.exports = app;
