@@ -34,7 +34,7 @@ initWs(app); // needs to happen before routes
 initPassport(app);
 
 app.use(require('./routes'))
-app.use(express.static(path.resolve('./public')));
+app.use(express.static(path.resolve('./build')));
 
 if (process.env.NODE_ENV === 'development') {
   const webpack = require('webpack');
@@ -51,7 +51,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 app.get('/*', (req, res) => {
-  res.sendFile(path.resolve('./server/public/index.html'));
+  res.sendFile(path.resolve('./server/build/index.html'));
 });
 
 module.exports = app;
