@@ -37,6 +37,7 @@ app.use(require('./routes'))
 app.use(express.static(path.resolve('./server/build')));
 
 if (process.env.NODE_ENV === 'development') {
+  console.log('here??')
   const webpack = require('webpack');
   const webpackConfigFactory = require('../config/webpack.config');
   const webpackDevMiddleware = require('webpack-dev-middleware');
