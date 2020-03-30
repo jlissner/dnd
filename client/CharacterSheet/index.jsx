@@ -57,6 +57,7 @@ function CharacterSheet({ id }) {
           <li>[x] make the update call work for saving features and traits</li>
           <li>[x] make the update call work for saving health stuff</li>
           <li>[x] make ssl work?</li>
+          <li>[x] get HMR working again</li>
           <li>[] create markdown helper</li>
         </ul>
       </Box>

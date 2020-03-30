@@ -3,7 +3,6 @@ const router = express.Router();
 const axios = require('axios');
 const charData = require('../../__mocks__/smashChar');
 const { wsBroadcaster, graphql } = require('../lib');
-
 const { callGraphql, objToGraphqlStr } = graphql;
 
 async function updateCharacter(id, attributes) {
@@ -20,13 +19,13 @@ async function updateCharacter(id, attributes) {
       }
     }
   `;
-  const res = await callGraphql(query);
+  const { updateCharacter } = await callGraphql(query);
 
-  return res.data.updateCharacter.character.attributes;
+  return updateCharacter.character.attributes;
 }
 
 async function fetchCharacter(id) {
-  const res = await callGraphql(`
+  const { character } = await callGraphql(`
     query {
       character(idPk: "${id}") {
         attributes
@@ -34,7 +33,7 @@ async function fetchCharacter(id) {
     }
   `);
 
-  return res.data.character.attributes;
+  return character.attributes;
 }
 
 async function openCharacterWs(id, ws) {

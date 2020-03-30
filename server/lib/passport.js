@@ -1,5 +1,6 @@
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const { pool } = require('./db');
 
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
@@ -7,11 +8,20 @@ passport.use(new GoogleStrategy({
     callbackURL: 'http://lvh.me/auth/google/callback',
   },
   function(accessToken, refreshToken, profile, cb) {
-    console.log('id', profile);
-    cb(null, profile.id );
-    // User.findOrCreate({ googleId: profile.id }, function (err, user) {
-    //   return cb(err, user);
-    // });
+    const { id, displayName, emails } = profile;
+    const parsedEmails = emails
+      .filter(email => email.verified)
+      .map(email => `"${email.value}"`)
+      .join(',');
+    const createUserIfNotExistsQuery = `
+      INSERT INTO app.users(google_id, name, emails)
+      VALUES (${id}, '${displayName}', '{${emails}}')
+      ON CONFLICT DO NOTHING;
+    `;
+
+    pool.query(createUserIfNotExistsQuery, (err) => {
+      cb(err, id)
+    });
   }
 ));
 
@@ -20,15 +30,11 @@ passport.serializeUser((id, cb) => {
 });
 
 passport.deserializeUser((id, cb) => {
-//   db.query('SELECT id, username, type FROM users WHERE id = $1', [parseInt(id, 10)], (err, results) => {
-//     if(err) {
-//       winston.error('Error when selecting user on session deserialize', err)
-//       return cb(err)
-//     }
-//
-//     cb(null, results.rows[0])
-//   })
-  cb(null, id)
+  const selectUserQuery = `SELECT * FROM app.users where google_id = '${id}'`;
+
+  pool.query(selectUserQuery, (err, res) => {
+    cb(null, res.rows[0])
+  });
 });
 
 module.exports = (app) => {

@@ -3,7 +3,8 @@ import useWebsocket from './useWebsocket';
 
 function useCharacter(id) {
   const { protocol, host } = window.location;
-  const url = `${protocol}//${host}/character/${id}`;
+  const wsProtocol = protocol.indexOf('https') > -1 ? 'wss' : 'ws';
+  const url = `${wsProtocol}://${host}/character/${id}`;
   const { message, readyState, send } = useWebsocket(url);
   const [character, setCharacter] = useState({});
   const loading = readyState === 0;

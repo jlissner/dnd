@@ -72,14 +72,17 @@ function callGraphql(query) {
     throw new Error('Still setting up shema');
   }
 
-  return new Promise((res) => {
-    withPostGraphileContext({ pgPool: pool }, (context) => {
-      graphqlConfig.context = context;
-    
-      graphql(schema, query, {}, context).then(res);
+  return new Promise((res, rej) => {
+    withPostGraphileContext({ pgPool: pool }, async (context) => {
+      const { data, errors } = await graphql(schema, query, {}, context);
+
+      if (errors) {
+        rej(errors);
+      } else {
+        res(data);
+      }
     });
   })
-
 }
 
 module.exports = {

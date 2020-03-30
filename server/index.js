@@ -16,24 +16,27 @@ initWs(app); // needs to happen before routes
 initPassport(app);
 
 app.use(require('./routes'))
-app.use(express.static(path.resolve('./server/build')));
 
-if (process.env.NODE_ENV === 'development') {
+if (process.env.NODE_ENV !== 'production') {
+  const history = require('connect-history-api-fallback');
   const webpack = require('webpack');
-  const webpackConfigFactory = require('../config/webpack.config');
   const webpackDevMiddleware = require('webpack-dev-middleware');
   const webpackHotMiddleware = require('webpack-hot-middleware');
-  const webpackConfig = webpackConfigFactory(process.env.NODE_ENV)
+  const webpackConfig = require('../config/webpack.config');
   const compiler = webpack(webpackConfig);
 
+  app.use(history()); // allows for routes besides root to work
   app.use(webpackDevMiddleware(compiler, {
     publicPath: webpackConfig.output.publicPath,
   }));
   app.use(webpackHotMiddleware(compiler));
+} else {
+  app.use(express.static(path.resolve('./server/build')));
+
+  app.get('/*', (req, res) => {
+    res.sendFile(path.resolve('./server/build/index.html'));
+  });
 }
 
-app.get('/*', (req, res) => {
-  res.sendFile(path.resolve('./server/build/index.html'));
-});
 
 module.exports = app;
