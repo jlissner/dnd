@@ -1,3 +1,5 @@
+const ConnectionFilterPlugin = require("postgraphile-plugin-connection-filter");
+
 const npConfig = {
   subscriptions: true,
   watchPg: true,
@@ -7,7 +9,7 @@ const npConfig = {
   ignoreIndexes: false,
   showErrorStack: "json",
   extendedErrors: ["hint", "detail", "errcode"],
-  appendPlugins: [require("@graphile-contrib/pg-simplify-inflector")],
+  appendPlugins: [ConnectionFilterPlugin, require("@graphile-contrib/pg-simplify-inflector")],
   exportGqlSchemaPath: "schema.graphql",
   graphiql: true,
   enhanceGraphiql: true,
@@ -30,7 +32,7 @@ const prodConfig = {
   ignoreRBAC: false,
   ignoreIndexes: false,
   extendedErrors: ["errcode"],
-  appendPlugins: [require("@graphile-contrib/pg-simplify-inflector")],
+  appendPlugins: [ConnectionFilterPlugin, require("@graphile-contrib/pg-simplify-inflector")],
   graphiql: false,
   enableQueryBatching: true,
   disableQueryLog: true, // our default logging has performance issues, but do make sure you have a logging system in place!

@@ -9,9 +9,9 @@ router.get('/ping', function (req, res) {
   res.send('pong');
 });
 
-router.use('/', postgraphileRoutes);
 router.use('/auth', authRoutes);
 router.use('/character', characterRoutes);
+router.use('/query', postgraphileRoutes);
 router.use('/user', userRoutes);
 
 module.exports = router;

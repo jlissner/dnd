@@ -2,8 +2,11 @@ import React from 'react';
 import { hot } from 'react-hot-loader/root';
 import {
   Box,
+  Button,
   CircularProgress,
   Grid,
+  Paper,
+  Typography,
 } from '@material-ui/core';
 import Navbar from './Navbar';
 import CharacterSheet from './CharacterSheet';
@@ -22,6 +25,24 @@ function App() {
   function renderContent() {
     if (!user) {
       return <Grid container justify="center"><CircularProgress /></Grid>
+    }
+
+    if (!user.name) {
+      return (
+        <Grid container justify="center">
+          <Paper>
+            <Box p={2} maxWidth={800}>
+              <Typography variant="h2">Welcome to RPG Together</Typography>
+              <Box my={2}>
+                <Typography>Log in with Google to continue!</Typography>
+              </Box>
+              <Grid container justify="flex-end">
+                <Button color="primary" href="/auth/google" variant="contained">Login</Button>
+              </Grid>
+            </Box>
+          </Paper>
+        </Grid>
+      );
     }
 
     return (
