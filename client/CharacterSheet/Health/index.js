@@ -36,12 +36,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Health({
-  character,
+  attributes,
   updateCharacter,
 }) {
   const id = useMemo(v4, [v4]);
   const [height, setHeight] = useState(0);
-  const { health } = character;
+  const { health } = attributes;
   const { currentHp } = health;
   const classes = useStyles({ height });
   const startHealth = useRef(currentHp);
@@ -52,7 +52,14 @@ function Health({
   }
 
   function updateCurrentHP(newHp) {
-    updateCharacter({ health: { ...health, currentHp: newHp }});
+    updateCharacter({
+      attributes: {
+        health: {
+          ...health,
+          currentHp: newHp,
+        },
+      },
+    });
   }
 
   useEffect(() => {
@@ -96,7 +103,7 @@ function Health({
 }
 
 Health.propTypes = {
-  character: PropTypes.shape().isRequired,
+  attributes: PropTypes.shape().isRequired,
   updateCharacter: PropTypes.func.isRequired,
 };
 

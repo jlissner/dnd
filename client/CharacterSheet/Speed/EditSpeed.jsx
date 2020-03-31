@@ -7,16 +7,16 @@ import speedForm from './speedForm';
 function EditSpeed({
   onCancel,
   onSave,
-  character,
+  attributes,
 }) {
   return (
     <EditContainer
       bgcolor="background.paper"
       form={speedForm}
-      Preview={({ newVal }) => <ViewSpeed character={{ ...character, speed: newVal }} />}
+      Preview={({ newVal }) => <ViewSpeed attributes={{ ...attributes, speed: newVal }} />}
       onCancel={onCancel}
       onSave={onSave}
-      value={character.speed}
+      value={attributes.speed}
       width={320}
     />
   )
@@ -25,7 +25,7 @@ function EditSpeed({
 EditSpeed.propTypes = {
   onCancel: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
-  character: PropTypes.shape().isRequired,
+  attributes: PropTypes.shape().isRequired,
 };
 
 export default EditSpeed;

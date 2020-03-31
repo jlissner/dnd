@@ -1,5 +1,5 @@
 import Confirm from './Confirm';
-import constants from './constants';
+import * as constants from './constants';
 import getNumericPrefix from './getNumericPrefix';
 import getNumericValue from './getNumericValue';
 import getTotalModifier from './getTotalModifier';

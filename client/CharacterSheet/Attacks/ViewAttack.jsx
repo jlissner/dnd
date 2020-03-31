@@ -7,24 +7,24 @@ import ViewAdvancedTextSection from '../AdvancedTextSection/ViewAdvancedTextSect
 
 const BASE_SAVE_DC = 8;
 
-function getSave(character, type) {
+function getSave(attributes, type) {
   const  [attr, save] = type.split(':');
-  const dc = getTotalModifier(character, attr, true, BASE_SAVE_DC);
+  const dc = getTotalModifier(attributes, attr, true, BASE_SAVE_DC);
 
   return `${_toUpper(save)}${dc}`
 }
 
-function getHit(atk, character) {
+function getHit(atk, attributes) {
   const { modType, bonusModifier, proficient } = atk;
   const isSave = modType.indexOf(':') > -1;
 
   if (!isSave) {
-    const modifier = getTotalModifier(character, modType, proficient, bonusModifier);
+    const modifier = getTotalModifier(attributes, modType, proficient, bonusModifier);
 
     return `${getNumericPrefix(modifier)}${modifier}`;
   }
 
-  return getSave(character, modType);
+  return getSave(attributes, modType);
 }
 
 function getDamage(dmg, modifier) {
@@ -41,7 +41,7 @@ function getName(name, modifier) {
 
 function ViewAttack({
   attack,
-  character,
+  attributes,
   onSave,
 }) {
   const {
@@ -55,7 +55,7 @@ function ViewAttack({
   } = attack;
   const atkName = getName(name, bonusModifier);
   const atkRange = range ? `range: ${range} | ` : '';
-  const hit = getHit(attack, character);
+  const hit = getHit(attack, attributes);
   const damage = getDamage(dmg, bonusModifier);
 
   function save({ uses: newUses }) {
@@ -79,7 +79,7 @@ function ViewAttack({
 
 ViewAttack.propTypes = {
   attack: PropTypes.shape().isRequired,
-  character: PropTypes.shape().isRequired,
+  attributes: PropTypes.shape().isRequired,
 };
 
 export default ViewAttack;

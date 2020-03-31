@@ -22,9 +22,9 @@ import Speed from './Speed';
 import TextSection from './TextSection';
 
 function CharacterSheet({ id }) {
-  const [character, updateCharacter] = useCharacter(id);
+  const [{ attributes, name }, updateCharacter] = useCharacter(id);
 
-  if (!character.id) {
+  if (!name) {
     return 'loading...';
   }
 
@@ -68,7 +68,7 @@ function CharacterSheet({ id }) {
             <Grid container spacing={2} alignItems="center">
               <Grid item xs={12} sm={6}>
                 <SaveableInput
-                  value={character.name}
+                  value={name}
                   label="Character Name"
                   onSave={(name) => updateCharacter({ name })}
                 />
@@ -77,44 +77,44 @@ function CharacterSheet({ id }) {
                 <Grid container spacing={1}>
                   <Grid item xs={12} sm={4}>
                     <SaveableInput
-                      onSave={(className) => updateCharacter({ className })}
-                      value={character.className}
+                      onSave={(className) => updateCharacter({ attributes: { className } })}
+                      value={attributes.className}
                       label="Class"
                     />
                   </Grid>
                   <Grid item xs={12} sm={4}>
                     <SaveableInput
-                      value={character.level}
+                      value={attributes.level}
                       label="Level"
-                      onSave={level => updateCharacter({ level })}
+                      onSave={level => updateCharacter({ attributes: { level } })}
                     />
                   </Grid>
                   <Grid item xs={12} sm={4}>
                     <SaveableInput
-                      value={character.background}
+                      value={attributes.background}
                       label="Background"
-                      onSave={background => updateCharacter({ background })}
+                      onSave={background => updateCharacter({ attributes: { background } })}
                     />
                   </Grid>
                   <Grid item xs={12} sm={4}>
                     <SaveableInput
-                      value={character.race}
+                      value={attributes.race}
                       label="Race"
-                      onSave={race => updateCharacter({ race })}
+                      onSave={race => updateCharacter({ attributes: { race } })}
                     />
                   </Grid>
                   <Grid item xs={12} sm={4}>
                     <SaveableInput
-                      value={character.alignment}
+                      value={attributes.alignment}
                       label="Alignment"
-                      onSave={alignment => updateCharacter({ alignment })}
+                      onSave={alignment => updateCharacter({ attributes: { alignment } })}
                     />
                   </Grid>
                   <Grid item xs={12} sm={4}>
                     <SaveableInput
-                      value={character.xp}
+                      value={attributes.xp}
                       label="Experience Points"
-                      onSave={xp => updateCharacter({ xp })}
+                      onSave={xp => updateCharacter({ attributes: { xp } })}
                     />
                   </Grid>
                 </Grid>
@@ -126,7 +126,7 @@ function CharacterSheet({ id }) {
             <Grid container spacing={2}>
               <Grid item xs={12} sm={5}>
                 <Attributes
-                  character={character}
+                  attributes={attributes}
                   updateCharacter={updateCharacter}
                 />
               </Grid>
@@ -135,18 +135,20 @@ function CharacterSheet({ id }) {
                 <Grid container spacing={2}>
                   <Grid item xs={12}>
                     <HorizontalInput
-                      value={character.inspiration}
+                      value={attributes.inspiration}
                       label="Inspiration"
-                      onSave={inspiration => updateCharacter({ inspiration })}
+                      onSave={inspiration => updateCharacter({ attributes: { inspiration } })}
                     />
                   </Grid>
 
                   <Grid item xs={12}>
                     <HorizontalInput
-                      value={character.proficiencyBonus}
+                      value={attributes.proficiencyBonus}
                       label="Proficiency Bonus"
                       onSave={proficiencyBonus => updateCharacter({
-                        proficiencyBonus: parseInt(proficiencyBonus, 10),
+                        attributes: {
+                          proficiencyBonus: parseInt(proficiencyBonus, 10),
+                        },
                       })}
                       type="number"
                     />
@@ -158,7 +160,7 @@ function CharacterSheet({ id }) {
                         <Proficiencies
                           fixedList
                           category="savingThrows"
-                          character={character}
+                          attributes={attributes}
                           updateCharacter={updateCharacter}
                         />
                       </Box>
@@ -179,7 +181,7 @@ function CharacterSheet({ id }) {
                       <Box p={1.5}>
                         <Proficiencies
                           category="skills"
-                          character={character}
+                          attributes={attributes}
                           updateCharacter={updateCharacter}
                         />
                       </Box>
@@ -203,7 +205,7 @@ function CharacterSheet({ id }) {
                   accessor="languagesAndProficiencies"
                   label="Languages And Proficiencies"
                   updateCharacter={updateCharacter}
-                  value={character.languagesAndProficiencies}
+                  value={attributes.languagesAndProficiencies}
                 />
               </Grid>
             </Grid>
@@ -212,20 +214,20 @@ function CharacterSheet({ id }) {
           <Grid item xs={12} sm={6} md={4}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={4}>
-                <ArmorClass character={character} updateCharacter={updateCharacter} />
+                <ArmorClass attributes={attributes} updateCharacter={updateCharacter} />
               </Grid>
               <Grid item xs={12} sm={4}>
-                <Initiative character={character} updateCharacter={updateCharacter} />
+                <Initiative attributes={attributes} updateCharacter={updateCharacter} />
               </Grid>
               <Grid item xs={12} sm={4}>
-                <Speed character={character} updateCharacter={updateCharacter} />
+                <Speed attributes={attributes} updateCharacter={updateCharacter} />
               </Grid>
 
               <Grid item xs={12}>
                 <Grid container spacing={1}>
                   <Grid item xs={12} md={6}>
                     <Health
-                      character={character}
+                      attributes={attributes}
                       updateCharacter={updateCharacter}
                     />
                   </Grid>
@@ -234,34 +236,34 @@ function CharacterSheet({ id }) {
                     <Grid container spacing={1}>
                       <Grid item xs={12}>
                         <HorizontalInput
-                          value={character.health.maxHp}
+                          value={attributes.health.maxHp}
                           label="Max HP"
-                          onSave={maxHp => updateCharacter({ health: { ...character.health, maxHp } })}
+                          onSave={maxHp => updateCharacter({ attributes: { health: { ...attributes.health, maxHp } } })}
                         />
                       </Grid>
                       <Grid item xs={12}>
                         <HorizontalInput
-                          value={character.health.tempHp}
+                          value={attributes.health.tempHp}
                           label="Temp HP"
-                          onSave={tempHp => updateCharacter({ health: { ...character.health, tempHp } })}
+                          onSave={tempHp => updateCharacter({ attributes: { health: { ...attributes.health, tempHp } } })}
                         />
                       </Grid>
                       <Grid item xs={12}>
                         <HorizontalInput
-                          value={character.health.totalHitDice}
+                          value={attributes.health.totalHitDice}
                           label="Total Hit Die"
-                          onSave={totalHitDice => updateCharacter({ health: { ...character.health, totalHitDice } })}
+                          onSave={totalHitDice => updateCharacter({ attributes: { health: { ...attributes.health, totalHitDice } } })}
                         />
                       </Grid>
                       <Grid item xs={12}>
                         <HorizontalInput
-                          value={character.health.hitDice}
+                          value={attributes.health.hitDice}
                           label="Hit Die"
-                          onSave={hitDice => updateCharacter({ health: { ...character.health, hitDice } })}
+                          onSave={hitDice => updateCharacter({ attributes: { health: { ...attributes.health, hitDice } } })}
                         />
                       </Grid>
                       <Grid item xs={12}>
-                        <DeathSaves character={character} updateCharacter={updateCharacter} />
+                        <DeathSaves attributes={attributes} updateCharacter={updateCharacter} />
                       </Grid>
                     </Grid>
                   </Grid>
@@ -270,14 +272,14 @@ function CharacterSheet({ id }) {
 
               <Grid item xs={12}>
                 <Attacks
-                  character={character}
+                  attributes={attributes}
                   updateCharacter={updateCharacter}
                 />
               </Grid>
 
               <Grid item xs={12}>
                 <Equipment
-                  character={character}
+                  attributes={attributes}
                   updateCharacter={updateCharacter}
                 />
               </Grid>
@@ -291,13 +293,13 @@ function CharacterSheet({ id }) {
                   accessor="personality"
                   label="Personality"
                   updateCharacter={updateCharacter}
-                  value={character.personality}
+                  value={attributes.personality}
                 />
               </Grid>
 
               <Grid item xs={12}>
                 <Features
-                  features={character.features}
+                  features={attributes.features}
                   updateCharacter={updateCharacter}
                 />
               </Grid>

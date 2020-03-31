@@ -84,10 +84,10 @@ function createNewAttack(category) {
 }
 
 function Attacks({
-  character,
+  attributes,
   updateCharacter,
 }) {
-  const { attacks } = character;
+  const { attacks } = attributes;
   const [newAttacks, setNewAttacks] = useState(attacks);
   const [newTab, setNewTab] = useState('');
   const tabsClasses = useTabsStyles();
@@ -116,14 +116,14 @@ function Attacks({
     if (_isEqual(updatedAttacks, attacks)) {
       setNewAttacks(updatedAttacks);
     } else {
-      updateCharacter({ attacks: updatedAttacks });
+      updateCharacter({ attributes: { attacks: updatedAttacks } });
     }
   }
 
   function onSave(newAttack, index) {
     const updatedAttacks = replaceByIndex(newAttacks, newAttack, index);
 
-    updateCharacter({ attacks: updatedAttacks });
+    updateCharacter({ attributes: { attacks: updatedAttacks } });
   }
 
   function onAdd(category) {
@@ -189,7 +189,7 @@ function Attacks({
             <Grid item xs={12} key={attack.name}>
               <Attack
                 attack={attack}
-                character={character}
+                attributes={attributes}
                 onDelete={() => onDelete(i)}
                 onSave={(newAttack) => onSave({ ...newAttack, category: tab }, i)}
               />
@@ -208,7 +208,7 @@ function Attacks({
 }
 
 Attacks.propTypes = {
-  character: PropTypes.shape(),
+  attributes: PropTypes.shape(),
   updateCharacter: PropTypes.func.isRequired,
 };
 

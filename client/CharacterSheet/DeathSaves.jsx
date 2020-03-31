@@ -11,11 +11,11 @@ import _get from 'lodash/get';
 import Radio from '../Form/Radio';
 
 function DeathSaves({
-  character,
+  attributes,
   updateCharacter,
 }) {
   const [saving, setSaving] = useState(false);
-  const health = _get(character, 'health', {});
+  const health = _get(attributes, 'health', {});
   const deathSaves = _get(health, 'deathSaves', []);
   const numberOfSuccesses = _filter(deathSaves, Boolean).length;
   const numberOfFailures = deathSaves.length - numberOfSuccesses;
@@ -28,11 +28,13 @@ function DeathSaves({
     setSaving(true);
 
     updateCharacter({
-      health: {
-        ...health,
-        deathSaves: newDeathSaves,
+      attributes: {
+        health: {
+          ...health,
+          deathSaves: newDeathSaves,
+        },
       },
-    })
+    });
   }
 
   function getNewDeathSaves(index, val, isSuccess) {
@@ -119,7 +121,7 @@ function DeathSaves({
 }
 
 DeathSaves.propTypes = {
-  character: PropTypes.shape().isRequired,
+  attributes: PropTypes.shape().isRequired,
   updateCharacter: PropTypes.func.isRequired,
 };
 

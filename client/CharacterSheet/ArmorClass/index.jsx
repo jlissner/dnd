@@ -5,13 +5,13 @@ import EditArmorClass from './EditArmorClass';
 import ViewArmorClass from './ViewArmorClass';
 
 function ArmorClass({
-  character,
+  attributes,
   updateCharacter,
 }) {
   const [editMode, setEditMode] = useState(false);
 
   function save(ac) {
-    updateCharacter({ ac })
+    updateCharacter({ attributes: { ac } })
   }
 
   if (editMode) {
@@ -19,7 +19,7 @@ function ArmorClass({
       <EditArmorClass
         onCancel={() => setEditMode(false)}
         onSave={save}
-        character={character}
+        attributes={attributes}
       />
     );
   }
@@ -27,14 +27,14 @@ function ArmorClass({
   return (
     <EditButton onClick={() => setEditMode(true)}>
       <ViewArmorClass
-        character={character}
+        attributes={attributes}
       />
     </EditButton>
   );
 }
 
 ArmorClass.propTypes = {
-  character: PropTypes.shape().isRequired,
+  attributes: PropTypes.shape().isRequired,
   updateCharacter: PropTypes.func.isRequired,
 };
 

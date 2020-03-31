@@ -5,13 +5,13 @@ import EditSpeed from './EditSpeed';
 import ViewSpeed from './ViewSpeed';
 
 function Speed({
-  character,
+  attributes,
   updateCharacter,
 }) {
   const [editMode, setEditMode] = useState(false);
 
   function save(speed) {
-    updateCharacter({ speed });
+    updateCharacter({ attributes: { speed } });
   }
 
   if (editMode) {
@@ -19,7 +19,7 @@ function Speed({
       <EditSpeed
         onCancel={() => setEditMode(false)}
         onSave={save}
-        character={character}
+        attributes={attributes}
       />
     );
   }
@@ -27,14 +27,14 @@ function Speed({
   return (
     <EditButton onClick={() => setEditMode(true)}>
       <ViewSpeed
-        character={character}
+        attributes={attributes}
       />
     </EditButton>
   );
 }
 
 Speed.propTypes = {
-  character: PropTypes.shape().isRequired,
+  attributes: PropTypes.shape().isRequired,
   updateCharacter: PropTypes.func.isRequired,
 };
 

@@ -5,23 +5,24 @@ const charData = require('../../__mocks__/smashChar');
 const { wsBroadcaster, graphql } = require('../lib');
 const { callGraphql, objToGraphqlStr } = graphql;
 
-async function updateCharacter(id, attributes) {
+async function updateCharacter(id, character) {
   const query = `
     mutation {
       updateCharacter(input: {
         idPk: "${id}"
         patch: {
-          ${objToGraphqlStr({ attributes })}
+          ${objToGraphqlStr(character)}
         }}) {
         character {
           attributes
+          name
         }
       }
     }
   `;
   const { updateCharacter } = await callGraphql(query);
 
-  return updateCharacter.character.attributes;
+  return updateCharacter.character;
 }
 
 async function fetchCharacter(id) {
@@ -29,11 +30,12 @@ async function fetchCharacter(id) {
     query {
       character(idPk: "${id}") {
         attributes
+        name
       }
     }
   `);
 
-  return character.attributes;
+  return character;
 }
 
 async function openCharacterWs(id, ws) {

@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
 
 function ViewAttribute({
   attribute,
-  character,
+  attributes,
 }) {
   const {
     abbv,
@@ -32,8 +32,8 @@ function ViewAttribute({
     notes,
     value,
   } = attribute;
-  const attrIndex = _findIndex(character.attributes, { name });
-  const charWithUpdatedAttribute = _cloneDeep(character);
+  const attrIndex = _findIndex(attributes.attributes, { name });
+  const charWithUpdatedAttribute = _cloneDeep(attributes);
 
   charWithUpdatedAttribute.attributes[attrIndex] = attribute;
 
@@ -96,7 +96,7 @@ function ViewAttribute({
 
 ViewAttribute.propTypes = {
   attribute: PropTypes.shape().isRequired,
-  character: PropTypes.shape().isRequired,
+  attributes: PropTypes.shape().isRequired,
 };
 
 export default ViewAttribute;

@@ -6,7 +6,7 @@ import ViewAttack from './ViewAttack';
 
 function Attack({
   attack,
-  character,
+  attributes,
   onDelete,
   onSave,
 }) {
@@ -17,7 +17,7 @@ function Attack({
     return (
       <EditAttack
         attack={attack}
-        character={character}
+        attributes={attributes}
         onCancel={() => setEditMode(false)}
         onDelete={onDelete}
         onSave={onSave}
@@ -27,14 +27,14 @@ function Attack({
 
   return (
     <EditButton onClick={() => setEditMode(true)}>
-      <ViewAttack attack={attack} character={character} onSave={onSave} />
+      <ViewAttack attack={attack} attributes={attributes} onSave={onSave} />
     </EditButton>
   )
 }
 
 Attack.propTypes = {
   attack: PropTypes.shape().isRequired,
-  character: PropTypes.shape().isRequired,
+  attributes: PropTypes.shape().isRequired,
   onDelete: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
 };

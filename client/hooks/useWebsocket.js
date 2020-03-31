@@ -1,9 +1,16 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 function useWebsocket(url) {
   const ws = useMemo(() => new WebSocket(url), [url]);
   const [readyState, setReadyState] = useState(ws.readyState);
   const [message, setMessage] = useState('');
+  const send = useCallback((msg) => {
+    if (msg === null || msg === undefined) {
+      return;
+    }
+
+    ws.send(msg);
+  }, [ws]);
 
   useEffect(() => {
     ws.onopen = () => {
@@ -26,14 +33,6 @@ function useWebsocket(url) {
       ws.close();
     }
   }, [ws]);
-
-  function send(msg) {
-    if (msg === null || msg === undefined) {
-      return;
-    }
-
-    ws.send(msg);
-  }
 
   return {
     readyState,

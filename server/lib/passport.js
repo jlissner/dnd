@@ -1,6 +1,7 @@
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const { pool } = require('./db');
+const { callGraphql } = require('./graphql');
 
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
@@ -30,10 +31,26 @@ passport.serializeUser((id, cb) => {
 });
 
 passport.deserializeUser((id, cb) => {
-  const selectUserQuery = `SELECT * FROM app.users where google_id = '${id}'`;
+  const selectUserQuery = `{
+    userByGoogleId(googleId: "${id}") {
+      idPk
+      name
+      characters {
+        nodes {
+          idPk
+          name
+        }
+      }
+    }
+  }`;
 
-  pool.query(selectUserQuery, (err, res) => {
-    cb(null, res.rows[0])
+  callGraphql(selectUserQuery).then(({ userByGoogleId }) => {
+    const user = {
+      ...userByGoogleId,
+      characters: userByGoogleId.characters.nodes
+    }
+
+    cb(null, user);
   });
 });
 

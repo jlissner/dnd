@@ -6,7 +6,7 @@ import ViewProficiency from './ViewProficiency';
 import proficiencyForm from './proficiencyForm';
 
 function EditProficiency({
-  character,
+  attributes,
   onCancel,
   onDelete,
   onSave,
@@ -19,7 +19,7 @@ function EditProficiency({
       onSave={onSave}
       Preview={({ newVal }) => (
         <ViewProficiency
-          character={character}
+          attributes={attributes}
           proficiency={newVal}
         />
       )}
@@ -30,7 +30,7 @@ function EditProficiency({
 }
 
 EditProficiency.propTypes = {
-  character: PropTypes.shape().isRequired,
+  attributes: PropTypes.shape().isRequired,
   onCancel: PropTypes.func.isRequired,
   onDelete: PropTypes.func,
   onSave: PropTypes.func.isRequired,

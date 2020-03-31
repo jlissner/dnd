@@ -7,7 +7,7 @@ import {
 import _reduce from 'lodash/reduce';
 import { Simple } from '../../Displays';
 
-function calculateSpeed({ speed, ...character }) {
+function calculateSpeed({ speed, ...attributes }) {
   const { base, modifiers } = speed;
   const bonusModifiers = _reduce(modifiers, (res, { active, value }) => (active ? res + value : res), 0)
 
@@ -15,11 +15,11 @@ function calculateSpeed({ speed, ...character }) {
 }
 
 function ViewSpeed({
-  character,
+  attributes,
 }) {
-  const { speed } = character;
+  const { speed } = attributes;
   const { notes } = speed;
-  const totalSpeed = calculateSpeed(character);
+  const totalSpeed = calculateSpeed(attributes);
 
   return (
     <Simple label="Speed" notes={notes}>
@@ -31,7 +31,7 @@ function ViewSpeed({
 }
 
 ViewSpeed.propTypes = {
-  character: PropTypes.shape().isRequired,
+  attributes: PropTypes.shape().isRequired,
 };
 
 export default ViewSpeed;

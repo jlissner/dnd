@@ -17,7 +17,7 @@ function TextSection({
   const [editMode, setEditMode] = useState(false);
 
   const save = useCallback(({ text }) => {
-    updateCharacter({ [accessor]: text })
+    updateCharacter({ attributes: { [accessor]: text } })
   }, [accessor, updateCharacter]);
 
   const content = useMemo(() => (

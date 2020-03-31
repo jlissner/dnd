@@ -7,16 +7,16 @@ import armorClassForm from './armorClassForm';
 function EditArmorClass({
   onCancel,
   onSave,
-  character,
+  attributes,
 }) {
   return (
     <EditContainer
       bgcolor="background.paper"
       form={armorClassForm}
-      Preview={({ newVal }) => <ViewArmorClass character={{ ...character, ac: newVal }} />}
+      Preview={({ newVal }) => <ViewArmorClass attributes={{ ...attributes, ac: newVal }} />}
       onCancel={onCancel}
       onSave={onSave}
-      value={character.ac}
+      value={attributes.ac}
       width={320}
     />
   )
@@ -25,7 +25,7 @@ function EditArmorClass({
 EditArmorClass.propTypes = {
   onCancel: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
-  character: PropTypes.shape().isRequired,
+  attributes: PropTypes.shape().isRequired,
 };
 
 export default EditArmorClass;

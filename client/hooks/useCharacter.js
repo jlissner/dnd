@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import _defaults from 'lodash/defaults';
 import useWebsocket from './useWebsocket';
 
 function useCharacter(id) {
@@ -8,19 +9,19 @@ function useCharacter(id) {
   const { message, readyState, send } = useWebsocket(url);
   const [character, setCharacter] = useState({});
   const loading = readyState === 0;
+  const updateCharacter = useCallback(({ name = character.name, attributes = {} }) => {
+    const type = 'UPDATE';
+    const updatedAttributes = _defaults(attributes, character.attributes);
+    const action = JSON.stringify({ type, payload: { name, attributes: updatedAttributes } });
+
+    send(action);
+  }, [send, character]);
 
   useEffect(() => {
     if (message) {
       setCharacter(JSON.parse(message));
     }
-  }, [message])
-
-  function updateCharacter(attributes) {
-    const type = 'UPDATE';
-    const action = JSON.stringify({ type, payload: { ...character, ...attributes } });
-
-    send(action);
-  }
+  }, [message]);
 
   return [
     character,

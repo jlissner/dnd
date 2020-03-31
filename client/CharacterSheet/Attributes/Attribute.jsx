@@ -6,7 +6,7 @@ import ViewAttribute from './ViewAttribute';
 
 function Attribute({
   attribute,
-  character,
+  attributes,
   onSave,
 }) {
   const [editMode, setEditMode] = useState(false);
@@ -15,7 +15,7 @@ function Attribute({
     return (
       <EditAttribute
         attribute={attribute}
-        character={character}
+        attributes={attributes}
         onSave={onSave}
         onCancel={() => setEditMode(false)}
       />
@@ -24,14 +24,14 @@ function Attribute({
 
   return (
     <EditButton onClick={() => setEditMode(true)}>
-      <ViewAttribute attribute={attribute} character={character} />
+      <ViewAttribute attribute={attribute} attributes={attributes} />
     </EditButton>
   );
 }
 
 Attribute.propTypes = {
   attribute: PropTypes.shape().isRequired,
-  character: PropTypes.shape().isRequired,
+  attributes: PropTypes.shape().isRequired,
   onSave: PropTypes.func.isRequired,
 };
 

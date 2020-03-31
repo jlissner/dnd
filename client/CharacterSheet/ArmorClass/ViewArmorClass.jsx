@@ -8,9 +8,9 @@ import _reduce from 'lodash/reduce';
 import { Simple } from '../../Displays';
 import getTotalModifier from '../../utils/getTotalModifier';
 
-function calculateAc({ ac, ...character }) {
-  const { base, attributes, maxAttrMod, modifiers } = ac;
-  const attrModifiers = _reduce(attributes, (res, attr) => res + getTotalModifier(character, attr), 0);
+function calculateAc({ ac, ...attributes }) {
+  const { base, attributes: acAttributes, maxAttrMod, modifiers } = ac;
+  const attrModifiers = _reduce(acAttributes, (res, attr) => res + getTotalModifier(attributes, attr), 0);
   const bonusModifiers = _reduce(modifiers, (res, { active, value }) => (active ? res + value : res), 0)
   const attrMod = (maxAttrMod > -1 && attrModifiers > maxAttrMod)
     ? maxAttrMod
@@ -20,11 +20,11 @@ function calculateAc({ ac, ...character }) {
 }
 
 function ViewArmorClass({
-  character,
+  attributes,
 }) {
-  const { ac } = character;
+  const { ac } = attributes;
   const { notes } = ac;
-  const totalAc = calculateAc(character);
+  const totalAc = calculateAc(attributes);
   
   return (
     <Simple label="AC" notes={notes}>
@@ -36,7 +36,7 @@ function ViewArmorClass({
 }
 
 ViewArmorClass.propTypes = {
-  character: PropTypes.shape().isRequired,
+  attributes: PropTypes.shape().isRequired,
 };
 
 export default ViewArmorClass;

@@ -16,8 +16,7 @@ export const characterSchemas = [{
       maxAttrMod: -1,
     },
     xp: 0,
-    name: 'Smash',
-    race: 'Goliath',
+    race: '',
     level: '1',
     money: {
       cp: 0,

@@ -7,16 +7,16 @@ import initiativeForm from './initiativeForm';
 function EditInitiative({
   onCancel,
   onSave,
-  character,
+  attributes,
 }) {
   return (
     <EditContainer
       bgcolor="background.paper"
       form={initiativeForm}
-      Preview={({ newVal }) => <ViewInitiative character={{ ...character, initiative: newVal }} />}
+      Preview={({ newVal }) => <ViewInitiative attributes={{ ...attributes, initiative: newVal }} />}
       onCancel={onCancel}
       onSave={onSave}
-      value={character.initiative}
+      value={attributes.initiative}
       width={320}
     />
   )
@@ -25,7 +25,7 @@ function EditInitiative({
 EditInitiative.propTypes = {
   onCancel: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
-  character: PropTypes.shape().isRequired,
+  attributes: PropTypes.shape().isRequired,
 };
 
 export default EditInitiative;

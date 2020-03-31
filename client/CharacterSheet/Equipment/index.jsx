@@ -25,10 +25,10 @@ const NEW_EQUIPMENT_TEMPLATE = {
 };
 
 function Equipment({
-  character,
+  attributes,
   updateCharacter,
 }) {
-  const { equipment, money } = character;
+  const { equipment, money } = attributes;
   const [newEquipment, setNewEquipment] = useState(equipment);
   const addButtonDisabled = !_last(newEquipment).name;
 
@@ -46,14 +46,14 @@ function Equipment({
     if (_isEqual(updatedEquipment, equipment)) {
       setNewEquipment([...updatedEquipment])
     } else {
-      updateCharacter({ equipment: updatedEquipment });
+      updateCharacter({ attributes: { equipment: updatedEquipment } });
     }
   }
 
   function onSave(updatedItem, index) {
     const updatedEquipment = replaceByIndex(newEquipment, updatedItem, index);
 
-    updateCharacter({ equipment: updatedEquipment });
+    updateCharacter({ attributes: { equipment: updatedEquipment } });
   }
 
   return (
@@ -96,7 +96,7 @@ function Equipment({
 }
 
 Equipment.propTypes = {
-  character: PropTypes.shape().isRequired,
+  attributes: PropTypes.shape().isRequired,
   updateCharacter: PropTypes.func.isRequired,
 };
 

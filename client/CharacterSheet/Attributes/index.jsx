@@ -5,24 +5,24 @@ import _map from 'lodash/map';
 import Attribute from './Attribute';
 
 function Attributes({
-  character,
+  attributes,
   updateCharacter,
 }) {
   function saveAttribute(attributeIndex) {
     return (updatedAttribute) => {
-      const updatedAttributes = character.attributes;
+      const updatedAttributes = attributes.attributes;
 
       updatedAttributes[attributeIndex] = updatedAttribute;
 
-      updateCharacter({ ...character, attributes: updatedAttributes });
+      updateCharacter({ attributes: { attributes: updatedAttributes } });
     }
   }
 
   return (
     <Grid container spacing={3}>
-      {_map(character.attributes, (attribute, i) => (
+      {_map(attributes.attributes, (attribute, i) => (
         <Grid item xs={12} key={attribute.name}>
-          <Attribute attribute={attribute} character={character} onSave={saveAttribute(i)} />
+          <Attribute attribute={attribute} attributes={attributes} onSave={saveAttribute(i)} />
         </Grid>
       ))}
     </Grid>
@@ -30,7 +30,7 @@ function Attributes({
 }
 
 Attributes.propTypes = {
-  character: PropTypes.shape().isRequired,
+  attributes: PropTypes.shape().isRequired,
   updateCharacter: PropTypes.func.isRequired,
 };
 

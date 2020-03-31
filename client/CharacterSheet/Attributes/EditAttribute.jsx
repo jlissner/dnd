@@ -6,7 +6,7 @@ import ViewAttribute from './ViewAttribute';
 
 function EditAttribute({
   attribute,
-  character,
+  attributes,
   onCancel,
   onSave,
 }) {
@@ -15,7 +15,7 @@ function EditAttribute({
       onCancel={onCancel}
       onSave={onSave}
       form={attributeForm}
-      Preview={({ newVal }) => <ViewAttribute attribute={newVal} character={character} />}
+      Preview={({ newVal }) => <ViewAttribute attribute={newVal} attributes={attributes} />}
       value={attribute}
     />
   )
@@ -23,7 +23,7 @@ function EditAttribute({
 
 EditAttribute.propTypes = {
   attribute: PropTypes.shape().isRequired,
-  character: PropTypes.shape().isRequired,
+  attributes: PropTypes.shape().isRequired,
   onCancel: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
 };

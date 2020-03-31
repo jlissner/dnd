@@ -5,13 +5,13 @@ import EditInitiative from './EditInitiative';
 import ViewInitiative from './ViewInitiative';
 
 function Initiative({
-  character,
+  attributes,
   updateCharacter,
 }) {
   const [editMode, setEditMode] = useState(false);
 
   function save(initiative) {
-    updateCharacter({ initiative });
+    updateCharacter({ attributes: { initiative } });
   }
 
   if (editMode) {
@@ -19,7 +19,7 @@ function Initiative({
       <EditInitiative
         onCancel={() => setEditMode(false)}
         onSave={save}
-        character={character}
+        attributes={attributes}
       />
     );
   }
@@ -27,14 +27,14 @@ function Initiative({
   return (
     <EditButton onClick={() => setEditMode(true)}>
       <ViewInitiative
-        character={character}
+        attributes={attributes}
       />
     </EditButton>
   );
 }
 
 Initiative.propTypes = {
-  character: PropTypes.shape().isRequired,
+  attributes: PropTypes.shape().isRequired,
   updateCharacter: PropTypes.func.isRequired,
 };
 

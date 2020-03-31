@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { hot } from 'react-hot-loader/root';
 import {
   Box,
@@ -13,6 +13,7 @@ import CharacterSheet from './CharacterSheet';
 // import CanvasMenu from './CanvasMenu';
 import GameBoard from './GameBoard';
 import PlayerList from './PlayerList';
+import SelectCharacter from './SelectCharacter';
 import {
   useGameBoard,
   useUser,
@@ -21,6 +22,7 @@ import {
 function App() {
   const gameBoard = useGameBoard();
   const user = useUser(true);
+  const [selectCharacter, setSelectedCharacter] = useState();
 
   function renderContent() {
     if (!user) {
@@ -43,6 +45,10 @@ function App() {
           </Paper>
         </Grid>
       );
+    }
+
+    if (!selectCharacter) {
+      return <SelectCharacter setSelectedCharacter={setSelectedCharacter} />;
     }
 
     return (

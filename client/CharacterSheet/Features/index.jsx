@@ -44,14 +44,14 @@ function Features({
     if (_isEqual(updatedFeatures, Features)) {
       setNewFeatures([...updatedFeatures]);
     } else {
-      updateCharacter({ features: updatedFeatures });
+      updateCharacter({ attributes: { features: updatedFeatures } });
     }
   }
 
   function onSave(updatedItem, index) {
     const updatedFeatures = replaceByIndex(newFeatures, updatedItem, index);
 
-    updateCharacter({ features: updatedFeatures });
+    updateCharacter({ attributes: { features: updatedFeatures } });
   }
 
   return (

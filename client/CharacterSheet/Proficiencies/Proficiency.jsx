@@ -7,7 +7,7 @@ import ViewProficiency from './ViewProficiency';
 
 function Proficiency({
   proficiency,
-  character,
+  attributes,
   onDelete,
   onSave,
 }) {
@@ -18,7 +18,7 @@ function Proficiency({
     return (
       <EditProficiency
         proficiency={proficiency}
-        character={character}
+        attributes={attributes}
         onCancel={name ? () => setEditMode(false) : onDelete}
         onDelete={onDelete}
         onSave={onSave}
@@ -28,14 +28,14 @@ function Proficiency({
 
   return (
     <EditButton onClick={() => setEditMode(true)}>
-      <ViewProficiency proficiency={proficiency} character={character} onSave={onSave} />
+      <ViewProficiency proficiency={proficiency} attributes={attributes} onSave={onSave} />
     </EditButton>
   )
 }
 
 Proficiency.propTypes = {
   Proficiency: PropTypes.shape().isRequired,
-  character: PropTypes.shape().isRequired,
+  attributes: PropTypes.shape().isRequired,
   onDelete: PropTypes.func,
   onSave: PropTypes.func.isRequired,
 };

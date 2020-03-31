@@ -6,7 +6,7 @@ import ViewAttack from './ViewAttack';
 
 function EditAttack({
   attack,
-  character,
+  attributes,
   onCancel,
   onDelete,
   onSave,
@@ -14,7 +14,7 @@ function EditAttack({
   return (
     <EditContainer
       form={attackForm}
-      Preview={({ newVal }) => <ViewAttack attack={newVal} character={character} />}
+      Preview={({ newVal }) => <ViewAttack attack={newVal} attributes={attributes} />}
       onCancel={onCancel}
       onDelete={onDelete}
       onSave={onSave}
@@ -25,7 +25,7 @@ function EditAttack({
 
 EditAttack.propTypes = {
   attack: PropTypes.shape().isRequired,
-  character: PropTypes.shape().isRequired,
+  attributes: PropTypes.shape().isRequired,
   onCancel: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,

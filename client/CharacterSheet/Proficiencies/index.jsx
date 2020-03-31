@@ -12,22 +12,22 @@ import Proficiency from './Proficiency';
 function Proficiencies({
   fixedList,
   category,
-  character,
+  attributes,
   onDelete,
   updateCharacter,
 }) {
-  const [proficiencies, setProficiencies] = useState(character[category]);
+  const [proficiencies, setProficiencies] = useState(attributes[category]);
 
   useEffect(() => {
-    setProficiencies(character[category]);
-  }, [character, category]);
+    setProficiencies(attributes[category]);
+  }, [attributes, category]);
 
   function save(index, updatedProficiency) {
     const updatedProficiencies = _cloneDeep(proficiencies);
 
     updatedProficiencies[index] = updatedProficiency;
 
-    updateCharacter({ [category]: updatedProficiencies });
+    updateCharacter({ attributes: { [category]: updatedProficiencies } });
   }
 
   function deleteFunc(index) {
@@ -36,15 +36,15 @@ function Proficiencies({
     }
 
     return () => {
-      if (character[category][index] === undefined) {
-        setProficiencies(character[category]);
+      if (attributes[category][index] === undefined) {
+        setProficiencies(attributes[category]);
 
         return;
       }
 
       const updatedProficiencies = _filter(proficiencies, (p, i) => i !== index);
 
-      updateCharacter({ [category]: updatedProficiencies });
+      updateCharacter({ attributes: { [category]: updatedProficiencies } });
     };
   }
 
@@ -65,7 +65,7 @@ function Proficiencies({
       {_map(proficiencies, (proficiency, i) => (
         <Proficiency
           key={proficiency.name}
-          character={character}
+          attributes={attributes}
           proficiency={proficiency}
           onDelete={deleteFunc(i)}
           onSave={(updatedProficiency) => save(i, updatedProficiency)}
@@ -85,7 +85,7 @@ function Proficiencies({
 Proficiencies.propTypes = {
   fixedList: PropTypes.bool,
   category: PropTypes.string.isRequired,
-  character: PropTypes.shape().isRequired,
+  attributes: PropTypes.shape().isRequired,
   updateCharacter: PropTypes.func.isRequired,
 };
 

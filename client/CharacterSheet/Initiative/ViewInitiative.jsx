@@ -9,20 +9,20 @@ import { Simple } from '../../Displays';
 import getTotalModifier from '../../utils/getTotalModifier';
 import getNumericPrefix from '../../utils/getNumericPrefix';
 
-function calculateInitiative({ initiative, ...character }) {
+function calculateInitiative({ initiative, ...attributes }) {
   const { modifiers } = initiative;
-  const attrModifier = getTotalModifier(character, 'dex');
+  const attrModifier = getTotalModifier(attributes, 'dex');
   const bonusModifiers = _reduce(modifiers, (res, { active, value }) => (active ? res + value : res), 0)
 
   return attrModifier + bonusModifiers;
 }
 
 function ViewInitiative({
-  character,
+  attributes,
 }) {
-  const { initiative } = character;
+  const { initiative } = attributes;
   const { notes } = initiative;
-  const totalInitiative = calculateInitiative(character);
+  const totalInitiative = calculateInitiative(attributes);
 
   return (
     <Simple label="Initiative" notes={notes}>
@@ -35,7 +35,7 @@ function ViewInitiative({
 }
 
 ViewInitiative.propTypes = {
-  character: PropTypes.shape().isRequired,
+  attributes: PropTypes.shape().isRequired,
 };
 
 export default ViewInitiative;

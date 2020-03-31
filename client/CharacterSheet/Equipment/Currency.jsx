@@ -9,7 +9,7 @@ function Currency({
   updateCharacter,
 }) {
   function onSave(newVal, key) {
-    updateCharacter({ money: { ...money, [key]: parseInt(newVal, 10) }});
+    updateCharacter({ attributes: { money: { ...money, [key]: parseInt(newVal, 10) } } });
   }
 
   return _map(money, (val, key) => (

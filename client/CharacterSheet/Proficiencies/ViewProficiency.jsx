@@ -25,7 +25,7 @@ const useStyles = makeStyles(theme => ({
 function ViewProficiency({
   proficiency,
   onSave,
-  character,
+  attributes,
 }) {
   const {
     bonusModifier,
@@ -34,7 +34,7 @@ function ViewProficiency({
     proficient,
     type,
   } = proficiency;
-  const modifier = getTotalModifier(character, type, proficient, bonusModifier);
+  const modifier = getTotalModifier(attributes, type, proficient, bonusModifier);
   const classes = useStyles();
   const [saving, setSaving] = useState(false);
   const [ref, openNotes, notesComponent] = useNotes(notes);
@@ -86,7 +86,7 @@ function ViewProficiency({
 }
 
 ViewProficiency.propTypes = {
-  character: PropTypes.shape().isRequired,
+  attributes: PropTypes.shape().isRequired,
   onSave: PropTypes.func.isRequired,
   proficiency: PropTypes.shape().isRequired,
 };
