@@ -67,7 +67,7 @@ function Equipment({
         <Box width={100} ml={-2.5}>
           <Currency money={money} updateCharacter={updateCharacter} />
         </Box>
-        <Box pl={2}>
+        <Box pl={2} width={1}>
           {_map(newEquipment, (equip, i) => (
             <Box key={equip.name} pb={1}>
               <AdvancedTextSection

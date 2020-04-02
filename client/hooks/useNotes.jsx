@@ -4,7 +4,7 @@ import {
   Box,
   Popover,
 } from '@material-ui/core';
-import Markdown from '../Form/Markdown';
+import Markdown from '../Displays/Markdown';
 
 const useStyles = makeStyles((theme) => ({
   paper: {

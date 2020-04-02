@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Box } from '@material-ui/core';
 import EditContainer from './EditContainer';
-import Markdown from './Markdown';
+import Markdown from '../Displays/Markdown';
 
 function MarkdownInput({
   onCancel,

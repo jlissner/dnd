@@ -14,11 +14,9 @@ import {
 } from '@material-ui/icons';
 import _fill from 'lodash/fill';
 import _map from 'lodash/map';
-import Badge from '../../Displays/Badge';
-import Markdown from '../../Form/Markdown';
+import { Badge, Markdown } from '../../Displays';
 import Radio from '../../Form/Radio';
-import If from '../../utils/If';
-import Rotate from '../../utils/Rotate';
+import { If, Rotate } from '../../utils';
 
 const useStyles = makeStyles((theme) => ({
   expandButton: {

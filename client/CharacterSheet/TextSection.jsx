@@ -5,7 +5,7 @@ import {
   Typography,
 } from '@material-ui/core';
 import EditButton from '../Form/EditButton';
-import Markdown from '../Form/Markdown';
+import Markdown from '../Displays/Markdown';
 import MarkdownInput from '../Form/MarkdownInput';
 
 function TextSection({
