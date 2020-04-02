@@ -98,7 +98,7 @@ function Attacks({
     return _uniq(cats);
   }, [newAttacks]);
   const [tab, setTab] = useState(categories[0]);
-  const addDisabled = !_last(newAttacks).name
+  const addDisabled = newAttacks.length > 0 ? !_last(newAttacks).name : false;
 
   useEffect(() => {
     setNewAttacks(attacks);

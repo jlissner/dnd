@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { makeStyles } from '@material-ui/core/styles';
 import {
   Box,
   Button,
@@ -8,11 +9,19 @@ import {
   Add as AddIcon,
 } from '@material-ui/icons';
 
+const useStyles = makeStyles((theme) => ({
+  button: {
+    height: '100%',
+  },
+}));
+
 function AddButton({
   BoxProps,
   onAdd,
   ...props
 }) {
+  const classes = useStyles();
+
   return (
     <Box
       bgcolor="background.paper"
@@ -24,7 +33,7 @@ function AddButton({
       width="25%"
       {...BoxProps}
     >
-      <Button fullWidth onClick={onAdd} {...props}>
+      <Button className={classes.button} fullWidth onClick={onAdd} {...props}>
         <AddIcon />
       </Button>
     </Box>

@@ -28,7 +28,7 @@ function Features({
   updateCharacter,
 }) {
   const [newFeatures, setNewFeatures] = useState(features);
-  const addButtonDisabled = !_last(newFeatures).name;
+  const addButtonDisabled = newFeatures.length > 0 ? !_last(newFeatures).name : false;
 
   useEffect(() => {
     setNewFeatures(features);

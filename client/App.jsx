@@ -21,7 +21,7 @@ import {
 
 function App() {
   const gameBoard = useGameBoard();
-  const user = useUser(true);
+  const { user } = useUser(true);
   const [selectCharacter, setSelectedCharacter] = useState();
 
   function renderContent() {
@@ -66,7 +66,7 @@ function App() {
           </Grid>
         </Box>
         <Box position="relative" zIndex="1">
-          <CharacterSheet id="1" />
+          <CharacterSheet id={selectCharacter} />
         </Box>
       </>
     )

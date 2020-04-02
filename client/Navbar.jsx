@@ -45,7 +45,7 @@ function Navbar({ user }) {
   return (
     <AppBar>
       <Toolbar>
-        <Typography className={classes.title} variant="h6">
+        <Typography className={classes.title} variant="h6" component="h1">
         	RPG Together
         </Typography>
         

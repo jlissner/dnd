@@ -270,7 +270,12 @@ FormItem.propTypes = {
   onEnter: PropTypes.func,
   options: PropTypes.arrayOf(PropTypes.shape({
     label: PropTypes.string,
-    value: PropTypes.string.isRequired,
+    value: PropTypes.oneOfType([
+      PropTypes.number,
+      PropTypes.string,
+      PropTypes.bool,
+      PropTypes.shape(),
+    ]),
   })),
   required: PropTypes.bool,
   text: PropTypes.string,
@@ -285,6 +290,7 @@ FormItem.propTypes = {
       PropTypes.bool,
       PropTypes.string,
     ])),
+    PropTypes.shape(),
   ]),
   variant: PropTypes.string,
 };

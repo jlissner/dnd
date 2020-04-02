@@ -30,7 +30,7 @@ function Equipment({
 }) {
   const { equipment, money } = attributes;
   const [newEquipment, setNewEquipment] = useState(equipment);
-  const addButtonDisabled = !_last(newEquipment).name;
+  const addButtonDisabled = newEquipment.length > 0 ? !_last(newEquipment).name : false;
 
   useEffect(() => {
     setNewEquipment(equipment);

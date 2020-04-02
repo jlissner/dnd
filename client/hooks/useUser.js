@@ -1,20 +1,22 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import axios from 'axios';
 import useGlobalState from './useGlobalState';
 
 function useUser(initUser) {
   const [user, setUser] = useGlobalState('user');
+  const fetchUser = useCallback(async () => {
+    const { data } = await axios.get('/user');
+
+    setUser(data || {});
+  }, [setUser]);
 
   useEffect(() => {
     if (initUser) {
-      console.log('here');
-      axios.get('/user').then(({ data }) => {
-        setUser(data || {});
-      });
+      fetchUser()
     }
-  }, [initUser, setUser]);
+  }, [initUser, fetchUser]);
 
-  return user;
+  return { user, fetchUser };
 }
 
 export default useUser;
