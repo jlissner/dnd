@@ -16,8 +16,8 @@ import {
 } from '@material-ui/icons';
 import _isEqual from 'lodash/isEqual';
 import _noop from 'lodash/noop';
-import If from '../utils/If';
-import validate from '../utils/validate';
+import { useGlobalState } from '../hooks';
+import { If, validate }  from '../utils';
 import DeleteButton from './DeleteButton';
 import Form from './index';
 
@@ -31,6 +31,7 @@ function EditContainer({
   value,
   width,
 }) {
+  const [, setMarkdownHelperOpen] = useGlobalState('markdownHelperOpen');
   const [validatedForm, setValidatedForm] = useState(form);
   const [newVal, setNewVal] = useState(value);
   const [previewing, setPreviewing] = useState(false);
@@ -110,7 +111,7 @@ function EditContainer({
           <Button disabled={previewing} onClick={() => setPreviewing(true)}>
             <VisibilityIcon />
           </Button>
-          <Button onClick={() => alert('Learn how to write markdown here: https://www.google.com/search?client=firefox-b-1-d&q=how+to+write+markdown')}>
+          <Button onClick={() => setMarkdownHelperOpen(true)}>
             <InfoIcon />
           </Button>
         </ButtonGroup>

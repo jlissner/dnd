@@ -12,6 +12,7 @@ import Navbar from './Navbar';
 import CharacterSheet from './CharacterSheet';
 // import CanvasMenu from './CanvasMenu';
 import GameBoard from './GameBoard';
+import MarkdownHelper from './Form/MarkdownHelper';
 import PlayerList from './PlayerList';
 import SelectCharacter from './SelectCharacter';
 import {
@@ -68,6 +69,7 @@ function App() {
         <Box position="relative" zIndex="1">
           <CharacterSheet id={selectCharacter} />
         </Box>
+        <MarkdownHelper />
       </>
     )
   }

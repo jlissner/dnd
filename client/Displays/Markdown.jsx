@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ReactMarkdown from 'react-markdown';
 import {
+  Divider,
   Link,
   Table,
   TableHead,
@@ -27,6 +28,7 @@ function Markdown({
         tableBody: ({ children, ...props }) => <TableBody>{children}</TableBody>,
         tableRow: ({ children, ...props }) => <TableRow hover>{children}</TableRow>,
         tableCell: ({ children, isHeader, align, ...props }) => <TableCell align={align || 'inherit'} variant={isHeader ? 'head' : 'body'}>{children}</TableCell>,
+        thematicBreak: Divider,
       }}
       source={text || defaultText}
       {...props}
