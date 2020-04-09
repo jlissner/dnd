@@ -17,6 +17,12 @@ const StyledCell = withStyles(() => ({
   },
 }))(TableCell);
 
+const blockquoteExample = `
+> This is an example
+
+> of a block quote
+`;
+
 const unorderedListExample = `
 * Unordered List
 * Unordered List
@@ -27,6 +33,12 @@ const orderedListExample = `
 1. ordered List
 `;
 
+const dividedText = `
+Some text I want divided
+--- 
+Some text I want divided 
+`
+
 const tableExample = `
 | Left Align | Center Align | Right Align |
 |------------|:------------:|------------:|
@@ -35,8 +47,14 @@ const tableExample = `
 | Cell       | Cell         | Cell        |
 `;
 
+const taskListExample = `
+- [x] Talk to the guard
+- [ ] Kill the goblins
+- [ ] Get paid  
+`;
+
 function MarkdownHelper() {
-  const [open, setOpen] = useGlobalState('markdownHelperOpen', true);
+  const [open, setOpen] = useGlobalState('markdownHelperOpen', false);
 
   return (
     <Dialog
@@ -77,6 +95,10 @@ function MarkdownHelper() {
               <StyledCell><Markdown text="[link to google](https://google.com)" /></StyledCell>
             </TableRow>
             <TableRow>
+              <StyledCell>![fallback text](https://placebear.com/100/100 "hover text")</StyledCell>
+              <StyledCell><Markdown text='![fallback text](https://placebear.com/100/100 "hover text")' /></StyledCell>
+            </TableRow>
+            <TableRow>
               <StyledCell>*italics* or _italics_</StyledCell>
               <StyledCell><Markdown text="*italics*" /></StyledCell>
             </TableRow>
@@ -94,21 +116,70 @@ function MarkdownHelper() {
             </TableRow>
             <TableRow>
               <StyledCell>
-                <Markdown text={`\`\`\`${unorderedListExample}\`\`\``} />
+                <Markdown text={`\`\`\`plain${blockquoteExample}\`\`\``} />
+              </StyledCell>
+              <StyledCell><Markdown text={blockquoteExample} /></StyledCell>
+            </TableRow>
+            <TableRow>
+              <StyledCell>
+                <Markdown text={`\`\`\`plain${unorderedListExample}\`\`\``} />
               </StyledCell>
               <StyledCell><Markdown text={unorderedListExample} /></StyledCell>
             </TableRow>
             <TableRow>
               <StyledCell>
-                <Markdown text={`\`\`\`${orderedListExample}\`\`\``} />
+                <Markdown text={`\`\`\`plain${orderedListExample}\`\`\``} />
               </StyledCell>
               <StyledCell><Markdown text={orderedListExample} /></StyledCell>
             </TableRow>
             <TableRow>
               <StyledCell>
-              <Markdown text={`\`\`\`${tableExample}\`\`\``}/>
+                <Markdown text={`\`\`\`plain${taskListExample}\`\`\``} />
+              </StyledCell>
+              <StyledCell><Markdown text={taskListExample} /></StyledCell>
+            </TableRow>
+            <TableRow>
+              <StyledCell>
+                <Markdown text={`\`\`\`plain${dividedText}\`\`\``} />
+              </StyledCell>
+              <StyledCell><Markdown text={dividedText} /></StyledCell>
+            </TableRow>
+            <TableRow>
+              <StyledCell>
+                <Markdown text={`\`\`\`plain${tableExample}\`\`\``}/>
               </StyledCell>
               <StyledCell><Markdown text={tableExample} /></StyledCell>
+            </TableRow>
+            <TableRow>
+              <StyledCell>
+                this text is `special`
+              </StyledCell>
+              <StyledCell><Markdown text="this text is `special`" /></StyledCell>
+            </TableRow>
+            <TableRow>
+              <StyledCell>
+                <pre>
+                  <code>
+                    
+```
+<br />
+This is a special block
+<br />
+&nbsp;&nbsp;and the spacing
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;is preserved
+<br />
+```
+                  </code>
+                </pre>
+              </StyledCell>
+              <StyledCell><Markdown text={`
+\`\`\`
+This is a special block
+  and the spacing
+    is preserved
+\`\`\`
+`} /></StyledCell>
             </TableRow>
           </TableBody>
         </Table>

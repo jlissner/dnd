@@ -19,7 +19,7 @@ function MarkdownInput({
       }]}
       Preview={({ newVal }) => (
         <Box p={2}>
-          <Markdown text={newVal || 'This is a link to [google](https://google.com)'} />
+          <Markdown text={newVal.text} />
         </Box>
       )}
       onCancel={onCancel}

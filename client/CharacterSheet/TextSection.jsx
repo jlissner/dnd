@@ -32,7 +32,7 @@ function TextSection({
             borderRadius={4}
             p={2}
           >
-            <Markdown text={value || 'Nothing here yet...'} />
+            <Markdown defaultText="Nothing here yet..." text={value} />
           </Box>
         </EditButton>
   ), [editMode, save, value])
