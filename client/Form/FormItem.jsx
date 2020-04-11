@@ -31,6 +31,8 @@ function updateTags(tagsText) {
 }
 
 function FormItem({
+  formValue,
+  conditions,
   disabled,
   error,
   helperText,
@@ -55,8 +57,9 @@ function FormItem({
     }
   }
 
+  const disableFormItem = _map(conditions, (val, key) => formValue[key] !== val).filter(Boolean).length > 0;
   const defaultProps = {
-    disabled,
+    disabled: disabled || disableFormItem,
     error,
     fullWidth,
     helperText,
@@ -90,7 +93,7 @@ function FormItem({
               <Checkbox
                 checked={value}
                 onChange={() => setValue(!value)}
-                disabled={disabled}
+                disabled={defaultProps.disabled}
                 required={required}
               />
             )}
@@ -108,7 +111,7 @@ function FormItem({
                     <Checkbox
                       checked={value.indexOf(opt.value) > -1}
                       onChange={() => setValue(_xor(value, [opt.value]))}
-                      disabled={disabled}
+                      disabled={defaultProps.disabled}
                       required={required}
                     />
                   )}
@@ -195,7 +198,7 @@ function FormItem({
                     style={{ padding: 0 }}
                     checked={mod.active}
                     onChange={() => setValue(_map(value, (v, j) => (i === j ? {...v, active: !mod.active} : v)))}
-                    disabled={disabled}
+                    disabled={defaultProps.disabled}
                     required={required}
                   />
                 </Grid>
@@ -260,6 +263,8 @@ function FormItem({
 }
 
 FormItem.propTypes = {
+  formValue: PropTypes.shape(),
+  conditions: PropTypes.shape(),
   disabled: PropTypes.bool,
   error: PropTypes.bool,
   fullWidth: PropTypes.bool,
@@ -296,6 +301,8 @@ FormItem.propTypes = {
 };
 
 FormItem.defaultProps = {
+  formValue: {},
+  conditions: {},
   disabled: false,
   error: false,
   fullWidth: true,

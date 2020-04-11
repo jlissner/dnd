@@ -15,11 +15,12 @@ function getSave(attributes, type) {
 }
 
 function getHit(atk, attributes) {
-  const { modType, bonusModifier, proficient } = atk;
+  const { modType, bonusModifier, proficient, isSpell } = atk;
   const isSave = modType.indexOf(':') > -1;
 
   if (!isSave) {
-    const modifier = getTotalModifier(attributes, modType, proficient, bonusModifier);
+    const addProficiencyBonus = isSpell || proficient;
+    const modifier = getTotalModifier(attributes, modType, addProficiencyBonus, bonusModifier);
 
     return `${getNumericPrefix(modifier)}${modifier}`;
   }
@@ -31,12 +32,6 @@ function getDamage(dmg, modifier) {
   const prefix = modifier ? `${getNumericPrefix(modifier)}${modifier}` : '';
 
   return dmg + prefix
-}
-
-function getName(name, modifier) {
-  const prefix = modifier ? `${getNumericPrefix(modifier)}${modifier} ` : '';
-
-  return prefix + name;
 }
 
 function ViewAttack({
@@ -52,11 +47,13 @@ function ViewAttack({
     range,
     notes,
     bonusModifier,
+    isSpell,
+    modType,
   } = attack;
-  const atkName = getName(name, bonusModifier);
   const atkRange = range ? `range: ${range} | ` : '';
   const hit = getHit(attack, attributes);
-  const damage = getDamage(dmg, bonusModifier);
+  const bonusDmg = isSpell ? bonusModifier : getTotalModifier(attributes, modType, false, bonusModifier);
+  const damage = getDamage(dmg, bonusDmg);
 
   function save({ uses: newUses }) {
     onSave({
@@ -69,7 +66,7 @@ function ViewAttack({
     <ViewAdvancedTextSection
       onSave={save}
       tags={[]}
-      name={atkName}
+      name={name}
       longDesc={notes}
       shortDesc={`${atkRange}hit: ${hit} | dmg: ${damage} | type: ${dmgType}`}
       uses={uses}

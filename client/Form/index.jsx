@@ -5,6 +5,8 @@ import _isNil from 'lodash/isNil';
 import _map from 'lodash/map';
 import _startCase from 'lodash/startCase';
 import FormItem from './FormItem';
+import { If } from '../utils';
+
 
 function Form({
   form,
@@ -27,7 +29,7 @@ function Form({
           md,
           lg,
           ...formProps
-        }) => (
+        }) => (//_map(formProps.conditions, (val, key) => value[key] !== val).filter(Boolean).length === 0 &&
           <Grid
             key={accessor}
             item
@@ -40,6 +42,7 @@ function Form({
               label={label || _startCase(accessor)}
               setValue={(newValue) => updateValue(newValue, accessor)}
               value={_isNil(value[accessor]) ? defaultValue : value[accessor]}
+              formValue={value}
               {...formProps}
             />
           </Grid>

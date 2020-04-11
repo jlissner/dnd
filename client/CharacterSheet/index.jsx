@@ -33,32 +33,16 @@ function CharacterSheet({ id }) {
       <Box p={2}>
         TODO:
         <ul>
-          <li>[x] finish initial form</li>
-          <li>[x] make re-useable markdown editor</li>
-          <li>[x] update death saves</li>
-          <li>[x] update attacks</li>
-          <li>[x] update currency</li>
-          <li>[x] update equipment</li>
-          <li>[x] update skills (need notes)</li>
-          <li>[x] update languages and other proficiencies</li>
-          <li>[x] verify everything has notes</li>
-          <li>[x] make the 'updateCharacter' function do as intended</li>
-          <li>[x] update the route to group the websockets by character</li>
-          <li>[x] create the db info needed</li>
-          <li>[x] add smash character info into db</li>
-          <li>[x] get the graphql is working</li>
-          <li>[x] make the update call work for header</li>
-          <li>[x] make the update call work for attributes</li>
-          <li>[x] make the update call work for saving throws and skills</li>
-          <li>[x] make the update call work for saving languages and proficiencies</li>
-          <li>[x] make the update call work for saving personality</li>
-          <li>[x] make the update call work for saving attacks</li>
-          <li>[x] make the update call work for saving equipment</li>
-          <li>[x] make the update call work for saving features and traits</li>
-          <li>[x] make the update call work for saving health stuff</li>
-          <li>[x] make ssl work?</li>
-          <li>[x] get HMR working again</li>
-          <li>[] create markdown helper</li>
+          <li>[ ] distinguish between spell and non spell attacks</li>
+          <li>[ ] have non-spell attacks add their modifier to dmg</li>
+          <li>[ ] create area for spell management</li>
+          <li>-- [ ] create area to see all spells you have</li>
+          <li>-- [ ] create area to see all spell slot info</li>
+          <li>-- [ ] know which spells are prepared</li>
+          <li>[ ] make attacks sortable</li>
+          <li>[ ] make skills sortable</li>
+          <li>[ ] make equipment sortable</li>
+          <li>[ ] make features sortable</li>
         </ul>
       </Box>
 

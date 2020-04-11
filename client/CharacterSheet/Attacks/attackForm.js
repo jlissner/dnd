@@ -2,12 +2,30 @@ const attackForm = [
   {
     accessor: 'name',
     required: true,
-    sm: 6,
   }, {
     accessor: 'uses',
     defaultValue: [],
     type: 'uses',
     sm: 6,
+  }, {
+    accessor: 'isSpell',
+    label: 'Attck is a spell',
+    defaultValue: false,
+    type: 'checkbox',
+    sm: 6,
+  }, {
+    accessor: 'isSave',
+    label: 'Enemy makes saving throw',
+    defaultValue: false,
+    type: 'checkbox',
+    sm: 6,
+    conditions: { isSpell: true },
+  }, {
+    accessor: 'proficient',
+    defaultValue: false,
+    type: 'checkbox',
+    sm: 6,
+    conditions: { isSpell: false },
   }, {
     accessor: 'modType',
     required: true,
@@ -28,11 +46,6 @@ const attackForm = [
     accessor: 'bonusModifier',
     defaultValue: 0,
     type: 'number',
-    sm: 6,
-  }, {
-    accessor: 'proficient',
-    defaultValue: false,
-    type: 'checkbox',
     sm: 6,
   }, {
     accessor: 'notes',

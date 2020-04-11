@@ -46,7 +46,7 @@ checkBrowsers(paths.appPath, isInteractive)
     return choosePort(HOST, PORT);
   })
   .then(port => {
-    if (PORT == null) {
+    if (port == null) {
       // We have not found a port.
       return;
     }
@@ -56,7 +56,7 @@ checkBrowsers(paths.appPath, isInteractive)
         return console.log(err);
       }
 
-      console.log(chalk.cyan('Starting the development server...\n'));
+      console.log(chalk.cyan(`Starting the development server on port ${port}...\n`));
     });
 
     ['SIGINT', 'SIGTERM'].forEach((sig) => {
