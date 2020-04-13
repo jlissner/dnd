@@ -6,7 +6,7 @@ import FormItem from '../../Form/FormItem';
 function getChangeType(val) {
   const firstChar = val[0];
 
-  if (firstChar === '-' || firstChar === '+') {
+  if ((firstChar === '-' || firstChar === '+') && val.length > 1) {
     return 'delta';
   }
 
