@@ -6,9 +6,8 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import AddIcon from '@material-ui/icons/Add';
-import CancelIcon from '@material-ui/icons/Cancel';
 import _find from 'lodash/find';
+import { Fa } from './utils';
 import { ADD_CHARACTER, REMOVE_CHARACTER } from './hooks/useGameBoard';
 
 function PlayerList({
@@ -47,13 +46,13 @@ function PlayerList({
 				<ListItem button onClick={() => addCharacter({name: 'Smash', background: 'green' })}>
 					<ListItemText primary="Smash" />
 					<IconButton onClick={() => removeCharacter('Smash')}>
-						<CancelIcon />
+						<Fa icon="times" />
 					</IconButton>
 				</ListItem>
 				<ListItem button onClick={() => addCharacter({name: 'Arcanis', background: 'yellow'})}>
 					<ListItemText primary="Arcanis" />
 					<IconButton onClick={() => removeCharacter('Arcanis')}>
-						<CancelIcon />
+						<Fa icon="times" />
 					</IconButton>
 				</ListItem>
 				<ListItem>
@@ -65,7 +64,7 @@ function PlayerList({
 					</ListItemText>
 					<ListItemSecondaryAction>
 						<IconButton onClick={saveNewCharacter}>
-							<AddIcon />
+							<Fa icon="plus" />
 						</IconButton>
 					</ListItemSecondaryAction>
 				</ListItem>

@@ -4,6 +4,7 @@ import getNumericPrefix from './getNumericPrefix';
 import getNumericValue from './getNumericValue';
 import getTotalModifier from './getTotalModifier';
 import If from './If';
+import Fa from './Fa';
 import objToGraphqlStr from './objToGraphqlStr';
 import removeByIndex from './removeByIndex';
 import replaceByIndex from './replaceByIndex';
@@ -17,6 +18,7 @@ export {
   getNumericValue,
   getTotalModifier,
   If,
+  Fa,
   objToGraphqlStr,
   removeByIndex,
   replaceByIndex,

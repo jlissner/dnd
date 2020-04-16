@@ -1,26 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import ReactNumberFormat from 'react-number-format';
-import { makeStyles } from '@material-ui/core/styles';
 import {
   Box,
-  Checkbox,
   Grid,
   Button,
 } from '@material-ui/core';
-import {
-  RadioButtonChecked,
-  RadioButtonUnchecked,
-} from '@material-ui/icons';
-import getNumericPrefix from '../../utils/getNumericPrefix';
-import useNotes from '../../hooks/useNotes';
-import getTotalModifier from '../../utils/getTotalModifier';
-
-const useStyles = makeStyles(theme => ({
-  checkbox: {
-    padding: 0,
-  },
-}));
+import Radio from '../../Form/Radio';
+import { getNumericPrefix, getTotalModifier } from '../../utils';
+import { useNotes } from '../../hooks';
 
 function ViewProficiency({
   proficiency,
@@ -35,7 +23,6 @@ function ViewProficiency({
     type,
   } = proficiency;
   const modifier = getTotalModifier(attributes, type, proficient, bonusModifier);
-  const classes = useStyles();
   const [saving, setSaving] = useState(false);
   const [ref, openNotes, notesComponent] = useNotes(notes);
   const displayName = notes
@@ -54,12 +41,9 @@ function ViewProficiency({
   return (
     <Grid container spacing={1} wrap="nowrap" alignItems="center" ref={ref}>
       <Grid item>
-        <Checkbox
-          checkedIcon={<RadioButtonChecked />}
+        <Radio
           checked={proficient}
-          className={classes.checkbox}
           disabled={saving}
-          icon={<RadioButtonUnchecked />}
           onClick={handleClick}
         />
       </Grid>

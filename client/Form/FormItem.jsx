@@ -10,7 +10,6 @@ import {
   TextField,
   Typography,
 } from '@material-ui/core';
-import DeleteIcon from '@material-ui/icons/Delete';
 import _filter from 'lodash/filter';
 import _last from 'lodash/last';
 import _map from 'lodash/map';
@@ -18,7 +17,7 @@ import _noop from 'lodash/noop';
 import _omit from 'lodash/omit';
 import _trimStart from 'lodash/trimStart';
 import _xor from 'lodash/xor';
-import If from '../utils/If';
+import { Fa, If } from '../utils';
 import getNumericValue from '../utils/getNumericValue';
 import AddButton from './AddButton';
 import NumericInput from './NumericInput';
@@ -218,7 +217,7 @@ function FormItem({
                 </Grid>
                 <Grid item>
                   <IconButton onClick={() => setValue(_filter(value, (v, j) => j !== i))}>
-                    <DeleteIcon />
+                    <Fa icon="times" />
                   </IconButton>
                 </Grid>
               </Grid>

@@ -5,8 +5,8 @@ import {
   CircularProgress,
   InputAdornment,
 } from '@material-ui/core';
-import { Save as SaveIcon } from '@material-ui/icons';
 import _noop from 'lodash/noop';
+import { Fa } from '../utils';
 import FormItem from './FormItem';
 
 const useStyles = makeStyles((theme) => ({
@@ -60,7 +60,7 @@ function SaveableInput({
           position="end"
           onClick={save}
         >
-          <SaveIcon />
+          <Fa icon="save" />
         </InputAdornment>
       )
     }

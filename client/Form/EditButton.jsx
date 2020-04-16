@@ -6,7 +6,7 @@ import {
   Fab,
   Fade,
 } from '@material-ui/core';
-import { Edit as EditIcon } from '@material-ui/icons';
+import { Fa } from '../utils';
 
 const useStyles = makeStyles(( theme ) => ({
   editButton: {
@@ -35,7 +35,7 @@ function EditButton({ children, size, ...props }) {
     >
       <Fade in={hovering}>
         <Fab className={classes.editButton} color="primary" {...props}>
-          <EditIcon className={classes.editIcon} />
+          <Fa icon="pencil" size="xs" />
         </Fab>
       </Fade>
       {children}

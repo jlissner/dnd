@@ -6,18 +6,10 @@ import {
   ButtonGroup,
   CircularProgress,
 } from '@material-ui/core';
-import {
-  Cancel as CancelIcon,
-  Code as CodeIcon,
-  Help as InfoIcon,
-  Save as SaveIcon,
-  Refresh as RefreshIcon,
-  Visibility as VisibilityIcon,
-} from '@material-ui/icons';
 import _isEqual from 'lodash/isEqual';
 import _noop from 'lodash/noop';
 import { useGlobalState } from '../hooks';
-import { If, validate }  from '../utils';
+import { If, Fa, validate }  from '../utils';
 import DeleteButton from './DeleteButton';
 import Form from './index';
 
@@ -106,19 +98,19 @@ function EditContainer({
       >
         <ButtonGroup variant="text">
           <Button disabled={!previewing} onClick={() => setPreviewing(false)}>
-            <CodeIcon />
+            <Fa icon="code" />
           </Button>
           <Button disabled={previewing} onClick={() => setPreviewing(true)}>
-            <VisibilityIcon />
+            <Fa icon="eye" />
           </Button>
           <Button onClick={() => setMarkdownHelperOpen(true)}>
-            <InfoIcon />
+            <Fa icon="info-circle" />
           </Button>
         </ButtonGroup>
 
         <ButtonGroup variant="text">
           <Button onClick={onCancel}>
-            <CancelIcon />
+            <Fa icon="times" />
           </Button>
         </ButtonGroup>
       </Box>
@@ -135,10 +127,10 @@ function EditContainer({
       >
         <ButtonGroup variant="text">
           <Button disabled={saveDisabled} onClick={() => setNewVal(value)}>
-            <RefreshIcon />
+            <Fa icon="sync" />
           </Button>
           <Button disabled={saveDisabled} onClick={() => save(newVal)}>
-            <SaveIcon />
+            <Fa icon="save" />
           </Button>
         </ButtonGroup>
 

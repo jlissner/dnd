@@ -61,9 +61,10 @@ function DeathSaves({
             <Typography align="right">Successes</Typography>
           </Grid>
           <Grid item xs={6}>
-            <Grid container spacing={1}>
+            <Grid container spacing={1} wrap="nowrap">
               <Grid item>
                 <Radio
+                  IconProps={{ fixedWidth: false }}
                   disabled={saving}
                   checked={numberOfSuccesses > 0}
                   onClick={(e) => handleSuccess(0, e.target.checked)}
@@ -71,6 +72,7 @@ function DeathSaves({
               </Grid>
               <Grid item>
                 <Radio
+                  IconProps={{ fixedWidth: false }}
                   disabled={saving}
                   checked={numberOfSuccesses > 1}
                   onClick={(e) => handleSuccess(1, e.target.checked)}
@@ -78,6 +80,7 @@ function DeathSaves({
               </Grid>
               <Grid item>
                 <Radio
+                  IconProps={{ fixedWidth: false }}
                   disabled={saving}
                   checked={numberOfSuccesses > 2}
                   onClick={(e) => handleSuccess(2, e.target.checked)}
@@ -89,9 +92,10 @@ function DeathSaves({
             <Typography align="right">Failures</Typography>
           </Grid>
           <Grid item xs={6}>
-            <Grid container spacing={1}>
+            <Grid container spacing={1} wrap="nowrap">
               <Grid item>
                 <Radio
+                  IconProps={{ fixedWidth: false }}
                   disabled={saving}
                   checked={numberOfFailures > 0}
                   onClick={(e) => handleFailure(0, e.target.checked)}
@@ -99,6 +103,7 @@ function DeathSaves({
               </Grid>
               <Grid item>
                 <Radio
+                  IconProps={{ fixedWidth: false }}
                   disabled={saving}
                   checked={numberOfFailures > 1}
                   onClick={(e) => handleFailure(1, e.target.checked)}
@@ -106,6 +111,7 @@ function DeathSaves({
               </Grid>
               <Grid item>
                 <Radio
+                  IconProps={{ fixedWidth: false }}
                   disabled={saving}
                   checked={numberOfFailures > 2}
                   onClick={(e) => handleFailure(2, e.target.checked)}

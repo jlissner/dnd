@@ -9,9 +9,6 @@ import {
   TextField,
   Typography,
 } from '@material-ui/core';
-import { 
-  Add as AddIcon,
-} from '@material-ui/icons';
 import _filter from 'lodash/filter';
 import _isEqual from 'lodash/isEqual';
 import _last from 'lodash/last';
@@ -19,6 +16,7 @@ import _map from 'lodash/map';
 import _uniq from 'lodash/uniq';
 import {
   Confirm,
+  Fa,
   removeByIndex,
   replaceByIndex,
 } from '../../utils';
@@ -158,7 +156,7 @@ function Attacks({
           Component={Tab}
           classes={tabClasses}
           disabled={addDisabled}
-          label={<AddIcon />}
+          label={<Fa icon="plus" />}
           text={(
             <TextField
               fullWidth

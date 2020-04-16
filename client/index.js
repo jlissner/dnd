@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { MuiThemeProvider } from '@material-ui/core/styles'
 import App from './App';
 import theme from './theme';
+import '@fortawesome/fontawesome-pro/js/all';
 import './index.css';
 
 ReactDOM.render((

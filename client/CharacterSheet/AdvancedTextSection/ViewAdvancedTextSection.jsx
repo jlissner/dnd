@@ -9,14 +9,11 @@ import {
   IconButton,
   Typography,
 } from '@material-ui/core';
-import {
-  ExpandMore as ExpandMoreIcon,
-} from '@material-ui/icons';
 import _fill from 'lodash/fill';
 import _map from 'lodash/map';
 import { Badge, Markdown } from '../../Displays';
 import Radio from '../../Form/Radio';
-import { If, Rotate } from '../../utils';
+import { Fa, If, Rotate } from '../../utils';
 
 const useStyles = makeStyles((theme) => ({
   expandButton: {
@@ -94,7 +91,7 @@ function ViewAdvancedTextSection({
           <If conditions={[longDesc, tags.length]}>
             <Rotate deg={expanded ? 180 : 0}>
               <IconButton onClick={() => setExpanded(!expanded)} className={classes.expandButton}>
-                <ExpandMoreIcon />
+                <Fa icon="chevron-down" />
               </IconButton>
             </Rotate>
           </If>

@@ -11,7 +11,7 @@ import {
   Toolbar,
   Typography,
 } from '@material-ui/core';
-import { AccountCircle as ProfileIcon } from '@material-ui/icons';
+import { Fa } from './utils';
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -34,7 +34,7 @@ function Navbar({ user }) {
 
     return (
       <>
-        <IconButton color="inherit" onClick={(evt) => setMenu(evt.target)}><ProfileIcon fontSize="large" /></IconButton>
+        <IconButton color="inherit" onClick={(evt) => setMenu(evt.target)}><Fa icon="user-circle" /></IconButton>
         <Menu open={Boolean(menu)} onClose={() => setMenu(null)} anchorEl={menu}>
           <MenuItem href="/auth/logout" component="a">Logout</MenuItem>
         </Menu>

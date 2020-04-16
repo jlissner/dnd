@@ -5,9 +5,7 @@ import {
   Box,
   Button,
 } from '@material-ui/core';
-import {
-  Add as AddIcon,
-} from '@material-ui/icons';
+import { Fa } from '../utils';
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -34,7 +32,7 @@ function AddButton({
       {...BoxProps}
     >
       <Button className={classes.button} fullWidth onClick={onAdd} {...props}>
-        <AddIcon />
+        <Fa icon="plus" size="lg" />
       </Button>
     </Box>
   )
