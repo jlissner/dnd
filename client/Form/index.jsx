@@ -1,24 +1,40 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Box, Grid } from '@material-ui/core';
 import _isNil from 'lodash/isNil';
 import _map from 'lodash/map';
 import _startCase from 'lodash/startCase';
 import FormItem from './FormItem';
+import validate from './validate';
 
 function Form({
   form,
+  FormItemProps,
+  GridProps,
+  GridItemProps,
   value,
-  setValue,
+  Wrapper,
+  WrapperProps,
 }) {
+  const [newValue, setNewValue] = useState(value);
+  const [formValidation, setFormValidation] = useState(form);
+
   function updateValue(newVal, accessor) {
-    setValue({ ...value, [accessor]: newVal });
+    setNewValue({ ...newValue, [accessor]: newVal });
   }
 
   return (
-    <Box p={2}>
-      <Grid container spacing={2}>
-        {_map(form, ({
+    <Wrapper
+      form={formValidation}
+      setForm={setFormValidation}
+      value={newValue}
+      originalValue={value}
+      validate={validate}
+      updateValue={updateValue}
+      {...WrapperProps}
+    >
+      <Grid container spacing={2} {...GridProps}>
+        {_map(formValidation, ({
           label,
           accessor,
           defaultValue,
@@ -35,25 +51,38 @@ function Form({
             sm={sm}
             md={md}
             lg={lg}
+            {...GridItemProps}
           >
             <FormItem
               label={label || _startCase(accessor)}
-              setValue={(newValue) => updateValue(newValue, accessor)}
-              value={_isNil(value[accessor]) ? defaultValue : value[accessor]}
-              formValue={value}
+              setValue={(val) => updateValue(val, accessor)}
+              value={_isNil(newValue[accessor]) ? defaultValue : newValue[accessor]}
               {...formProps}
+              {...FormItemProps}
             />
           </Grid>
         ))}
       </Grid>
-    </Box>
+    </Wrapper>
   );
 }
 
 Form.propTypes = {
   form: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+  FormItemProps: PropTypes.shape(),
+  GridProps: PropTypes.shape(),
+  GridItemProps: PropTypes.shape(),
   value: PropTypes.shape().isRequired,
-  setValue: PropTypes.func.isRequired,
+  Wrapper: PropTypes.elementType,
+  WrapperProps: PropTypes.shape(),
 };
+
+Form.defaultProps = {
+  Wrapper: ({ children }) => <Box p={2}>{children}</Box>,
+  FormItemProps: {},
+  GridProps: {},
+  GridItemProps: {},
+  WrapperProps: {},
+}
 
 export default Form;

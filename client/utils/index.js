@@ -9,7 +9,6 @@ import objToGraphqlStr from './objToGraphqlStr';
 import removeByIndex from './removeByIndex';
 import replaceByIndex from './replaceByIndex';
 import Rotate from './Rotate';
-import validate from './validate';
 
 export {
   Confirm,
@@ -23,5 +22,4 @@ export {
   removeByIndex,
   replaceByIndex,
   Rotate,
-  validate,
 };

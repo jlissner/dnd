@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import EditContainer from '../../Form/EditContainer';
+import Editor from '../../Editor';
 import ViewSpeed from './ViewSpeed';
 import speedForm from './speedForm';
 
@@ -10,7 +10,7 @@ function EditSpeed({
   attributes,
 }) {
   return (
-    <EditContainer
+    <Editor
       bgcolor="background.paper"
       form={speedForm}
       Preview={({ newVal }) => <ViewSpeed attributes={{ ...attributes, speed: newVal }} />}

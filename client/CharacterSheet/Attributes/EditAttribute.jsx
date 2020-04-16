@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import EditContainer from '../../Form/EditContainer';
+import Editor from '../../Editor';
 import attributeForm from './attributeForm';
 import ViewAttribute from './ViewAttribute';
 
@@ -11,7 +11,7 @@ function EditAttribute({
   onSave,
 }) {
   return (
-    <EditContainer
+    <Editor
       onCancel={onCancel}
       onSave={onSave}
       form={attributeForm}

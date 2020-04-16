@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import EditContainer from '../../Form/EditContainer';
+import Editor from '../../Editor';
 import ViewArmorClass from './ViewArmorClass';
 import armorClassForm from './armorClassForm';
 
@@ -10,7 +10,7 @@ function EditArmorClass({
   attributes,
 }) {
   return (
-    <EditContainer
+    <Editor
       bgcolor="background.paper"
       form={armorClassForm}
       Preview={({ newVal }) => <ViewArmorClass attributes={{ ...attributes, ac: newVal }} />}

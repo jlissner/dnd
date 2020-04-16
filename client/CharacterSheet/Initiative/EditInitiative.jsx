@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import EditContainer from '../../Form/EditContainer';
+import Editor from '../../Editor';
 import ViewInitiative from './ViewInitiative';
 import initiativeForm from './initiativeForm';
 
@@ -10,7 +10,7 @@ function EditInitiative({
   attributes,
 }) {
   return (
-    <EditContainer
+    <Editor
       bgcolor="background.paper"
       form={initiativeForm}
       Preview={({ newVal }) => <ViewInitiative attributes={{ ...attributes, initiative: newVal }} />}

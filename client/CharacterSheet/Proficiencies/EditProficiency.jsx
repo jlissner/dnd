@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import _noop from 'lodash/noop';
-import EditContainer from '../../Form/EditContainer';
+import Editor from '../../Editor';
 import ViewProficiency from './ViewProficiency';
 import proficiencyForm from './proficiencyForm';
 
@@ -13,7 +13,7 @@ function EditProficiency({
   proficiency,
 }) {
   return (
-    <EditContainer
+    <Editor
       onCancel={onCancel}
       onDelete={onDelete}
       onSave={onSave}
