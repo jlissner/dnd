@@ -19,7 +19,7 @@ function EditorWrapper({
   originalValue,
   Preview,
   form,
-  setValidatedForm,
+  setForm,
   validate,
   value,
   width,
@@ -56,7 +56,7 @@ function EditorWrapper({
     const { hasError, validatedSchema } = validate(form, value);
 
     if (hasError) {
-      setValidatedForm(validatedSchema);
+      setForm(validatedSchema);
       return;
     }
 
@@ -100,7 +100,7 @@ EditorWrapper.propTypes = {
   onDelete: PropTypes.func,
   onSave: PropTypes.func.isRequired,
   Preview: PropTypes.oneOfType([PropTypes.elementType, PropTypes.node]).isRequired,
-  setValidatedForm: PropTypes.func.isRequired,
+  setForm: PropTypes.func.isRequired,
   validate: PropTypes.func.isRequired,
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.shape()]).isRequired,
   originalValue: PropTypes.oneOfType([PropTypes.string, PropTypes.shape()]).isRequired,

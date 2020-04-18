@@ -57,6 +57,7 @@ function Form({
               label={label || _startCase(accessor)}
               setValue={(val) => updateValue(val, accessor)}
               value={_isNil(newValue[accessor]) ? defaultValue : newValue[accessor]}
+              formValue={newValue}
               {...formProps}
               {...FormItemProps}
             />
