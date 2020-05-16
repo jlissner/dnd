@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import ReactNumberFormat from 'react-number-format';
 import {
   Box,
   Grid,
   Button,
+  Typography,
 } from '@material-ui/core';
 import Radio from '../../Form/Radio';
 import { getNumericPrefix, getTotalModifier } from '../../utils';
@@ -49,17 +49,13 @@ function ViewProficiency({
       </Grid>
       <Grid item xs={3}>
         <Box
-          bgcolor="rgba(0, 0, 0, 0.09)"
-          border={1}
-          borderRadius={4}
-          component={ReactNumberFormat}
-          p={.5}
-          px={.75}
-          prefix={getNumericPrefix(modifier)}
-          value={modifier}
+          component={Typography}
           width={1}
-          disabled
-        />
+        >
+          <strong>
+            {getNumericPrefix(modifier) + modifier}
+          </strong>
+        </Box>
       </Grid>
       <Grid item xs={12}>
         <Button onClick={openNotes} size="small">{displayName}</Button>
