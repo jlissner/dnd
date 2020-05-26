@@ -2,6 +2,8 @@ import { useCallback, useEffect, useState } from 'react';
 
 const globalState = {};
 
+window.getState = () => globalState
+
 function useGlobalState(name, initialState) {
   globalState[name] = globalState[name] === undefined
     ? initialState

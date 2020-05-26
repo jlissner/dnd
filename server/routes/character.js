@@ -16,6 +16,7 @@ async function updateCharacter(id, character) {
         character {
           attributes
           name
+          notes
         }
       }
     }
@@ -31,6 +32,7 @@ async function fetchCharacter(id) {
       character(idPk: "${id}") {
         attributes
         name
+        notes
       }
     }
   `);

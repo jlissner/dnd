@@ -8,7 +8,7 @@ function DeleteButton({
 }) {
   return (
     <Confirm
-      Component={(props) => (<Button {...props}><Fa icon="times" /></Button>)}
+      Component={(props) => (<Button {...props}><Fa icon="trash" /></Button>)}
       onConfirm={onClick}
       text="Once deleted, it cannot be undone."
       title="Delete this?"

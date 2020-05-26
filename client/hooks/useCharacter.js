@@ -9,10 +9,10 @@ function useCharacter(id) {
   const { message, readyState, send } = useWebsocket(url);
   const [character, setCharacter] = useState({});
   const loading = readyState === 0;
-  const updateCharacter = useCallback(({ name = character.name, attributes = {} }) => {
+  const updateCharacter = useCallback(({ name = character.name, attributes = {}, notes = character.notes }) => {
     const type = 'UPDATE';
     const updatedAttributes = _defaults(attributes, character.attributes);
-    const action = JSON.stringify({ type, payload: { name, attributes: updatedAttributes } });
+    const action = JSON.stringify({ type, payload: { name, attributes: updatedAttributes, notes } });
 
     send(action);
   }, [send, character]);

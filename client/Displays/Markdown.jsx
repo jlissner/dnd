@@ -13,6 +13,45 @@ import {
   Typography,
 } from '@material-ui/core';
 
+function parseHandlebars() {
+  function locateHandlebar(value, fromIndex) {
+    return value.indexOf('{{', fromIndex)
+  }
+
+  function tokenizeHandlebar(eat, value, silent) {
+    var match = /^{{(\w+)}}/.exec(value)
+
+    if (match) {
+      if (silent) {
+        return true
+      }
+
+      console.log({ match });
+
+      return eat(match[0])({
+        type: 'custom',
+        url: 'https://social-network/' + match[1],
+        children: [{type: 'text', value: match[1]}]
+      })
+    }
+  }
+
+  tokenizeHandlebar.notInLink = true
+  tokenizeHandlebar.locator = locateHandlebar
+
+  return function handlebars() {
+    var Parser = this.Parser
+    var tokenizers = Parser.prototype.inlineTokenizers
+    var methods = Parser.prototype.inlineMethods
+
+    // Add an inline tokenizer (defined in the following example).
+    tokenizers.handlebar = tokenizeHandlebar
+
+    // Run it just before `text`.
+    methods.splice(methods.indexOf('text'), 0, 'handlebar')
+  }
+}
+
 const Blockquote = withStyles((theme) => ({
   root: {
     borderLeft: '4px solid rgba(0, 0, 0, 0.23)',
@@ -48,6 +87,8 @@ function Code({ language, value }) {
   return <pre className={classes.root}><code>{value}</code></pre>
 }
 
+
+
 function Markdown({
   defaultText,
   text,
@@ -56,6 +97,7 @@ function Markdown({
   return (
     <ReactMarkdown
       renderers={{
+        custom: ({ children }) => <div>{children} and it's custom!</div>,
         blockquote: Blockquote,
         code: Code,
         heading: ({ children, level }) => <Typography variant={`h${level}`}>{children}</Typography>,
@@ -71,6 +113,7 @@ function Markdown({
         definition: (props) => console.log(props) || 'here',
       }}
       source={text || defaultText}
+      plugins={[parseHandlebars()]}
       {...props}
     />
   );

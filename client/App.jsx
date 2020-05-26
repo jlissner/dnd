@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { hot } from 'react-hot-loader/root';
+import { Switch, Route } from 'react-router-dom';
 import {
   Box,
   Button,
@@ -8,22 +9,15 @@ import {
   Paper,
   Typography,
 } from '@material-ui/core';
-import Navbar from './Navbar';
-import CharacterSheet from './CharacterSheet';
-// import CanvasMenu from './CanvasMenu';
-import GameBoard from './GameBoard';
-import MarkdownHelper from './Form/MarkdownHelper';
-import PlayerList from './PlayerList';
-import SelectCharacter from './SelectCharacter';
+import Navbar from './Navbar' ;
+import { useUser } from './hooks';
 import {
-  useGameBoard,
-  useUser,
-} from './hooks';
+  Admin,
+  Home,
+} from './Pages';
 
 function App() {
-  const gameBoard = useGameBoard();
   const { user } = useUser(true);
-  const [selectCharacter, setSelectedCharacter] = useState();
 
   function renderContent() {
     if (!user) {
@@ -48,30 +42,12 @@ function App() {
       );
     }
 
-    if (!selectCharacter) {
-      return <SelectCharacter setSelectedCharacter={setSelectedCharacter} />;
-    }
-
     return (
-      <>
-        <GameBoard gameBoard={gameBoard}/>
-
-        <Box width="25%" position="relative" zIndex="1">
-          <Grid container spacing={3}>
-            <Grid item xs={12}>
-              <PlayerList gameBoard={gameBoard} />
-            </Grid>
-            <Grid item xs={12}>
-              {/* <CanvasMenu /> */}
-            </Grid>
-          </Grid>
-        </Box>
-        <Box position="relative" zIndex="1">
-          <CharacterSheet id={selectCharacter} />
-        </Box>
-        <MarkdownHelper />
-      </>
-    )
+      <Switch>
+        <Route component={Home} exact path="/" />
+        <Route component={Admin} exact path="/admin" />
+      </Switch>
+    );
   }
 
   return (
