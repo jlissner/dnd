@@ -1,4 +1,9 @@
-import { useCallback, useEffect, useState } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
+import _isEqual from 'lodash/isEqual';
 
 const globalState = {};
 
@@ -13,7 +18,15 @@ function useGlobalState(name, initialState) {
     setGs(globalState[name]);
   }, [name])
   const setGlobalState = useCallback((detail) => {
-    globalState[name] = detail;
+    const newVal = typeof detail === 'function'
+      ? detail(globalState[name])
+      : detail;
+
+    if (_isEqual(newVal, globalState[name])) {
+      return;
+    }
+
+    globalState[name] = newVal;
 
     window.dispatchEvent(new Event('ugs'))
   }, [name]);

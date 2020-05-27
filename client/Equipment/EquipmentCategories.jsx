@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import axios from 'axios';
 import {
   List,
@@ -8,7 +8,6 @@ import {
 } from '@material-ui/core';
 import _get from 'lodash/get';
 import _map from 'lodash/map';
-import AddButton from '../Form/AddButton';
 import { useGlobalState } from '../hooks';
 
 function fetchCategories() {
@@ -25,13 +24,13 @@ function EquipmentCategories() {
       fetchCategories().then(({ data }) => {
         console.log({ data });
         const newCategories = _get(data, 'data.equipmentCategories.nodes', []);
-        
+
         if (newCategories.length) {
           setCategories(newCategories);
         }
       }).catch(console.error);
     }
-  }, [categories]);
+  }, [categories, setCategories]);
 
   return (
     <List>
@@ -42,7 +41,7 @@ function EquipmentCategories() {
       ))}
       <ListItem>
         <ListItemSecondaryAction>
-          
+
         </ListItemSecondaryAction>
       </ListItem>
     </List>

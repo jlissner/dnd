@@ -10,48 +10,32 @@ import _without from 'lodash/without';
 import { If } from '../utils';
 import { useGlobalState } from '../hooks';
 
-let counter = 0
-
-function useHideaway(id) {
-  const [hideaway, setHideaway] = useGlobalState('hideaway', []);
-  const index = hideaway.indexOf(id);
-
-  useEffect(() => {
-    if (index === -1) {
-      setHideaway([...hideaway, id]);
-    }
-  }, [id, hideaway, index]);
-
-  return {
-    fabLeft: 32,
-    fabTop: 124 + (index * 64)
-  };
-}
-
 function Hideaway({
   icon,
   children,
 }) {
-  const id = useMemo(v4, [v4]);
-  console.log({ id });
-  const {
-    fabLeft,
-    fabTop,
-    contentLeft,
-    contentTop,
-  } = useHideaway(id);
+  const id = useMemo(v4, []);
+  const [hideaway, setHideaway] = useGlobalState('hideaway', [id]);
   const [show, setShow] = useState(false);
+  const index = hideaway.indexOf(id);
+
+  useEffect(() => {
+    setHideaway((curVal) => {
+      const curIndex = curVal.indexOf(id);
+
+      if (curIndex === -1) {
+        return [...curVal, id];
+      }
+
+      return curVal;
+    });
+
+    return () => setHideaway((curVal) => _without(curVal, id))
+  }, [setHideaway, id]);
 
   return (
     <>
-      <If conditions={[show]}>
-        <Box component={Paper}>
-          <Box p={2}>
-            {children}
-          </Box>
-        </Box>
-      </If>
-      <Box position="fixed" top={fabTop} left={fabLeft}>
+      <Box position="fixed" top={96 + (index * 48)} left={32}>
         <Fab
           onClick={() => setShow(!show)}
           size="small"
@@ -60,6 +44,22 @@ function Hideaway({
           {icon}
         </Fab>
       </Box>
+      <If conditions={[show]}>
+        <Box
+          id={id}
+          position="fixed"
+          left={106}
+          right={32}
+          bottom={32}
+          top={96}
+        >
+          <Box component={Paper} maxHeight={1} overflow="auto">
+            <Box p={2}>
+              {children}
+            </Box>
+          </Box>
+        </Box>
+      </If>
     </>
   )
 }

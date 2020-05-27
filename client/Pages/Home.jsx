@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import {
   Box,
-  Grid,
 } from '@material-ui/core';
 import MarkdownHelper from '../Form/MarkdownHelper';
 import { useGameBoard } from '../hooks';
 import SelectCharacter from '../SelectCharacter';
-import PlayerList from '../PlayerList';
+// import PlayerList from '../PlayerList';
 import GameBoard from '../GameBoard';
 import CharacterSheet from '../CharacterSheet';
 

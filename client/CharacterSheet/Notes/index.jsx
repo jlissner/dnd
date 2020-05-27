@@ -1,6 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
 import {
   Box,
   TextField,
@@ -8,25 +7,28 @@ import {
 import { If, Fa } from '../../utils';
 import { Markdown } from '../../Displays';
 
-const useStyles = makeStyles(() => ({
-  input: {
-    // background: 'none',
-    // width: '100%',
-  },
-}));
-
 function Notes({
   notes,
   onSave,
 }) {
-  const classes = useStyles();
-  const [newNotes, setNewNotes] = useState(notes);
+  const [newNotes, setNewNotes] = useState(notes || '');
+  const [doubleClicking, setDoubleClicking] = useState(false);
   const [saving, setSaving] = useState(false);
   const [editing, setEditing] = useState(false);
 
   useEffect(() => {
     setSaving(false);
-  }, [notes])
+  }, [notes]);
+
+  useEffect(() => {
+    const checkDoubleClick = setTimeout(() => {
+      setDoubleClicking(false);
+    }, 200);
+
+    return () => {
+      clearTimeout(checkDoubleClick);
+    }
+  }, [doubleClicking, setDoubleClicking]);
 
   function handleSave() {
     setEditing(false);
@@ -38,7 +40,15 @@ function Notes({
     }
 
     setSaving(true);
-    onSave(newNotes);
+    onSave(trimmedNewNotes);
+  }
+
+  function doubleClick() {
+    if (doubleClicking) {
+      setEditing(true);
+    } else {
+      setDoubleClicking(true);
+    }
   }
 
   function renderContent() {
@@ -46,7 +56,6 @@ function Notes({
       return (
         <TextField
           autoFocus
-          className={classes.input}
           fullWidth
           onChange={(evt) => setNewNotes(evt.target.value)}
           onBlur={handleSave}
@@ -67,7 +76,7 @@ function Notes({
       p={2}
       position="relative"
       onSubmit={handleSave}
-      onClick={() => setEditing(true)}
+      onClick={doubleClick}
     >
       <Box position="absolute" top={1} right={1}>
         <If conditions={[saving]}>
