@@ -65,6 +65,7 @@ function ViewAttribute({
           p={2}
           width={1}
           bgcolor="grey.200"
+          className="content-header"
         >
           <Typography align="center">{value}</Typography>
         </Box>

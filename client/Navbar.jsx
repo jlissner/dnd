@@ -12,6 +12,7 @@ import {
   Typography,
 } from '@material-ui/core';
 import { Fa } from './utils';
+import { useGlobalState } from './hooks';
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -20,8 +21,14 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Navbar({ user }) {
+  const [, setSelectedCharacter] = useGlobalState('selectedCharacter');
   const [menu, setMenu] = useState(null);
   const classes = useStyles();
+
+  function clearSelectedCharater() {
+    setSelectedCharacter(0);
+    setMenu(null);
+  }
 
   function renderActions() {
     if (!user) {
@@ -36,6 +43,7 @@ function Navbar({ user }) {
       <>
         <IconButton color="inherit" onClick={(evt) => setMenu(evt.target)}><Fa icon="user-circle" /></IconButton>
         <Menu open={Boolean(menu)} onClose={() => setMenu(null)} anchorEl={menu}>
+          <MenuItem onClick={clearSelectedCharater}>Change Character</MenuItem>
           <MenuItem href="/auth/logout" component="a">Logout</MenuItem>
         </Menu>
       </>

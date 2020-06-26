@@ -9,6 +9,12 @@ function useWebsocket(url) {
       return;
     }
 
+    if (typeof msg === 'object') {
+      ws.send(JSON.stringify(msg));
+
+      return;
+    }
+
     ws.send(msg);
   }, [ws]);
 

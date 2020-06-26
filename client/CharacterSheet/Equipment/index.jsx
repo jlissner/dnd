@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {
   Box,
   Grid,
+  Paper,
   Typography,
 } from '@material-ui/core';
 import _isEqual from 'lodash/isEqual';
@@ -57,41 +58,43 @@ function Equipment({
   }
 
   return (
-    <Box
-      border={1}
-      borderColor="rgba(0, 0, 0, 0.42)"
-      borderRadius={4}
-      p={2}
-    >
-      <Grid container spacing={1} wrap="nowrap">
-        <Box width={100} ml={-2.5}>
-          <Currency money={money} updateCharacter={updateCharacter} />
-        </Box>
-        <Box pl={2} width={1}>
-          {_map(newEquipment, (equip, i) => (
-            <Box key={equip.name} pb={1}>
-              <AdvancedTextSection
-                onDelete={() => onDelete(i)}
-                onSave={(newItem) => onSave(newItem, i)}
-                {...equip}
-              />
-            </Box>
-          ))}
-          <AddButton disabled={addButtonDisabled} onAdd={onAdd} />
-        </Box>
-      </Grid>
+    <Paper>
       <Box
-        bgcolor="rgba(0, 0, 0, 0.09)"
-        borderTop={1}
+        border={1}
         borderColor="rgba(0, 0, 0, 0.42)"
-        mx={-2}
-        mb={-2}
-        mt={2}
+        borderRadius={4}
         p={2}
       >
-        <Typography align="center" variant="h6">Equipment</Typography>
+        <Grid container spacing={1} wrap="nowrap">
+          <Box width={100} ml={-2.5}>
+            <Currency money={money} updateCharacter={updateCharacter} />
+          </Box>
+          <Box pl={2} width={1}>
+            {_map(newEquipment, (equip, i) => (
+              <Box key={equip.name} pb={1}>
+                <AdvancedTextSection
+                  onDelete={() => onDelete(i)}
+                  onSave={(newItem) => onSave(newItem, i)}
+                  {...equip}
+                />
+              </Box>
+            ))}
+            <AddButton disabled={addButtonDisabled} onAdd={onAdd} />
+          </Box>
+        </Grid>
+        <Box
+          bgcolor="rgba(0, 0, 0, 0.09)"
+          borderTop={1}
+          borderColor="rgba(0, 0, 0, 0.42)"
+          mx={-2}
+          mb={-2}
+          mt={2}
+          p={2}
+        >
+          <Typography align="center" variant="h6" className="content-header">Equipment</Typography>
+        </Box>
       </Box>
-    </Box>
+    </Paper>
   )
 }
 

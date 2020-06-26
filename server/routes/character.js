@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const axios = require('axios');
+const _ = require('lodash');
 const charData = require('../../__mocks__/smashChar');
 const { wsBroadcaster, graphql } = require('../lib');
 const { callGraphql, objToGraphqlStr } = graphql;
@@ -10,14 +11,9 @@ async function updateCharacter(id, character) {
     mutation {
       updateCharacter(input: {
         idPk: "${id}"
-        patch: {
-          ${objToGraphqlStr(character)}
-        }}) {
-        character {
-          attributes
-          name
-          notes
-        }
+        patch: { ${objToGraphqlStr(character)} }
+      }) {
+        clientMutationId
       }
     }
   `;
@@ -33,11 +29,79 @@ async function fetchCharacter(id) {
         attributes
         name
         notes
+        LIST:characterLists {
+          nodes {
+            list {
+              idPk
+              title
+              type
+              showTitle
+              listItems {
+                nodes {
+                  idPk
+                  text
+                  checked
+                  listOrder
+                }
+              }
+            }
+          }
+        }
+        pages:characterPages {
+          nodes {
+            idPk
+            title
+            widgets:pageWidgetsByPageFk {
+              nodes {
+                idPk
+                type
+                widgetId
+                x
+                y
+                h:height
+                w:width
+              }
+            }
+          }
+        }
       }
     }
   `);
 
-  return character;
+  const pages = _.map(character.pages.nodes, ({ idPk, title, widgets }) => ({
+    idPk,
+    title,
+    widgets: widgets.nodes
+  }));
+  const LIST = _.map(character.LIST.nodes, ({ list }) => ({
+    idPk: list.idPk,
+    title: list.title,
+    type: list.type,
+    showTitle: list.showTitle,
+    items: list.listItems.nodes,
+  }));
+
+  return {
+    ...character,
+    pages,
+    LIST,
+  };
+}
+
+async function updatePageLayout(payload) {
+  const mutations = _.reduce(payload, (res, { idPk, ...update }) => res + `
+    update_${idPk}:updatePageWidget(input: {
+        idPk: "${idPk}",
+        patch: { ${objToGraphqlStr(update)} }
+      }) {
+        clientMutationId
+      }
+  `, '');
+  const query = `
+    mutation { ${mutations} }
+  `;
+  
+  await callGraphql(query);
 }
 
 async function openCharacterWs(id, ws) {
@@ -64,12 +128,32 @@ router.ws('/:id', async (ws, req) => {
 
       switch (type) {
         case 'UPDATE': {
-          const updatedCharacter = await updateCharacter(id, payload);
+          await updateCharacter(id, payload);
+          const character = await fetchCharacter(id);
 
           return wsBroadcaster.broadcast({
             category: 'characters',
             key: id,
             data: JSON.stringify({ id, ...updatedCharacter }),
+          });
+        }
+        case 'UPDATE_PAGE_LAYOUT': {
+          const updatedPageLayout = await updatePageLayout(payload);
+          const character = await fetchCharacter(id);
+
+          return wsBroadcaster.broadcast({
+            category: 'characters',
+            key: id,
+            data: JSON.stringify({ id, ...character }),
+          });
+        }
+        case 'REFRESH': {
+          const character = await fetchCharacter(id);
+
+          return wsBroadcaster.broadcast({
+            category: 'characters',
+            key: id,
+            data: JSON.stringify({ id, ...character }),
           });
         }
         default: {

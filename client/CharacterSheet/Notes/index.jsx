@@ -2,7 +2,10 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   Box,
+  Divider,
+  Paper,
   TextField,
+  Typography,
 } from '@material-ui/core';
 import { If, Fa } from '../../utils';
 import { Markdown } from '../../Displays';
@@ -71,20 +74,24 @@ function Notes({
   }
 
   return (
-    <Box
-      component="form"
-      p={2}
-      position="relative"
-      onSubmit={handleSave}
-      onClick={doubleClick}
-    >
-      <Box position="absolute" top={1} right={1}>
-        <If conditions={[saving]}>
-          <Fa icon="save"/>
-        </If>
+    <Paper>
+      <Box
+        component="form"
+        p={2}
+        position="relative"
+        onSubmit={handleSave}
+        onClick={doubleClick}
+      >
+        <Typography className="content-header" variant="h6">Notes</Typography>
+        <Divider />
+        <Box position="absolute" top={1} right={1}>
+          <If conditions={[saving]}>
+            <Fa icon="save"/>
+          </If>
+        </Box>
+        {renderContent()}
       </Box>
-      {renderContent()}
-    </Box>
+    </Paper>
   )
 }
 

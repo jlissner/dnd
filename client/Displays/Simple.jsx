@@ -44,7 +44,7 @@ function Simple({
         {children}
       </Box>
       <Box mt={1} className={classes.title} onClick={hasNotes ? openNotes : _noop}>
-        <Typography align="center" variant="body2">
+        <Typography align="center" variant="body2" className="content-header">
           {label}{notes ? '*' : ''}
         </Typography>
       </Box>

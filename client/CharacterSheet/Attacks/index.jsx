@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import {
   Box,
   Grid,
+  Paper,
   Tab,
   Tabs,
   TextField,
@@ -131,77 +132,79 @@ function Attacks({
   }
 
   return (
-    <Box
-      bgcolor="rgba(0, 0, 0, 0.09)"
-      border={1}
-      borderColor="rgba(0, 0, 0, 0.42)"
-      borderRadius={4}
-    >
-      <Tabs
-        classes={tabsClasses}
-        value={tab}
-        variant="scrollable"
-        onChange={(_, val) => categories.indexOf(val) > -1 && setTab(val)}
+    <Paper>
+      <Box
+        bgcolor="rgba(0, 0, 0, 0.09)"
+        border={1}
+        borderColor="rgba(0, 0, 0, 0.42)"
+        borderRadius={4}
       >
-        {_map(categories, (cat) => (
-          <Tab
+        <Tabs
+          classes={tabsClasses}
+          value={tab}
+          variant="scrollable"
+          onChange={(_, val) => categories.indexOf(val) > -1 && setTab(val)}
+        >
+          {_map(categories, (cat) => (
+            <Tab
+              classes={tabClasses}
+              disabled={addDisabled}
+              key={cat}
+              label={cat}
+              value={cat}
+            />
+          ))}
+          <Confirm
+            Component={Tab}
             classes={tabClasses}
             disabled={addDisabled}
-            key={cat}
-            label={cat}
-            value={cat}
-          />
-        ))}
-        <Confirm
-          Component={Tab}
-          classes={tabClasses}
-          disabled={addDisabled}
-          label={<Fa icon="plus" />}
-          text={(
-            <TextField
-              fullWidth
-              label="Title"
-              value={newTab}
-              variant="filled"
-              onChange={(evt) => setNewTab(evt.target.value)}
-            />
-          )}
-          title="New Category"
-          onConfirm={() => {
-            onAdd(newTab);
-            setTab(newTab);
-            setNewTab('');
-          }}
-        />
-      </Tabs>
-      <Box
-        bgcolor="background.paper"
-        borderColor="rgba(0, 0, 0, 0.42)"
-        borderBottom={1}
-        borderTop={1}
-        p={2}
-        mt="-3px"
-      >
-        <Grid container spacing={2}>
-          {_map(newAttacks, (attack, i) => attack.category === tab && (
-            <Grid item xs={12} key={attack.name}>
-              <Attack
-                attack={attack}
-                attributes={attributes}
-                onDelete={() => onDelete(i)}
-                onSave={(newAttack) => onSave({ ...newAttack, category: tab }, i)}
+            label={<Fa icon="plus" />}
+            text={(
+              <TextField
+                fullWidth
+                label="Title"
+                value={newTab}
+                variant="filled"
+                onChange={(evt) => setNewTab(evt.target.value)}
               />
+            )}
+            title="New Category"
+            onConfirm={() => {
+              onAdd(newTab);
+              setTab(newTab);
+              setNewTab('');
+            }}
+          />
+        </Tabs>
+        <Box
+          bgcolor="background.paper"
+          borderColor="rgba(0, 0, 0, 0.42)"
+          borderBottom={1}
+          borderTop={1}
+          p={2}
+          mt="-3px"
+        >
+          <Grid container spacing={2}>
+            {_map(newAttacks, (attack, i) => attack.category === tab && (
+              <Grid item xs={12} key={attack.name}>
+                <Attack
+                  attack={attack}
+                  attributes={attributes}
+                  onDelete={() => onDelete(i)}
+                  onSave={(newAttack) => onSave({ ...newAttack, category: tab }, i)}
+                />
+              </Grid>
+            ))}
+            <Grid item xs={12}>
+              <AddButton disabled={addDisabled} onAdd={() => onAdd(tab)} />
             </Grid>
-          ))}
-          <Grid item xs={12}>
-            <AddButton disabled={addDisabled} onAdd={() => onAdd(tab)} />
           </Grid>
-        </Grid>
+        </Box>
+        <Box p={2}>
+          <Typography align="center" variant="h6" className="content-header">Attacks</Typography>
+        </Box>
       </Box>
-      <Box p={2}>
-        <Typography align="center" variant="h6">Attacks</Typography>
-      </Box>
-    </Box>
+    </Paper>
   )
 }
 

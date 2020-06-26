@@ -47,13 +47,14 @@ function TextSection({
       border={1}
       borderColor="rgba(0, 0, 0, 0.42)"
       borderRadius={4}
+      overflow="hidden"
     >
       <Box bgcolor="background.paper" borderRadius="4px 4px 0 0">
         {content}
       </Box>
 
       <Box borderColor="rgba(0, 0, 0, 0.42)" borderTop={1} p={2}>
-        <Typography align="center" variant="h6">{label}</Typography>
+        <Typography align="center" variant="h6" className="content-header">{label}</Typography>
       </Box>
     </Box>
   )
