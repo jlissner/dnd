@@ -49,7 +49,7 @@ function HorizontalInput({
     : { borderRight: 0, borderRadius: '4px 0 0 4px', order: -1 };
 
   return (
-    <Grid container wrap="nowrap" alignItems="center">
+    <Grid container wrap="nowrap" alignItems="center" className={classes.root}>
       <Grid item>
         <SaveableInput
           type={type}
@@ -90,7 +90,7 @@ HorizontalInput.propTypes = {
 };
 
 HorizontalInput.defaultProps = {
-  inputFirst: true,
+  inputFirst: false,
   useNumericPrefix: true,
   type: 'text',
   onSave: _noop,

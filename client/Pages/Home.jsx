@@ -1,26 +1,31 @@
 import React from 'react';
+import { useRecoilValue } from 'recoil';
 import {
   Box,
 } from '@material-ui/core';
 import MarkdownHelper from '../Form/MarkdownHelper';
-import { useGameBoard, useGlobalState } from '../hooks';
+// import {
+  // useGameBoard,
+  // useGlobalState,
+// } from '../hooks';
+import { selectedCharacterState } from '../state';
 import SelectCharacter from '../SelectCharacter';
-// import PlayerList from '../PlayerList';
-import GameBoard from '../GameBoard';
+// import GameBoard from '../GameBoard';
 import CharacterBook from '../CharacterBook';
-import CharacterSheet from '../CharacterSheet';
+// import PlayerList from '../PlayerList';
+// import CharacterSheet from '../CharacterSheet';
 
 function Home() {
-  const gameBoard = useGameBoard();
-  const [selectedCharacter, setSelectedCharacter] = useGlobalState('selectedCharacter');
+  // const gameBoard = useGameBoard();
+  const selectedCharacter = useRecoilValue(selectedCharacterState);
 
   if (!selectedCharacter) {
-    return <SelectCharacter setSelectedCharacter={setSelectedCharacter} />;
+    return <SelectCharacter />;
   }
 
   return (
     <>
-      <GameBoard gameBoard={gameBoard}/>
+      {/* <GameBoard gameBoard={gameBoard}/> */}
 
       {/* <Box width="25%" position="relative" zIndex="1"> */}
       {/*   <Grid container spacing={3}> */}
@@ -32,9 +37,9 @@ function Home() {
       {/*     </Grid> */}
       {/*   </Grid> */}
       {/* </Box> */}
-      <Box position="relative" zIndex="1">
-        <CharacterBook id={selectedCharacter} />
+      <Box position="relative" zIndex="1" height={1}>
         {/* <CharacterSheet id={selectedCharacter} /> */}
+        <CharacterBook id={selectedCharacter} />
       </Box>
       <MarkdownHelper />
     </>

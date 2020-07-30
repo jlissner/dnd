@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import axios from 'axios';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Box,
@@ -11,8 +11,9 @@ import {
 } from '@material-ui/core';
 import _map from 'lodash/map';
 import AddButton from './Form/AddButton';
+import { fetchUser } from './actions';
 import Form from './Form';
-import { useUser } from './hooks';
+import { selectedCharacterState, userState } from './state';
 import { Confirm, constants, objToGraphqlStr } from './utils';
 
 const { characterSchemas } = constants;
@@ -37,11 +38,10 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function SelectCharacter({
-  setSelectedCharacter,
-}) {
+function SelectCharacter() {
   const classes = useStyles();
-  const { user, fetchUser } = useUser();
+  const setSelectedCharacter = useSetRecoilState(selectedCharacterState);
+  const [user, setUser] = useRecoilState(userState);
   const [saving, setSaving] = useState(false);
   const [newChar, setNewChar] = useState({ name: '', schema: '' });
   const { idPk, characters } = user;
@@ -65,8 +65,9 @@ function SelectCharacter({
 
     try {
       const { data } = await axios.post('/query/graphql', { query: newCharacterMutation });
+      const updatedUser = await fetchUser();
 
-      await fetchUser();
+      setUser(updatedUser);
 
       setSelectedCharacter(data.data.createCharacter.character.idPk);
     } catch (err) {
@@ -127,9 +128,5 @@ function SelectCharacter({
     </Grid>
   )
 }
-
-SelectCharacter.propTypes = {
-  setSelectedCharacter: PropTypes.func.isRequired,
-};
 
 export default SelectCharacter;

@@ -7,7 +7,7 @@ import {
   Typography,
 } from '@material-ui/core';
 import { Fa } from '../utils';
-import useCharacter from '../hooks/useCharacter';
+import useCharacterWs from '../hooks/useCharacterWs';
 import SaveableInput from '../Form/SaveableInput';
 import HorizontalInput from '../Form/HorizontalInput';
 import ArmorClass from './ArmorClass';
@@ -25,7 +25,7 @@ import Notes from './Notes';
 import { HideawayItem, HideawayList } from '../Hideaway';
 
 function CharacterSheet({ id }) {
-  const [{ attributes, name, notes }, updateCharacter] = useCharacter(id);
+  const [{ attributes, name, notes }, updateCharacter] = useCharacterWs(id);
 
   if (!name) {
     return 'loading...';
@@ -46,26 +46,15 @@ function CharacterSheet({ id }) {
         </Grid>
 
         <Grid item xs={12} md={4} lg={3}>
-          <Paper>
-            <Box border={1} borderColor="rgba(0, 0, 0, 0.42)" borderRadius={4}>
-              <Box p={1.5}>
-                <Proficiencies
-                  category="skills"
-                  attributes={attributes}
-                  updateCharacter={updateCharacter}
-                />
-              </Box>
-              <Box
-                p={1}
-                bgcolor="rgba(0, 0, 0, 0.09)"
-                borderColor="rgba(0, 0, 0, 0.42)"
-                borderRadius="0 0 4px 4px"
-                borderTop={1}
-              >
-                <Typography variant="h6" align="center" className="content-header">Skills</Typography>
-              </Box>
-            </Box>
-          </Paper>
+          <Equipment
+            attributes={attributes}
+            updateCharacter={updateCharacter}
+          />
+          <Box p={1}/>
+          <Attacks
+            attributes={attributes}
+            updateCharacter={updateCharacter}
+          />
         </Grid>
 
         <Grid item xs={12} md={3} lg={3}>
@@ -87,6 +76,27 @@ function CharacterSheet({ id }) {
                 borderTop={1}
               >
                 <Typography variant="h6" align="center" className="content-header">Saving Throws</Typography>
+              </Box>
+            </Box>
+          </Paper>
+          <Box p={1}/>
+          <Paper>
+            <Box border={1} borderColor="rgba(0, 0, 0, 0.42)" borderRadius={4}>
+              <Box p={1.5}>
+                <Proficiencies
+                  category="skills"
+                  attributes={attributes}
+                  updateCharacter={updateCharacter}
+                />
+              </Box>
+              <Box
+                p={1}
+                bgcolor="rgba(0, 0, 0, 0.09)"
+                borderColor="rgba(0, 0, 0, 0.42)"
+                borderRadius="0 0 4px 4px"
+                borderTop={1}
+              >
+                <Typography variant="h6" align="center" className="content-header">Skills</Typography>
               </Box>
             </Box>
           </Paper>
@@ -151,17 +161,11 @@ function CharacterSheet({ id }) {
         </Grid>
 
         <Grid item xs={12} sm={6} md={4}>
-          <Attacks
-            attributes={attributes}
-            updateCharacter={updateCharacter}
-          />
+          
         </Grid>
 
         <Grid item xs={12} sm={6} md={4}>
-          <Equipment
-            attributes={attributes}
-            updateCharacter={updateCharacter}
-          />
+          
         </Grid>
       </Grid>
 

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Box, Grid } from '@material-ui/core';
 import _isNil from 'lodash/isNil';
+import _noop from 'lodash/noop';
 import _map from 'lodash/map';
 import _startCase from 'lodash/startCase';
 import FormItem from './FormItem';
@@ -13,6 +14,7 @@ function Form({
   GridProps,
   GridItemProps,
   value,
+  onSave,
   Wrapper,
   WrapperProps,
 }) {
@@ -30,6 +32,15 @@ function Form({
       value={newValue}
       originalValue={value}
       validate={validate}
+      onSave={() => {
+        const { hasError, validatedSchema } = validate(form, newValue);
+
+        setFormValidation(validatedSchema);
+
+        if (!hasError) {
+          onSave(newValue);
+        }
+      }}
       updateValue={updateValue}
       {...WrapperProps}
     >
@@ -76,6 +87,7 @@ Form.propTypes = {
   value: PropTypes.shape().isRequired,
   Wrapper: PropTypes.elementType,
   WrapperProps: PropTypes.shape(),
+  onSave: PropTypes.func,
 };
 
 Form.defaultProps = {
@@ -84,6 +96,7 @@ Form.defaultProps = {
   GridProps: {},
   GridItemProps: {},
   WrapperProps: {},
+  onSave: _noop,
 }
 
 export default Form;

@@ -1,19 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Scrollbars } from 'react-custom-scrollbars';
+import { useRecoilValue } from 'recoil';
 import GridLayout, { WidthProvider } from 'react-grid-layout';
 import _differenceWith from 'lodash/differenceWith';
+import _get from 'lodash/get';
 import _isEqual from 'lodash/isEqual';
 import _map from 'lodash/map';
 import _pick from 'lodash/pick';
-import { UPDATE_PAGE_LAYOUT } from '../hooks/useCharacter';
-import { List } from '../Widgets';
+import { Scrollbars } from '../utils';
+import { usePage } from '../hooks';
+import Widget from '../Widget';
+import { flagState, pageSelector } from '../state';
 
 const ResponsiveGrid = WidthProvider(GridLayout);
-
-const widgets = {
-  LIST: List,
-};
 
 function formatLayout(content) {
   return _map(content, ({ idPk, layout }) => ({
@@ -22,59 +21,76 @@ function formatLayout(content) {
   }));
 }
 
+function getGridFromLayout(layout) {
+  return _pick(layout, ['x', 'y', 'h', 'w', 'i']);
+}
+
 function Page({
-  content,
-  updateCharacter,
+  id,
 }) {
-  const layout = formatLayout(content);
+  const { updateLayout } = usePage(id);
+  const page = useRecoilValue(pageSelector(id));
+  const editing = useRecoilValue(flagState('editMode'));
+  const content = _map(_get(page, 'layout', []), ({
+    idPk,
+    type,
+    widgetId,
+    ...layout
+  }) => ({
+    idPk,
+    layout,
+    widgetId,
+    widgetType: type,
+  }));
+  const formattedLayout = formatLayout(content);
+  const layout = _map(formattedLayout, l => ({...l, static: !editing }));
 
   return (
-    <ResponsiveGrid
-      layout={layout}
-      cols={4}
-      rowHeight={30}
-      onLayoutChange={(updatedLayout) => {
-        const formatedUpdates = _map(updatedLayout, l => _pick(l, ['x', 'y', 'h', 'w', 'i']));
-        const changes = _differenceWith(formatedUpdates, layout, _isEqual);
+    <>
+      <ResponsiveGrid
+        layout={layout}
+        cols={12}
+        rowHeight={30}
+        onLayoutChange={(updatedLayout) => {
+          const curLayoutGrid = _map(formattedLayout, getGridFromLayout);
+          const updatedLayoutGrid = _map(updatedLayout, getGridFromLayout);
+          const changes = _differenceWith(updatedLayoutGrid, curLayoutGrid, _isEqual);
 
-        if(changes.length) {
-          const updates = changes.map(change => ({
-            idPk: change.i,
-            x: change.x,
-            y: change.y,
-            width: change.w,
-            height: change.h,
-          }));
-          
-          updateCharacter(updates, UPDATE_PAGE_LAYOUT);
-        }
-      }}
-    >
-      {
-        _map(content, ({ idPk, widgetType, layout, ...widget }) => {
-          const WidgetComponent = widgets[widgetType];
+          if(changes.length) {
+            const updates = changes.map(change => ({
+              idPk: change.i,
+              x: change.x,
+              y: change.y,
+              width: change.w,
+              height: change.h,
+            }));
 
-          return (
+            updateLayout(updates);
+          }
+        }}
+      >
+        {
+          _map(content, ({ idPk, widgetType, widgetId }) => (
             <div key={idPk}>
-              <Scrollbars style={{ width: '100%', height: '100%' }}>
-                {widget.idPk}
-                <WidgetComponent {...widget} updateCharacter={updateCharacter} />
+              <Scrollbars>
+                <Widget
+                  type={widgetType}
+                  widgetId={widgetId}
+                  pageId={id}
+                  pageWidgetId={idPk}
+                  editing={editing}
+                />
               </Scrollbars>
             </div>
-          );
-        })
-      }
-    </ResponsiveGrid>
-  )
+          ))
+        }
+      </ResponsiveGrid>
+    </>
+  );
 }
 
 Page.propTypes = {
-  content: PropTypes.arrayOf(PropTypes.shape()),
-  updateCharacter: PropTypes.func.isRequired,
-};
-
-Page.defaultProps = {
-  content: [],
+  id: PropTypes.string.isRequired,
 };
 
 export default Page;

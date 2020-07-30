@@ -9,6 +9,8 @@ import objToGraphqlStr from './objToGraphqlStr';
 import removeByIndex from './removeByIndex';
 import replaceByIndex from './replaceByIndex';
 import Rotate from './Rotate';
+import Scrollbars from './Scrollbars';
+import suspendable from './suspendable';
 
 export {
   Confirm,
@@ -22,4 +24,6 @@ export {
   removeByIndex,
   replaceByIndex,
   Rotate,
+  Scrollbars,
+  suspendable,
 };

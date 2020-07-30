@@ -29,7 +29,7 @@ if (process.env.NODE_ENV !== 'production') {
   app.use(webpackDevMiddleware(compiler, {
     publicPath: webpackConfig.output.publicPath,
   }));
-  app.use(webpackHotMiddleware(compiler));
+  // app.use(webpackHotMiddleware(compiler));
 } else {
   app.use(express.static(path.resolve('./server/build')));
 
