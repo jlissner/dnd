@@ -6,9 +6,12 @@ import pageState from './pageState';
 import pageLayoutState from './pageLayoutState';
 import selectedCharacterState from './selectedCharacterState';
 import selectedPageState from './selectedPageState';
+import smartValueState from './smartValueState';
+import smartValueModifierState from './smartValueModifierState';
 import userState from './userState';
 import userWidgetsState from './userWidgetsState';
 import widgetState from './widgetState';
+import widgetTypesState from './widgetTypesState';
 
 export {
   characterState,
@@ -19,7 +22,10 @@ export {
   pageLayoutState,
   selectedCharacterState,
   selectedPageState,
+  smartValueState,
+  smartValueModifierState,
   userState,
   userWidgetsState,
   widgetState,
+  widgetTypesState,
 };

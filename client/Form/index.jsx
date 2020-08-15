@@ -1,12 +1,29 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Box, Grid } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
+import _cloneDeep from 'lodash/cloneDeep';
+import _isEqual from 'lodash/isEqual';
 import _isNil from 'lodash/isNil';
+import _get from 'lodash/get';
 import _noop from 'lodash/noop';
 import _map from 'lodash/map';
 import _startCase from 'lodash/startCase';
+import _transform from 'lodash/transform';
+import DefaultForm from './DefaultForm';
 import FormItem from './FormItem';
 import validate from './validate';
+
+function getValWithDefaults(value, form) {
+  return _transform(form, (res, { accessor, defaultValue }) => {
+    if (!accessor || !defaultValue) {
+      return;
+    }
+
+    const currentValue = res[accessor];
+
+    res[accessor] = _isNil(currentValue) ? defaultValue : currentValue;
+  }, _cloneDeep(value));
+}
 
 function Form({
   form,
@@ -18,8 +35,10 @@ function Form({
   Wrapper,
   WrapperProps,
 }) {
-  const [newValue, setNewValue] = useState(value);
+  const initialValue = useMemo(() => getValWithDefaults(value, form), [value, form]);
+  const [newValue, setNewValue] = useState(initialValue);
   const [formValidation, setFormValidation] = useState(form);
+  const hasChanges = !_isEqual(value, newValue);
 
   function updateValue(newVal, accessor) {
     setNewValue({ ...newValue, [accessor]: newVal });
@@ -27,12 +46,13 @@ function Form({
 
   return (
     <Wrapper
+      hasChanges={hasChanges}
       form={formValidation}
       setForm={setFormValidation}
       value={newValue}
       originalValue={value}
       validate={validate}
-      onSave={() => {
+      handleSave={() => {
         const { hasError, validatedSchema } = validate(form, newValue);
 
         setFormValidation(validatedSchema);
@@ -41,6 +61,7 @@ function Form({
           onSave(newValue);
         }
       }}
+      reset={() => setNewValue(initialValue)}
       updateValue={updateValue}
       {...WrapperProps}
     >
@@ -67,7 +88,7 @@ function Form({
             <FormItem
               label={label || _startCase(accessor)}
               setValue={(val) => updateValue(val, accessor)}
-              value={_isNil(newValue[accessor]) ? defaultValue : newValue[accessor]}
+              value={_get(newValue, accessor, defaultValue)}
               formValue={newValue}
               {...formProps}
               {...FormItemProps}
@@ -84,14 +105,15 @@ Form.propTypes = {
   FormItemProps: PropTypes.shape(),
   GridProps: PropTypes.shape(),
   GridItemProps: PropTypes.shape(),
-  value: PropTypes.shape().isRequired,
+  value: PropTypes.shape(),
   Wrapper: PropTypes.elementType,
   WrapperProps: PropTypes.shape(),
   onSave: PropTypes.func,
 };
 
 Form.defaultProps = {
-  Wrapper: ({ children }) => <Box p={2}>{children}</Box>,
+  Wrapper: DefaultForm,
+  value: {},
   FormItemProps: {},
   GridProps: {},
   GridItemProps: {},

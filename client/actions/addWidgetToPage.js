@@ -1,14 +1,15 @@
 import axios from 'axios';
+import _get from 'lodash/get';
 
 async function addWidgetToPage(pageId, widget, layout) {
+  console.log({ pageId, widget, layout });
   const query = `
     mutation {
       createPageWidget(
         input: {
           pageWidget: {
             pageFk: "${pageId}"
-            type: ${widget.type}
-            widgetId: "${widget.idPk}"
+            widgetFk: "${widget.idPk}"
             x: ${layout.x}
             y: ${layout.y}
             height: ${layout.height}
@@ -19,8 +20,12 @@ async function addWidgetToPage(pageId, widget, layout) {
         pageWidget {
           idPk
           pageFk
-          type
-          widgetId
+          widgetFk
+          type: widget {
+            widgetType {
+              name
+            }
+          }
           x
           y
           w: width
@@ -31,6 +36,8 @@ async function addWidgetToPage(pageId, widget, layout) {
   `;
   const { data } = await axios.post('/query/graphql', { query });
   const addedWidget = data.data.createPageWidget.pageWidget
+
+  addedWidget.type = _get(addedWidget, 'type.widgetType.name');
 
   return addedWidget;
 }

@@ -1,4 +1,6 @@
 import axios from 'axios';
+import _get from 'lodash/get';
+import _map from 'lodash/map';
 import _reduce from 'lodash/reduce';
 import { objToGraphqlStr } from '../utils';
 
@@ -20,26 +22,35 @@ async function updatePageLayout(pageId, widgets) {
   const fetchQuery = `
     query {
       page:characterPage(idPk: "${pageId}") {
-        idPk
-        title
         layout:pageWidgetsByPageFk {
           nodes {
             idPk
-            type
-            widgetId
+            widgetFk
             x
             y
             h:height
             w:width
+            type: widget {
+              widgetType {
+                name
+              }
+            }
           }
         }
       }
     }
   `;
-  const fetchRes = await axios.post('/query/graphql', { query: fetchQuery });
-  const { page } = fetchRes.data.data;
+  const { data } = await axios.post('/query/graphql', { query: fetchQuery });
+  const { errors, page } = data.data;
 
-  return page.layout.nodes;
+  if (errors) {
+    throw new Error(errors);
+  }
+
+  return _map(page.layout.nodes, (layout) => ({
+    ...layout,
+    type: _get(layout, 'type.widgetType.name'),
+  }));
 }
 
 export default updatePageLayout;

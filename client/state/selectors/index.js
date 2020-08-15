@@ -1,7 +1,7 @@
-import pageLayoutSelector from './pageLayoutSelector';
 import pageSelector from './pageSelector';
+import smartValueSelector from './smartValueSelector';
 
 export {
-  pageLayoutSelector,
   pageSelector,
+  smartValueSelector,
 };

@@ -10,7 +10,7 @@ import { pageState } from '../state';
 
 function Widget({
   type,
-  widgetId,
+  widgetFk,
   pageId,
   pageWidgetId,
   editing,
@@ -52,13 +52,15 @@ function Widget({
           Remove
         </Button>
       </Box>
-      <Component id={widgetId}/>
+      <Box height={1} width={1} p="2px">
+        <Component id={widgetFk}/>
+      </Box>
     </React.Suspense>
   );
 }
 
 Widget.propTypes = {
-  widgetId: PropTypes.string.isRequired,
+  widgetFk: PropTypes.string.isRequired,
   pageId: PropTypes.string.isRequired,
   pageWidgetId: PropTypes.string.isRequired,
   editing: PropTypes.bool.isRequired,

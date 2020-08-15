@@ -1,6 +1,5 @@
 const express = require('express');
 const app = express();
-const bodyParser = require('body-parser')
 const path = require('path');
 const initWs = require('express-ws');
 const {
@@ -8,8 +7,8 @@ const {
   initSession,
 } = require('./lib');
 
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json({ type: 'application/*+json' }));
+app.use(express.urlencoded({ extended: true }))
+app.use(express.json())
 
 initSession(app)
 initWs(app); // needs to happen before routes
@@ -29,7 +28,7 @@ if (process.env.NODE_ENV !== 'production') {
   app.use(webpackDevMiddleware(compiler, {
     publicPath: webpackConfig.output.publicPath,
   }));
-  // app.use(webpackHotMiddleware(compiler));
+  app.use(webpackHotMiddleware(compiler));
 } else {
   app.use(express.static(path.resolve('./server/build')));
 

@@ -1,9 +1,9 @@
 import { atomFamily } from 'recoil';
-import widgets from '../../Widget/widgets';
+import { fetchWidget } from '../../Widget/widgetActions';
 
 const widgetState = atomFamily({
   key: 'widgetState',
-  default: ({ type, widgetId }) => widgets[type].fetch(widgetId),
+  default: fetchWidget,
 });
 
 export default widgetState;

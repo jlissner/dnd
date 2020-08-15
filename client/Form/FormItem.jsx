@@ -79,11 +79,14 @@ function FormItem({
 
   function renderInput() {
     switch (type) {
+      case 'selectSmartValue': {
+        return 'TODO: Select Smart Value';
+      }
       case 'divider': {
-        return <Divider />
+        return <Divider />;
       }
       case 'static-text': {
-        return <Typography variant={variant}>{text}</Typography>
+        return <Typography variant={variant}>{text}</Typography>;
       }
       case 'checkbox': {
         return (

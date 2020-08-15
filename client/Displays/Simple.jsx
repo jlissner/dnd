@@ -2,37 +2,36 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { Box, Typography } from '@material-ui/core';
-import _noop from 'lodash/noop';
-import useNotes from '../hooks/useNotes';
 
 const useStyles = makeStyles(() => ({
   title: {
-    cursor: hasNotes => (hasNotes ? 'pointer' : 'default'),
+    cursor: 'pointer',
 
     '&:hover': {
-      backgroundColor: hasNotes => (hasNotes ? 'rgba(0, 0, 0, 0.09)' : 'none'),
+      backgroundColor: 'rgba(0, 0, 0, 0.09)',
     },
   },
 }));
 
 function Simple({
   children,
-  hasNotes,
+  handleOpen,
   label,
   notes,
+  notesRef,
   ...props
 }) {
-  const classes = useStyles(hasNotes);
-  const [ref, openNotes, notesComponent] = useNotes(notes);
+  const classes = useStyles();
 
   return (
     <Box
+      ref={notesRef}
       border={1}
       borderColor="rgba(0, 0, 0, 0.42)"
       borderRadius={4}
       bgcolor="rgba(0, 0, 0, 0.09)"
       p={1}
-      ref={ref}
+      height={1}
       {...props}
     >
       <Box
@@ -43,12 +42,11 @@ function Simple({
       >
         {children}
       </Box>
-      <Box mt={1} className={classes.title} onClick={hasNotes ? openNotes : _noop}>
+      <Box mt={1} className={classes.title} onClick={handleOpen}>
         <Typography align="center" variant="body2" className="content-header">
           {label}{notes ? '*' : ''}
         </Typography>
       </Box>
-      {notesComponent}
     </Box>
   )
 }
@@ -57,12 +55,11 @@ Simple.propTypes = {
   children: PropTypes.node.isRequired,
   label: PropTypes.string.isRequired,
   notes: PropTypes.string,
-  hasNotes: PropTypes.bool,
+  handleOpen: PropTypes.func.isRequired,
 };
 
 Simple.defaultProps = {
   notes: '',
-  hasNotes: true,
 }
 
 export default Simple;

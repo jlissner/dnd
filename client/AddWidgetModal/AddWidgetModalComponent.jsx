@@ -1,11 +1,7 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import {
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
-  AccordionActions,
   Box,
   Button,
   Dialog,
@@ -13,67 +9,20 @@ import {
   DialogActions,
   Tab,
   Tabs,
-  Typography,
 } from '@material-ui/core';
-import _map from 'lodash/map';
-import widgets from '../Widget/widgets';
-import { Fa } from '../utils';
-import { useForm } from '../hooks';
-import {
-  characterWidgetsState,
-  flagState,
-  selectedCharacterState,
-  userState,
-} from '../state';
-import WidgetAccordion from '../WidgetAccordion';
-
-const startVal = {};
+import _find from 'lodash/find';
+import { flagState, widgetTypesState } from '../state';
+import WidgetsManager from '../WidgetsManager';
 
 function AddWidgetModalComponent() {
   const [addWidgetOpen, setAddWidgetOpen] = useRecoilState(flagState('addWidgetOpen'));
-  const [tab, setTab] = useState('LIST');
-  const user = useRecoilValue(userState);
-  const selectedCharacter = useRecoilValue(selectedCharacterState);
-  const [characterWidgets, setCharacterWidgets] = useRecoilState(characterWidgetsState({
-    characterId: selectedCharacter,
-    widgetType: tab,
-  }));
-  const {
-    create,
-    schema,
-  } = widgets[tab];
-  const [expanded, setExpanded] = useState();
-  const [saving, setSaving] = useState(false);
-  const formOptions = useMemo(() => ({    
-    schema,
-    value: startVal,
-    onSave: async (newVal, reset) => {
-      const newWidget = { ...newVal, userFk: user.idPk };
+  const widgetTypes = useRecoilValue(widgetTypesState);
+  const [tab, setTab] = useState('Attribute');
+  const typeId = _find(widgetTypes, ['name', tab]).idPk;
 
-      setSaving(true);
-
-      try {
-        const createdWidget = await create(newWidget, selectedCharacter);
-        
-        setCharacterWidgets((curCharWidgets) => [...curCharWidgets, createdWidget.idPk]);
-        reset();
-      } catch (error) {
-        console.error(error);
-      }
-
-      setSaving(false);
-    },
-    FormItemProps: { disabled: saving },
-  }), [create, schema, user, saving, selectedCharacter, setCharacterWidgets]);
-  const { form, handleSave, reset, hasChanges } = useForm(formOptions);
-
-  function handleExpand(expandVal) {
-    if (expanded === expandVal) {
-      setExpanded(null);
-    } else {
-      setExpanded(expandVal);
-    }
-  }
+  useEffect(() => {
+    setTab(widgetTypes[0].name);
+  }, [widgetTypes]);
 
   function onClose() {
     setAddWidgetOpen(false);
@@ -88,48 +37,18 @@ function AddWidgetModalComponent() {
             orientation="vertical"
             value={tab}
             onChange={(e, newTab) => {
-              reset();
               setTab(newTab);
             }}
           >
-            <Tab label="Counters" value="COUNTER" />
-            <Tab label="Lists" value="LIST" />
-            <Tab label="...Coming Soon" value="NONE" />
+            <Tab label="Attributes" value="Attribute" />
+            <Tab label="Skills" value="Skill" />
+            <Tab label="Stats" value="Stat" />
+            <Tab label="Lists" value="List" />
+            <Tab label="Text Boxes" value="TextBox" />
           </Tabs>
         </Box>
         <Box p={2} pt={0} width={1}>
-          {_map(characterWidgets, (widgetId) => (
-            <WidgetAccordion
-              key={widgetId}
-              id={widgetId}
-              type={tab}
-              expanded={expanded === widgetId}
-              handleExpand={handleExpand}
-            />
-          ))}
-          <Accordion
-            expanded={expanded === 'new'}
-            onChange={() => handleExpand('new')}
-          >
-            <AccordionSummary
-              expandIcon={<Fa icon="chevron-down" />}
-            >
-              <Typography>New</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              {form}
-            </AccordionDetails>
-            <AccordionActions>
-              <Button
-                color="primary"
-                disabled={!hasChanges || saving}
-                onClick={handleSave}
-                variant="contained"
-              >
-                Save
-              </Button>
-            </AccordionActions>
-          </Accordion>
+          <WidgetsManager type={tab} typeId={typeId} />
         </Box>
       </Box>
       <DialogActions>

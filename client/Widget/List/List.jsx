@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import PropTypes from 'prop-types'
 import { SortableContainer } from 'react-sortable-hoc';
 import _map from 'lodash/map';
@@ -14,13 +14,15 @@ function List({
   updateItem,
   reorderItems,
   removeItem,
+  orderStart,
+  saving,
 }) {
   const [reordering, setReordering] = useState(false);
   const updatedItems = useRef(items);
   const refresh = useRefresh();
-  const Container = SortableContainer(Component);
+  const Container = useMemo(() => SortableContainer(Component), [Component]);
 
-  if (!reordering) {
+  if (!reordering && !saving) {
     updatedItems.current = items;
   }
 
@@ -45,29 +47,17 @@ function List({
         updatedItems.current = newUpdatedItems;
         refresh();
 
-        try {
-          const itemsToUpdate = _map(newUpdatedItems, ({ listOrder, ...item }, i) => (
-            i === listOrder
-            ? false
-            : { ...item, listOrder: i }
-          )).filter(Boolean);
-
-          reorderItems(itemsToUpdate);
-        } catch (err) {
-          setReordering(false);
-
-          console.error(err);
-        }
+        reorderItems(newUpdatedItems);
       }}
     >
       {_map(updatedItems.current, (item, i) => (
         <ListItem
           disabled={reordering}
-          key={item.idPk}
+          key={item.text}
           classes={classes}
           type={type}
           index={i}
-          order={i+1}
+          order={orderStart + i + 1}
           updateItem={updateItem}
           removeItem={removeItem}
           reordering={reordering}
@@ -86,6 +76,8 @@ List.propTypes = {
   updateItem: PropTypes.func.isRequired,
   reorderItems: PropTypes.func.isRequired,
   removeItem: PropTypes.func.isRequired,
+  orderStart: PropTypes.number,
+  saving: PropTypes.bool.isRequired,
 };
 
 const defaultItems = [];
@@ -95,6 +87,7 @@ List.defaultProps = {
   Component: 'ul',
   items: defaultItems,
   type: 'UNORDERED',
+  orderStart: 0,
 }
 
 export default List;

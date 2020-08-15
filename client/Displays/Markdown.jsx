@@ -87,8 +87,6 @@ function Code({ language, value }) {
   return <pre className={classes.root}><code>{value}</code></pre>
 }
 
-
-
 function Markdown({
   defaultText,
   text,
@@ -103,7 +101,7 @@ function Markdown({
         heading: ({ children, level }) => <Typography variant={`h${level}`}>{children}</Typography>,
         inlineCode: InlineCode,
         link: ({ children, href }) => <Link color="primary" href={href} size="small">{children}</Link>,
-        paragraph: ({ children }) => <Typography>{children}</Typography>,
+        paragraph: ({ children }) => <Typography gutterBottom>{children}</Typography>,
         table: ({ children, ...props }) => <Table>{children}</Table>,
         tableHead: ({ children, ...props }) => <TableHead>{children}</TableHead>,
         tableBody: ({ children, ...props }) => <TableBody>{children}</TableBody>,

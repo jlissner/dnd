@@ -11,9 +11,8 @@ import {
 } from '@material-ui/core';
 import { Alert, AlertTitle } from '@material-ui/lab';
 import _filter from 'lodash/filter';
-import _sortBy from 'lodash/sortBy';
-import { useList } from '../../hooks';
-import { Fa } from '../../utils';
+import useList from './useList';
+import { Fa, Scrollbars } from '../../utils';
 import List from './List';
 
 const useStyles = makeStyles((theme) => ({
@@ -67,7 +66,7 @@ const useStyles = makeStyles((theme) => ({
   },
   root: {
     overflowX: 'hidden',
-    marginTop: ({ showTitle }) => showTitle ? 0 : theme.spacing(2),
+    marginTop: 0,
     paddingLeft: 0,
     marginBottom: 0,
   },
@@ -88,23 +87,23 @@ function ListWidget({
     updateItem,
     reorderItems,
     removeItem,
+    saving,
   } = useList(id);
   const {
     listItems: items = [],
-    title,
+    name,
     type,
     showTitle,
   } = list || {};
   const [adding, setAdding] = useState(false);
   const isCheckList = type === 'CHECK';
   const Root = type === 'ORDERED' ? 'ol' : 'ul';
-  const sortedItems = _sortBy(items, ['checked', 'listOrder']);
   const classes = useStyles({ showTitle, isCheckList });
-  const uncheckedItems = _filter(sortedItems, ['checked', false]);
-  const checkedItems = _filter(sortedItems, 'checked');
+  const uncheckedItems = _filter(items, ['checked', false]);
+  const checkedItems = _filter(items, 'checked');
   const primaryItems = isCheckList
     ? uncheckedItems
-    : sortedItems;
+    : items;
 
   useEffect(() => {
     setAdding(false);
@@ -114,7 +113,7 @@ function ListWidget({
     setAdding(true);
 
     try {
-      await addItem(sortedItems.length);
+      await addItem();
     } catch (err) {
       console.error(err);
     }
@@ -135,10 +134,28 @@ function ListWidget({
   }
 
   return (
-    <Box p="2px" height={1} width={1}>
-      <Box component={Paper} p={1} height={1} width={1}>
-        {showTitle && <Typography variant="h5">{title}</Typography>}
-
+    <Box
+      component={Paper}
+      p={1}
+      pt={showTitle ? 6 : 1}
+      height={1}
+      width={1}
+      position="relative"
+    >
+      <Box
+        display={showTitle ? 'block' : 'none'}
+        position="absolute"
+        top={0}
+        left={0}
+        right={0}
+        zIndex={1}
+        p={1}
+        borderBottom="1px solid rgba(0, 0, 0, 0.09)"
+      >
+        <Typography variant="h5">{name}</Typography>
+      </Box>
+      
+      <Scrollbars>
         <List
           classes={classes}
           Component={Root}
@@ -147,6 +164,7 @@ function ListWidget({
           updateItem={updateItem}
           reorderItems={reorderItems}
           removeItem={removeItem}
+          saving={saving}
         />
         <ButtonBase
           component="div"
@@ -174,10 +192,12 @@ function ListWidget({
               updateItem={updateItem}
               reorderItems={reorderItems}
               removeItem={removeItem}
+              orderStart={primaryItems.length}
+              saving={saving}
             />
           </>
         }
-      </Box>
+      </Scrollbars>
     </Box>
   )
 }

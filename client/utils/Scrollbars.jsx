@@ -5,9 +5,11 @@ import { Scrollbars as CustomScrollbars } from 'react-custom-scrollbars';
 function Scrollbars({
   children,
   dontScrollToTop,
+  stickyBottom,
   ...props
 }) {
-  const ref = useRef(null);
+  const scrollbarsRef = useRef(null);
+  const scrollHeightRef = useRef(null);
 
   useEffect(() => {
     if (dontScrollToTop) {
@@ -15,21 +17,33 @@ function Scrollbars({
     }
 
     const intervalId = setInterval(() => {
-      const { clientHeight } = ref.current.getValues();
+      const { clientHeight } = scrollbarsRef.current.getValues();
 
       if (clientHeight) {
-        ref.current.scrollToTop();
+        scrollbarsRef.current.scrollToTop();
 
         clearInterval(intervalId);
       }
     }, 100);
-  }, [ref, dontScrollToTop]);
+  }, [scrollbarsRef, dontScrollToTop]);
+
+  function handleUpdate({ scrollHeight }) {
+    if (!stickyBottom) {
+      return;
+    }
+
+    if (scrollHeightRef.current !== scrollHeight) {
+      scrollbarsRef.current.scrollToBottom();
+      scrollHeightRef.current = scrollHeight;
+    }
+  }
 
   return (
     <CustomScrollbars
-      ref={ref}
+      ref={scrollbarsRef}
       autoHide
       hideTracksWhenNotNeeded
+      onUpdate={handleUpdate}
       {...props}
     >
       {children}
@@ -40,10 +54,12 @@ function Scrollbars({
 Scrollbars.propTypes = {
   children: PropTypes.node.isRequired,
   dontScrollToTop: PropTypes.bool,
+  stickyBottom: PropTypes.bool,
 };
 
 Scrollbars.defaultProps = {
   dontScrollToTop: false,
+  stickyBottom: false,
 }
 
 export default Scrollbars;

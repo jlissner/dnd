@@ -1,4 +1,4 @@
-const { pool } = require('./db');
+const pool = require('./pg');
 const { graphql } = require('graphql');
 const { watchPostGraphileSchema, withPostGraphileContext } = require('postgraphile');
 const postgraphileConfig = require('../../config/postgraphile');

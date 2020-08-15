@@ -40,15 +40,13 @@ function ListItem({
     }
 
     setLoading(true);
-    updateItem({ idPk, text: trimmedUpdateText });
+    updateItem({ index: order - 1, text: trimmedUpdateText });
   }
 
   function handleDelete() {
     setLoading(true);
 
-    console.log({ idPk });
-
-    removeItem(idPk);
+    removeItem(order - 1);
   }
 
   useEffect(() => {
@@ -58,8 +56,8 @@ function ListItem({
   const handleCheck = useCallback(async () => {
     setLoading(true);
 
-    updateItem({ idPk, checked: !checked });
-  }, [idPk, checked, updateItem]);
+    updateItem({ index: order - 1, checked: !checked });
+  }, [order, checked, updateItem]);
 
   const prefix = useMemo(() => {
     switch (type) {

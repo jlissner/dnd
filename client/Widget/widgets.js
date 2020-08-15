@@ -1,14 +1,13 @@
-import COUNTER from './Counter';
-import LIST from './List';
-
-const NONE = {
-  schema: [
-    { type: 'static-text', text: 'More widget options coming soon!', variant: 'h6', key: 'text1' }
-  ]
-};
+import Attribute from './Attribute';
+import Skill from './Skill';
+import Stat from './Stat';
+import List from './List';
+import TextBox from './TextBox';
 
 export default {
-  COUNTER,
-  LIST,
-  NONE,
+  Attribute,
+  Skill,
+  Stat,
+  List,
+  TextBox,
 };

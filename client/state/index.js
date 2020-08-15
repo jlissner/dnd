@@ -7,13 +7,16 @@ import {
   pageState,
   selectedCharacterState,
   selectedPageState,
+  smartValueState,
+  smartValueModifierState,
   userState,
   userWidgetsState,
   widgetState,
+  widgetTypesState,
 } from './atoms';
 import {
-  pageLayoutSelector,
   pageSelector,
+  smartValueSelector,
 } from './selectors';
 
 export {
@@ -25,9 +28,12 @@ export {
   pageState,
   selectedCharacterState,
   selectedPageState,
+  smartValueState,
+  smartValueModifierState,
   userState,
   userWidgetsState,
   widgetState,
-  pageLayoutSelector,
+  widgetTypesState,
   pageSelector,
+  smartValueSelector,
 };

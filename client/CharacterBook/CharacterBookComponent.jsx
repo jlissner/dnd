@@ -1,25 +1,24 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilState } from 'recoil';
 import classnames from 'classnames';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Box,
-  Grid,
-  IconButton,
   Paper,
   Typography,
 } from '@material-ui/core';
 import _get from 'lodash/get';
 import _isNil from 'lodash/isNil';
 import _map from 'lodash/map';
+import gameboard from '../assets/gameboard.jpg';
 import { useCharacter } from '../hooks';
-import { flagState, selectedPageState } from '../state';
+import { selectedPageState } from '../state';
 import { Fa, Scrollbars } from '../utils';
+import CharacterBookHeader from './CharacterBookHeader';
 import CharacterBookSkeleton from './CharacterBookSkeleton';
 import Page from './Page';
 import PageSkeleton from './PageSkeleton';
-import gameboard from '../assets/gameboard.jpg';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -59,9 +58,7 @@ const useStyles = makeStyles((theme) => ({
 function CharacterBookComponent({ id }) {
   const classes = useStyles();
   const { character } = useCharacter(id);
-  const setAddWidgetOpen = useSetRecoilState(flagState('addWidgetOpen'))
-  const [editing, setEditing] = useRecoilState(flagState('editMode'));
-  const { name, pages } = character || {};
+  const { pages } = character || {};
   const [selectedPage, setSelectedPage] = useRecoilState(selectedPageState);
 
   useEffect(() => {
@@ -70,8 +67,12 @@ function CharacterBookComponent({ id }) {
     }
   }, [pages, selectedPage, setSelectedPage]);
 
-  if (!character || (_isNil(selectedPage))) {
-    return <CharacterBookSkeleton />;
+  if (!character || _isNil(selectedPage)) {
+    if (_get(pages, 'length')) {
+      return <CharacterBookSkeleton />;
+    } else {
+      return <Typography>Add a page...</Typography>;
+    }
   }
 
   const tabs = _map(pages, (page) => (
@@ -87,21 +88,7 @@ function CharacterBookComponent({ id }) {
   return (
     <Paper className={classes.paper}>
       <Box p={1} bgcolor="background.paper" boxShadow="0px 3px 4px -3px" zIndex={1}>
-        <Grid container justify="space-between" alignItems="center">
-          <Grid item>
-            <Typography variant="h6">{name}</Typography>
-          </Grid>
-          <Grid item>
-            <Box display="flex">
-              <IconButton key="addItem" onClick={() => setAddWidgetOpen(true)}>
-                <Fa icon="plus" size="xs" transform="shrink-2" />
-              </IconButton>
-              <IconButton edge="end" onClick={() => setEditing(!editing)}>
-                <Fa icon="pencil" size="xs" transform="shrink-2" />
-              </IconButton>
-            </Box>
-          </Grid>
-        </Grid>
+        <CharacterBookHeader />
       </Box>
       <React.Suspense fallback={<PageSkeleton />}>
         <Scrollbars>

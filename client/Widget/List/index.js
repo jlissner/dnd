@@ -1,25 +1,14 @@
-import {
-  createList,
-  deleteList,
-  fetchList,
-  fetchListsByCharacter,
-  fetchListsByUser,
-  updateList,
-} from '../../actions';
 import ListWidget from './ListWidget';
 import ListSkeleton from './ListSkeleton';
-import listForm from './listForm';
+import ListForm from './ListForm';
 
 const manifest = {
+  type: 'List',
   Component: ListWidget,
   Fallback: ListSkeleton,
-  schema: listForm,
-  fetch: fetchList,
-  create: createList,
-  remove: deleteList,
-  update: updateList,
-  byCharacter: fetchListsByCharacter,
-  byUser: fetchListsByUser,
+  Form: ListForm,
+  defaultHeight: 10,
+  defaultWidth: 2,
 };
 
 export default manifest;

@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Grid } from '@material-ui/core';
 import _cloneDeep from 'lodash/cloneDeep';
+import _get from 'lodash/get';
 import _isEqual from 'lodash/isEqual';
 import _isNil from 'lodash/isNil';
 import _map from 'lodash/map';
@@ -70,7 +71,7 @@ function useForm({
           <FormItem
             label={label || _startCase(accessor)}
             setValue={(val) => setNewValue({ ...newValue, [accessor]: val })}
-            value={_isNil(newValue[accessor]) ? defaultValue : newValue[accessor]}
+            value={_get(newValue, accessor, defaultValue)}
             formValue={newValue}
             {...formProps}
             {...FormItemProps}

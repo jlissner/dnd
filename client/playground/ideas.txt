@@ -1,23 +1,180 @@
+/* abilities ******************************
+*  - on active -> adjust relavent stats
+*  - udpate uses
+*  - figure out
+*   - how to track/store uses
+*
+*  ______
+* ((*)___) Rage (*) ( ) ( )
+* _______
+* (___(*)) Rage (*) (*) ( )
+*
+********************************************/
 
 
-/******** Generic widget data structure?? *******************************
 
-    |--------------------------------------------|
-    | widget_types                               |
-    |--------------------------------------------|
-    | id(bigserial) | name(text) | schema(jsonb) |
-    |--------------------------------------------|
+/* counter notes *********************************
+*
+* |-------|
+* |   8   |
+* |-------|
+* | title | -> click -> |----------------------|
+* |-------|             | value: 8 | notes     |
+*                       |----------|-----------|
+*                       | base: 5  | these are |
+*                       | mod1: +1 | completly |
+*                       | mod2: +2 | seperate  |
+*                       |----------------------|
+*
+*************************************************/
 
-    |---------------------------------------------------|
-    | widget_instances                                  |
-    |---------------------------------------------------|
-    | id(bigserial) | type_id(bigint) | user_id(bigint) |
-    |---------------------------------------------------|
 
-    |----------------------------------------------------------------|
-    | widget_data                                                    |
-    |----------------------------------------------------------------|
-    | id(bigserial) | instance_id(bigint) | key(text) | value(jsonb) |
-    |----------------------------------------------------------------|
-
+/******** Generic widget data structure *******************************
+*
+*    |------------------|
+*    | smart_values     |
+*    |------------------|
+*    | id_pk: bigserial |
+*    | name: text       |
+*    | value: text      |
+*    | min: number      |
+*    | max: number      |
+*    |------------------|
+*
+*    |----------------------------|
+*    | smart_value_modifiers      |
+*    |----------------------------|
+*    | id_pk: bigserial           |
+*    | smart_value_fk: bigint     |
+*    | type: enum                 |
+*    | smart_value_ref_fk: bigint |
+*    | active: bigint             |
+*    | min: bigint                |
+*    | max: bigint                |
+*    | list_order: bigint         |
+*    |----------------------------|
+*
+*    |------------------------|
+*    | widgets                |
+*    |------------------------|
+*    | id_pk: bigserial       |
+*    | name: text             |
+*    | character_fk: bigint   |
+*    | widget_type_fk: bigint |
+*    | dumb_values: jsonb     |
+*    |------------------------|
+*
+*    |------------------------|
+*    | widget_values          |
+*    |------------------------|
+*    | id_pk: bigserial       |
+*    | key: text              |
+*    | smart_value_fk: bigint |
+*    | widget_fk: bigint      |
+*    |------------------------|
+*
+*    |------------------|
+*    | widget_types     |
+*    |------------------|
+*    | id_pk: bigserial |
+*    | name: text       |
+*    |------------------|
+*
 *************************************************************************/
+
+/******** Global attriubtes/modifiers/etc ********************************
+*
+*    |--------------------------------|
+*    | abilities                      |
+*    |--------------------------------|
+*    | id_pk: bigserial               |
+*    | name: text                     |
+*    | type: SPELL | EQUIPMENT | FEAT |
+*    | reference_id: bigint           |
+*    | is_active: bool                |
+*    | effects: effect[]              |
+*    |--------------------------------|
+*
+*    |----------------------|
+*    | effect               |
+*    |----------------------|
+*    | type: FORMULA | TEXT |
+*    | affected: DMG | SKILL|
+*    | value: text          |
+*    | 
+*    | 
+*    |-------------------|
+*
+*    effects: +2 dmg | disadvantage on wisdom saving throws | feather fall | 
+*    effects: +2 dmg | disadvantage on wisdom saving throws | feather fall | 
+*
+*************************************************************************/
+
+values
+- hp: tracker
+- strength: attribtue
+- wisdom saving throw: skill
+- investigation: skill
+- AC
+- speed
+- death saves
+
+special values: advtantage, disadvantage... more?
+
+|---------------------------|
+| smart_values              |
+|---------------------------|
+| id_pk | name | value      | character_fk = 1
+|---------------------------|
+| 1     | Dex  | '18'       |
+| 2     | Dexm | '0'        | dexm = dexterity modifier
+| 3     | Dexs | '0'        | dexs = dexterity saving throw
+| 4     | AC   | '10'       |
+| 5     | Prof | '3'        |
+| 6     | ME1  | '5'        | ME1 = Magical effect #1
+| 7     | EQE1 | '2'        | EQE1 = Equipemnt effect #1 "shield"
+| 8     | EQO2 | '12'       | EQO2 = Equipemnt override #2 "armor"
+| 9     | HP   | '35'       |
+| 10    | SLTH | '0'        | stealth
+| 11    | da   | 'dis. adv' | da = disadvantage
+|---------------------------|
+
+
+
+|----------------------------------------------------------------------|
+| smart_value_modifiers                                                |
+|----------------------------------------------------------------------|
+| value_fk | type     | value_ref_fk | active | min | max | list_order |
+|----------------------------------------------------------------------|
+| 2 (dexm) | ATTR_MOD | 1 (dex)      | true   | -   | -   | 1          |
+| 3 (dexs) | ADD      | 2 (dexm)     | true   | -   | -   | 1          |
+| 3 (dexs) | ADD      | 5 (Prof)     | true   | -   | -   | 2          |
+| 4 (AC)   | ADD      | 2 (dexm)     | true   | -   | 2   | 2          |
+| 4 (AC)   | ADD      | 6 (ME1)      | false  | -   | -   | 4          |
+| 4 (AC)   | ADD      | 7 (EQE1)     | true   | -   | -   | 3          |
+| 4 (AC)   | BASE     | 8 (EQO1)     | true   | -   | -   | 1          |
+| 10 (SLTH)| ADD      | 2 (dexm)     | true   | -   | -   | 1          |
+| 10 (SLTH)| ADD      | 5 (Prof)     | true   | -   | -   | 2          |
+| 10 (SLTH)| AUGMENT  | 11 (dis. adv)| true   | -   | -   | 3          |
+|---------------------------------------------|------------------------|
+
+AC:
+15 (from armor, override replaces base)
++ 4 -> 2 (dex modifier, limited to +2 by armor) 
++ 2 (from shield)
+= 19
++ 5 (activate shield spell)
+= 24
+
+order of operations
+base = first override || value_fk.value
+base_added = base + sum of "ADD"s
+valBeforeOverload = max && max < base_added ? max : base_added
+finalVal = valBeforeOverload + sum ov overloads
+
+
+
+
+
+
+

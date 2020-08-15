@@ -6,6 +6,7 @@ import getTotalModifier from './getTotalModifier';
 import If from './If';
 import Fa from './Fa';
 import objToGraphqlStr from './objToGraphqlStr';
+import Popover from './Popover';
 import removeByIndex from './removeByIndex';
 import replaceByIndex from './replaceByIndex';
 import Rotate from './Rotate';
@@ -21,6 +22,7 @@ export {
   If,
   Fa,
   objToGraphqlStr,
+  Popover,
   removeByIndex,
   replaceByIndex,
   Rotate,
