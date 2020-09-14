@@ -12,13 +12,15 @@ import {
   TableCell,
   Typography,
 } from '@material-ui/core';
+import _map from 'lodash/map';
+import _sortBy from 'lodash/sortBy';
 
 function parseHandlebars() {
   function locateHandlebar(value, fromIndex) {
     return value.indexOf('{{', fromIndex)
   }
 
-  function tokenizeHandlebar(eat, value, silent) {
+  function tokenizeDictionary(eat, value, silent) {
     var match = /^{{(\w+)}}/.exec(value)
 
     if (match) {
@@ -26,18 +28,18 @@ function parseHandlebars() {
         return true
       }
 
-      console.log({ match });
+      console.log({ value, match });
 
       return eat(match[0])({
-        type: 'custom',
+        type: 'smartValue',
         url: 'https://social-network/' + match[1],
         children: [{type: 'text', value: match[1]}]
       })
     }
   }
 
-  tokenizeHandlebar.notInLink = true
-  tokenizeHandlebar.locator = locateHandlebar
+  tokenizeDictionary.notInLink = true
+  tokenizeDictionary.locator = locateHandlebar
 
   return function handlebars() {
     var Parser = this.Parser
@@ -45,11 +47,56 @@ function parseHandlebars() {
     var methods = Parser.prototype.inlineMethods
 
     // Add an inline tokenizer (defined in the following example).
-    tokenizers.handlebar = tokenizeHandlebar
+    tokenizers.handlebar = tokenizeDictionary
 
     // Run it just before `text`.
     methods.splice(methods.indexOf('text'), 0, 'handlebar')
   }
+}
+
+function parseDictonary(dictionary) {
+  const dictionarySortedByLength = _sortBy(dictionary, ['length']).reverse();
+
+  return _map(dictionarySortedByLength, ({ word, definition }) => {
+    function locateWord(value, fromIndex) {
+      return value.indexOf(word, fromIndex);
+    }
+
+    function tokenizeDictionary(eat, value, silent) {
+      const shouldEat = value.indexOf(word) === 0;
+
+      if (!shouldEat) {
+        return;
+      }
+
+      if (silent) {
+        return true
+      }
+
+      return eat(word)({
+        type: 'dictionary',
+        definition,
+        children: [{type: 'text', value: word}]
+      })
+    }
+
+    tokenizeDictionary.notInLink = true
+    tokenizeDictionary.locator = locateWord
+
+    return function dictionary() {
+      var Parser = this.Parser
+      var tokenizers = Parser.prototype.inlineTokenizers
+      var methods = Parser.prototype.inlineMethods
+
+      // Add an inline tokenizer (defined in the following example).
+      tokenizers[`dictionary${word}`] = tokenizeDictionary
+
+      // Run it just before `text`.
+      methods.splice(methods.indexOf('text'), 0, `dictionary${word}`)
+    }
+
+  });
+
 }
 
 const Blockquote = withStyles((theme) => ({
@@ -95,7 +142,8 @@ function Markdown({
   return (
     <ReactMarkdown
       renderers={{
-        custom: ({ children }) => <div>{children} and it's custom!</div>,
+        dictionary: ({ children, definition }) => <strong title={definition}>{children}</strong>,
+        smartValue: ({ children }) => <div>{children} and it's custom!</div>,
         blockquote: Blockquote,
         code: Code,
         heading: ({ children, level }) => <Typography variant={`h${level}`}>{children}</Typography>,
@@ -111,7 +159,12 @@ function Markdown({
         definition: (props) => console.log(props) || 'here',
       }}
       source={text || defaultText}
-      plugins={[parseHandlebars()]}
+      plugins={[parseHandlebars(), ...parseDictonary([
+        { word: 'just', definition: 'crazy cool test'},
+        { word: 'test', definition: 'more testing'},
+        { word: 'a', definition: 'more testing'},
+        { word: 'a big oof', definition: 'more testing'},
+        ])]}
       {...props}
     />
   );

@@ -8,7 +8,7 @@ import {
   TableCell,
   TableRow,
 } from '@material-ui/core';
-import { Markdown } from '../Displays';
+import Markdown from '../Markdown';
 import { useGlobalState } from '../hooks';
 
 const StyledCell = withStyles(() => ({

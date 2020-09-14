@@ -19,6 +19,7 @@ import {
 } from '../state';
 import {
   addWidgetToPage as addWidgetToPageAction,
+  updatePage,
   updatePageLayout,
 } from '../actions';
 
@@ -62,7 +63,7 @@ function usePage(pageId) {
     updatePage: async (updatedPage) => {
       setSavingPage(true);
 
-      // TODO: add func to actually update the page
+      await updatePage(updatedPage);
       setPage(updatedPage);
 
       setSavingPage(false);

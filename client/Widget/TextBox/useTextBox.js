@@ -48,7 +48,11 @@ function useTextBox(id) {
     deleteTextBox: remove,
     addToPage,
     saveText: (newText) => {
-      updateDumbValue('text', newText);
+      if (typeof newText === 'function') {
+        updateDumbValue('text', newText(textBox.text))
+      } else {
+        updateDumbValue('text', newText);
+      }
     },
   }), [
     characterId,

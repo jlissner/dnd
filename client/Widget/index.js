@@ -67,4 +67,4 @@ Widget.propTypes = {
   type: PropTypes.string.isRequired,
 };
 
-export default Widget;
+export default React.memo(Widget);

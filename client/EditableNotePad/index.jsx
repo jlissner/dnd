@@ -5,7 +5,7 @@ import {
   InputBase,
 } from '@material-ui/core';
 import _trim from 'lodash/trim';
-import { Markdown } from '../Displays';
+import Markdown from '../Markdown';
 import { useDoubleClick } from '../hooks';
 import { Fa, If } from '../utils';
 

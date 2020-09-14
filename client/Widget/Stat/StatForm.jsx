@@ -26,7 +26,6 @@ function StatForm({ id }) {
     stat,
     saving,
     update,
-    value,
   } = useStat(id);
 
   return (

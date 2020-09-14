@@ -4,7 +4,7 @@ import _map from 'lodash/map';
 import {
   selectedCharacterState,
   characterWidgetsState,
-  widgetState,
+  smartValueSelector,
   widgetTypesState,
 } from '../../state';
 
@@ -19,7 +19,7 @@ const attributesSelector = selector({
       typeId: widgetType.idPk,
     }));
 
-    return get(waitForAll(_map(characterAttributes, widgetState)));
+    return get(waitForAll(_map(characterAttributes, smartValueSelector)));
   }
 });
 

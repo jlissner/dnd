@@ -4,6 +4,7 @@ import flagState from './flagState';
 import forceRefreshState from './forceRefreshState';
 import pageState from './pageState';
 import pageLayoutState from './pageLayoutState';
+import popoverState from './popoverState';
 import selectedCharacterState from './selectedCharacterState';
 import selectedPageState from './selectedPageState';
 import smartValueState from './smartValueState';
@@ -20,6 +21,7 @@ export {
   forceRefreshState,
   pageState,
   pageLayoutState,
+  popoverState,
   selectedCharacterState,
   selectedPageState,
   smartValueState,

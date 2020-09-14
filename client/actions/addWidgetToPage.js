@@ -2,7 +2,6 @@ import axios from 'axios';
 import _get from 'lodash/get';
 
 async function addWidgetToPage(pageId, widget, layout) {
-  console.log({ pageId, widget, layout });
   const query = `
     mutation {
       createPageWidget(

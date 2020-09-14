@@ -46,8 +46,6 @@ function CharacterBook(props) {
   )
 }
 
-export { CharacterBookSkeleton };
-
 CharacterBook.propTypes = {
   id: PropTypes.string.isRequired,
 };

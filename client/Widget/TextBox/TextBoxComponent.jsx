@@ -9,7 +9,7 @@ import {
 } from '@material-ui/core';
 import { useDoubleClick } from '../../hooks';
 import { If, Fa, Scrollbars } from '../../utils';
-import { Markdown } from '../../Displays';
+import Markdown from '../../Markdown';
 import useTextBox from './useTextBox';
 
 function TextBoxComponent({
@@ -63,7 +63,7 @@ function TextBoxComponent({
     }
 
     return (
-      <Markdown text={newText} />
+      <Markdown text={newText} update={saveText} />
     )
   }
 

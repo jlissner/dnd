@@ -15,6 +15,7 @@ import { Fa } from '../utils';
 function CharacterBookHeader() {
   const [menu, setMenu] = useState(null);
   const setAddWidgetOpen = useSetRecoilState(flagState('addWidgetOpen'));
+  const setEditPageOpen = useSetRecoilState(flagState('editPageOpen'));
   const [editing, setEditing] = useRecoilState(flagState('editMode'));
   const selectedCharacter = useRecoilValue(selectedCharacterState);
   const { character } = useCharacter(selectedCharacter);
@@ -59,6 +60,17 @@ function CharacterBookHeader() {
             ? 'Stop Arranging Widgets'
             : 'Arrange Widgets'
           }
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            setMenu(null);
+            setEditPageOpen(true);
+          }}
+        >
+          <ListItemIcon>
+            <Fa icon="file" />
+          </ListItemIcon>
+          Edit Page Details
         </MenuItem>
       </Menu>
     </>

@@ -12,6 +12,18 @@
 ********************************************/
 
 
+/* dictionary ***********************************
+*
+* create custom right click menu
+* - to find words
+* - to create words & definition
+* - to edit words & definition
+*
+*
+*
+*
+*************************************************/
+
 
 /* counter notes *********************************
 *

@@ -1,5 +1,4 @@
 import React from 'react';
-import { hot } from 'react-hot-loader/root';
 import { Switch, Route } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import {
@@ -57,4 +56,4 @@ function AppComponent() {
   );
 }
 
-export default hot(AppComponent);
+export default AppComponent;

@@ -2,6 +2,10 @@ import axios from 'axios';
 import _map from 'lodash/map';
 
 async function fetchPage(pageId) {
+  if (!pageId) {
+    return null;
+  }
+
   const query = `query {
     page:characterPage(idPk: "${pageId}") {
         idPk

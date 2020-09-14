@@ -5,6 +5,7 @@ import {
   forceRefreshState,
   pageLayoutState,
   pageState,
+  popoverState,
   selectedCharacterState,
   selectedPageState,
   smartValueState,
@@ -15,6 +16,7 @@ import {
   widgetTypesState,
 } from './atoms';
 import {
+  characterGlossarySelector,
   pageSelector,
   smartValueSelector,
 } from './selectors';
@@ -26,6 +28,7 @@ export {
   forceRefreshState,
   pageLayoutState,
   pageState,
+  popoverState,
   selectedCharacterState,
   selectedPageState,
   smartValueState,
@@ -34,6 +37,7 @@ export {
   userWidgetsState,
   widgetState,
   widgetTypesState,
+  characterGlossarySelector,
   pageSelector,
   smartValueSelector,
 };

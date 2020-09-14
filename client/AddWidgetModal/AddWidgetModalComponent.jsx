@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import {
   Box,
@@ -41,6 +40,8 @@ function AddWidgetModalComponent() {
             }}
           >
             <Tab label="Attributes" value="Attribute" />
+            <Tab label="Features" value="Feature" />
+            <Tab label="Glossary" value="Glossary" />
             <Tab label="Skills" value="Skill" />
             <Tab label="Stats" value="Stat" />
             <Tab label="Lists" value="List" />
@@ -57,10 +58,5 @@ function AddWidgetModalComponent() {
     </Dialog>
   )
 }
-
-AddWidgetModalComponent.propTypes = {
-  onClose: PropTypes.func.isRequired,
-  open: PropTypes.bool.isRequired,
-};
 
 export default AddWidgetModalComponent;

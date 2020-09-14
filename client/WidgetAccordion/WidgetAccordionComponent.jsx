@@ -9,7 +9,6 @@ import {
   AccordionDetails,
   Typography,
 } from '@material-ui/core';
-import _get from 'lodash/get';
 import { Fa } from '../utils';
 import { widgetState } from '../state';
 import widgets from '../Widget/widgets';
@@ -21,10 +20,7 @@ function WidgetAccordionComponent({
   expanded,
   handleExpand,
 }) {
-  const {
-    Form,
-    display,
-  } = widgets[type];
+  const { Form } = widgets[type];
   const widget = useRecoilValue(widgetState(id));
 
   return (

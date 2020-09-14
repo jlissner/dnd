@@ -59,6 +59,10 @@ function Page({
   }, [saving, layoutRef]);
 
   useEffect(() => {
+    setEditableLayout(layoutRef.current);
+  }, [id]);
+
+  useEffect(() => {
     setEditableLayout(editableLayout => _map(editableLayout, l => ({...l, static: !editing })))
   }, [editing]);
   
@@ -118,4 +122,4 @@ Page.propTypes = {
   id: PropTypes.string.isRequired,
 };
 
-export default Page;
+export default React.memo(Page);

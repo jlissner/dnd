@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import {
   Checkbox,
@@ -21,6 +21,7 @@ import { Fa, If } from '../utils';
 import getNumericValue from '../utils/getNumericValue';
 import AddButton from './AddButton';
 import NumericInput from './NumericInput';
+import WidgetSmartValues from './WidgetSmartValues';
 
 function updateTags(tagsText) {
   return tagsText
@@ -50,12 +51,11 @@ function FormItem({
   variant,
   ...props
 }) {
-  function handleEnter(evt) {
+  const handleEnter = useCallback((evt) => {
     if (evt.keyCode === 13) {
       onEnter();
     }
-  }
-
+  }, [onEnter]);
   const disableFormItem = _map(conditions, (val, key) => formValue[key] !== val).filter(Boolean).length > 0;
   const defaultProps = {
     disabled: disabled || disableFormItem,
@@ -242,6 +242,9 @@ function FormItem({
             onChange={(evt) => setValue(updateTags(evt.target.value))}
           />
         );
+      }
+      case 'smartValues': {
+        return <WidgetSmartValues {...defaultProps} {...props} setValue={setValue} />;
       }
       default: {
         return (

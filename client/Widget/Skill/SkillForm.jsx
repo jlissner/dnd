@@ -130,7 +130,7 @@ function SkillForm({ id }) {
             variant="filled"
             select
           >
-            {attributes.map(({ name, attributeModifierFk }) => (
+            {attributes.map(({ name, attributeModifierFk, ...te }) => console.log({ name, attributeModifierFk, ...te }) || (
               <MenuItem key={attributeModifierFk} value={attributeModifierFk}>{name}</MenuItem>
             ))}
           </TextField>

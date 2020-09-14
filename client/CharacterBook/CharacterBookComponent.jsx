@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useRecoilState } from 'recoil';
 import classnames from 'classnames';
@@ -6,6 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import {
   Box,
   Paper,
+  TextField,
   Typography,
 } from '@material-ui/core';
 import _get from 'lodash/get';
@@ -14,7 +15,7 @@ import _map from 'lodash/map';
 import gameboard from '../assets/gameboard.jpg';
 import { useCharacter } from '../hooks';
 import { selectedPageState } from '../state';
-import { Fa, Scrollbars } from '../utils';
+import { Confirm, Fa, Scrollbars } from '../utils';
 import CharacterBookHeader from './CharacterBookHeader';
 import CharacterBookSkeleton from './CharacterBookSkeleton';
 import Page from './Page';
@@ -56,8 +57,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function CharacterBookComponent({ id }) {
+  const [newPageName, setNewPageName] = useState('');
   const classes = useStyles();
-  const { character } = useCharacter(id);
+  const { character, createPage } = useCharacter(id);
   const { pages } = character || {};
   const [selectedPage, setSelectedPage] = useRecoilState(selectedPageState);
 
@@ -99,9 +101,22 @@ function CharacterBookComponent({ id }) {
       </React.Suspense>
       <div className={classes.tabs}>
         {tabs}
-        <button type="button" className={classes.tab}>
-          <Fa icon="plus" />
-        </button>
+        <Confirm
+          Component={(componentProps) => (
+            <button {...componentProps} type="button" className={classes.tab}>
+              <Fa icon="plus" />
+            </button>
+          )}
+          onConfirm={() => newPageName && createPage(newPageName)}
+          title="Create a New Page"
+          text={(
+            <TextField
+              label="Page Name"
+              onChange={(evt) => setNewPageName(evt.target.value)}
+              value={newPageName}
+            />
+          )}
+        />
       </div>
     </Paper>
   )

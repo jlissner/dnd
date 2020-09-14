@@ -22,7 +22,6 @@ function useStat(id) {
   }));
   const {
     widget: stat,
-    setWidget: setStat,
     updateDumbValue,
     update,
     remove,
@@ -30,7 +29,7 @@ function useStat(id) {
     saving,
     attemptSaveable,
   } = useWidget(id);
-  const { smartValue, updateValue } = useSmartValue(_get(stat, 'value'));
+  const { smartValue } = useSmartValue(_get(stat, 'value'));
   const statWithValue = useMemo(() => {
     if (!stat || !smartValue) {
       return null;
@@ -65,25 +64,18 @@ function useStat(id) {
 
       return updateDumbValue('notes', newNotes);
     },
-    update: attemptSaveable(async ({ baseValue, ...statUpdates }) => {
-//       const promises = [];
-//       if (baseValue !== statWithValue.baseValue) {
-//         promises.push(updateValue(baseValue));
-//       }
-// 
-//       promises.push(update(statUpdates));
-// 
-//       await Promise.all(promises);
+    update: (statUpdates) => update({
+      name: statUpdates.name,
+      values: [{
+        idPk: smartValue.idPk,
+        value: statUpdates.baseValue,
+      }],
+      dumbValues: {
+        ...stat.dumbValues,
+        type: statUpdates.type,
+      },
     }),
     create: attemptSaveable(async (statToCreate) => {
-      console.log({
-        name: statToCreate.name,
-        values: [{
-          key: 'value',
-          value: statToCreate.baseValue,
-        }],
-        dumbValues: { notes: '', type: statToCreate.type }
-      });
       const createdWidget = await createWidget({
         name: statToCreate.name,
         characterId,
@@ -100,6 +92,7 @@ function useStat(id) {
     remove,
     addToPage,
   }), [
+    smartValue.idPk,
     characterId,
     typeId,
     characterWidgets,
@@ -107,11 +100,7 @@ function useStat(id) {
     updateDumbValue,
     stat,
     statWithValue,
-    setStat,
     saving,
-    updateValue,
-    smartValue.value,
-    id,
     addToPage,
     attemptSaveable,
     remove,
